@@ -1,0 +1,20 @@
+@[reducible] def geoDegenerate (F : Type) [Field F] [NumberField F] [StarRing F] (Tau : Type) [Fintype Tau] : DV.Geo F where
+  Var := ℕ
+  dim := fun N => Formalism.DegreeFormula.dimFl Tau N
+  Fn := fun _ => F
+  fnField := fun _ => inferInstanceAs (Field F)
+  fnAlg := fun _ => inferInstanceAs (Algebra F F)
+  Dv := fun N => Tau → Fin N → ℤ
+  dvGrp := fun _ => inferInstance
+  Eff := fun _ _ => True
+  eff_zero := fun _ => trivial
+  eff_add := fun _ _ _ _ _ => trivial
+  H0 := fun _ _ => ⊤
+  degreeZeroCohomology_finiteDimensional := fun _ _ => inferInstance
+  mul_mem_riemannRochSpace_add := fun _ _ _ _ _ _ _ => Submodule.mem_top
+  riemannRoch_mono := fun _ _ _ _ => le_refl _
+  KY := fun _ => 0
+  Cl := fun _ => PUnit
+  properCl := fun _ _ => True
+  subCl := fun _ _ _ => True
+  supp := fun _ _ => PUnit.unit

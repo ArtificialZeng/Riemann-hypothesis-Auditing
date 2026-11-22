@@ -1,0 +1,7 @@
+structure Parameters (hL : _root_.UpperTheory.Zero.LLC.RecTExists) : Type 2 where
+  R : RPosition
+  N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL
+  S : SExt
+  Γ : GeoP
+variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists}
+@[reducible] def Parameters.s (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) : Slots := ⟨p.R, _root_.GlobalTheory.Mem.Top.Bl.normChoiceOfExtension hL p.N, SXE p.S, OX p.Γ⟩

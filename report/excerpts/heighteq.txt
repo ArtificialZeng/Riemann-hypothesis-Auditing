@@ -1,0 +1,22 @@
+def ht : D.what₂.Word → ℝ := DV.hExpl6 D p.L Y.X C.Csz
+
+def pt : Pt C where
+  D := setDiv D (nPrime p.L) p.ht
+  L := ledTr (nPrime p.L) p.ht p.L
+  gatT := gatTr (nPrime p.L) p.ht Y.gatT
+  ta :=
+    { Gx := instTr (nPrime p.L) p.ht p.ta.Gx
+      Gy := latTr (nPrime p.L) p.ht Y.Gy
+      supp_sat := p.ta.supp_sat
+      tw_supp := p.ta.tw_supp
+      fills := fun w => fills_tr (D := D) (nPrime p.L) p.ht p.ta.Gx C.GK w (p.ta.fills w)
+      lats0 := fun w u h1 h2 => p.ta.lats0 w u (by rw [← VV_tr (nPrime p.L) p.ht]; exact h1) h2
+      latTied := (p.Gy_eq ▸ p.ta.latTied : G.LatTied Y.gatT p.ta.Gx Y.Gy)
+      drop_iff := p.ta.drop_iff }
+  xa :=
+    { ties := { Y.ties with }
+      X := divTr (nPrime p.L) p.ht Y.X
+      nuDef := p.nuDef
+      nprimeDef := fun _ => rfl
+      rrDef := Y.rrDef
+      h_eq := fun _ => rfl

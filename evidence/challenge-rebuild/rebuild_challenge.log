@@ -1,0 +1,77 @@
++ set -o pipefail
++ export XDG_CACHE_HOME=~/rh-audit/cache
++ XDG_CACHE_HOME=~/rh-audit/cache
++ export MATHLIB_CACHE_DIR=~/rh-audit/cache/mathlib
++ MATHLIB_CACHE_DIR=~/rh-audit/cache/mathlib
++ export PATH=~/rh-audit/tools/lean-4.33.1-darwin_aarch64/bin:~/.opencode/bin:~/.npm-global/bin:~/bin:/Applications/Cursor.app/Contents/Resources/app/bin:~/.local/bin:~/.npm-global/bin:~/.npm-global/bin:~/.npm-global/bin:/opt/anaconda3/bin:/opt/anaconda3/condabin:~/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.app
++ PATH=~/rh-audit/tools/lean-4.33.1-darwin_aarch64/bin:~/.opencode/bin:~/.npm-global/bin:~/bin:/Applications/Cursor.app/Contents/Resources/app/bin:~/.local/bin:~/.npm-global/bin:~/.npm-global/bin:~/.npm-global/bin:/opt/anaconda3/bin:/opt/anaconda3/condabin:~/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.secu
++ cd ~/rh-audit/challenge-rebuild
++ date
+Mon Nov 23 04:07:37 +08 2026
++ ok=0
++ for attempt in 1 2 3 4 5 6
++ rm -rf .lake/packages/batteries.tmp
++ tail -12
++ lake exe cache get
+✔ [20/25] Built Cache.Warning (4.7s)
+✔ [21/25] Built Cache.Warning:c.o (2.3s)
+✔ [22/25] Built Cache.Main (11s)
+✔ [23/25] Built Cache.Requests:c.o (27s)
+✔ [24/25] Built Cache.Main:c.o (5.4s)
+✔ [25/25] Built cache:exe (6.6s)
+Current branch: HEAD
+Using cache from origin: (some leanprover-community/mathlib4)
+Attempting to download 8690 file(s) from leanprover-community/mathlib4 cache at https://lakecache.blob.core.windows.net/mathlib4-master
+Decompressed 8690 file(s)
+Already decompressed 8690 file(s)
++ ok=1
++ break
++ '[' 1 = 1 ']'
++ date
+Mon Nov 23 04:10:29 +08 2026
++ ls .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+.lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
++ lake build Challenge
++ tail -8
+⚠ [8706/8707] Built Challenge (120s)
+warning: src/Challenge.lean:19:8: declaration uses `sorry`
+warning: src/Challenge.lean:21:8: declaration uses `sorry`
+warning: src/Challenge.lean:23:8: declaration uses `sorry`
+warning: src/Challenge.lean:25:8: declaration uses `sorry`
+warning: src/Challenge.lean:27:8: declaration uses `sorry`
+Build completed successfully (8707 jobs).
++ date
+Mon Nov 23 04:12:51 +08 2026
++ cd ~/rh-audit/tools
++ '[' '!' -d lean4export ']'
++ git clone -q https://github.com/leanprover/lean4export.git
++ cd lean4export
++ git checkout -q v4.33.0
++ git log -1 '--format=%H %ad %s'
+15f6055e299ad5b89345e533cc2192f4cc00f659 Mon Aug 10 08:28:36 2026 +0200 chore: bump toolchain to v4.33.0 (#44)
++ lake build
++ tail -5
+✔ [3/6] Built Main (10s)
+✔ [4/6] Built Main:c.o (1.4s)
+✔ [5/6] Built Export:c.o (25s)
+✔ [6/6] Built lean4export:exe (5.5s)
+Build completed successfully (6 jobs).
++ ls .lake/build/bin
+lean4export
+lean4export.hash
+lean4export.rsp
+lean4export.trace
++ cd ~/rh-audit/challenge-rebuild
+++ cat export-targets.txt
+++ tr '\n' ' '
++ lake env ~/rh-audit/tools/lean4export/.lake/build/bin/lean4export Challenge -- Quot Quot.mk Quot.lift Quot.ind riemannHypothesis riemannZeta_eq_zero_re LFunction_ne_zero_of_half_lt_re LFunction_eq_zero_re LFunction_eq_zero_re_of_isPrimitive propext Quot.sound Classical.choice Nat.add Nat.sub Nat.mul Nat.pow Nat.gcd Nat.div Nat.mod Nat.beq Nat.ble Nat.land Nat.lor Nat.xor Nat.shiftLeft Nat.shiftRight String.ofList Char.ofNat List eagerReduce Nat String String.mk Char optParam autoParam semiOutParam outParam
++ ls -la my_challenge.ndjson
+-rw-r--r--  1 user  staff  350862311 Nov 23 04:17 my_challenge.ndjson
++ shasum -a 256 my_challenge.ndjson
+bd484ac9886a96f26b1d9a7a59ebd45b7a70d102c015d4f31f9302bbdd6ab2b9  my_challenge.ndjson
++ echo 'published: bd484ac9886a96f26b1d9a7a59ebd45b7a70d102c015d4f31f9302bbdd6ab2b9'
+published: bd484ac9886a96f26b1d9a7a59ebd45b7a70d102c015d4f31f9302bbdd6ab2b9
++ date
+Mon Nov 23 04:17:23 +08 2026
++ echo DONE
+DONE

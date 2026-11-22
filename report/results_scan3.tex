@@ -1,0 +1,22 @@
+\newcommand{\scanThreeSummary}{第三遍扫描（结构体字段读取与消去）的要点：\lean{OAt.rec}、\lean{DivT.rec}、\lean{DivX.rec}、\lean{DV.Geo.rec} 均为零引用，
+即这些记录的内容只可能经字段投影读出；\lean{OAt} 的 \lean{geo} 字段没有转手以外的读取者；内容提取引理 \lean{GeoTiedP.geoTied}、\lean{GeoTiedP.formsTieX} 不在依赖锥内；
+而抽象接口 \lean{DV.Geo} 的字段确被锥内 621 个声明读取（\S\ref{sec:fact-degenerate}）。}
+\newcommand{\scanThreeAppendix}{%
+\subsection{第三遍扫描：结构体字段的读取与消去}
+
+「依赖数」是传递依赖该模式的声明个数；投影类种子匹配的是内核项中的 \lean{proj} 结点。
+
+\begin{center}\small
+\begin{tabular}{@{}lrc@{}}
+\toprule
+种子（模式） & 依赖它的声明数 & 主定理依赖它？\\
+\midrule
+\tableinput{tables/scan3_counts.tex}
+\bottomrule
+\end{tabular}
+\end{center}
+
+直接读取 \lean{OAt} 的 \lean{lam} 字段的定理有三个：\lean{divEx_geoCl}、\lean{oAt_setDiv}（二者是转手）以及 \lean{GlobalTheory.T.parameter_of_discrete_series_ray_alt}（真正的消费者）；
+直接读取 \lean{geo} 字段的只有前两个。实际出现在依赖锥内的 \lean{DV.Geo} 字段访问函数共 18 个：
+\lean{Var}、\lean{Cl}、\lean{Dv}、\lean{dvGrp}、\lean{Fn}、\lean{fnField}、\lean{fnAlg}、\lean{H0}、\lean{supp}、\lean{dim}、\lean{Adl}、\lean{ofW}、\lean{inter}、\lean{twist}、\lean{vanishOn}、\lean{arTop}、\lean{arVol}、\lean{nefA}。
+}

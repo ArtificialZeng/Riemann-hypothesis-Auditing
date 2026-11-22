@@ -1,0 +1,16 @@
+geoDegenerate	*.geoDegenerate
+geoDegenerateNoTau	*.geoDegenerateNoTau
+algDegenerate	*.algDegenerate
+padDegenerate	*.padDegenerate
+mdlJunk	*.mdlJunk
+cxJunk	*.cxJunk
+geoTrue	*.geoTrue
+shimUJunk	*.shimUJunk
+divXFl	*.divXFl
+geoOver_stages	*.geoOver_stages
+LPTiedPlaceholder	*.LPTiedPlaceholder
+NTiedGPlaceholder	*.NTiedGPlaceholder
+NormalizedHeckeDataPlaceholder	*.NormalizedHeckeDataPlaceholder
+geoExample	*.geoExample
+anyGeometry	GlobalTheory.Mem.Top.Bl.anyGeometry
+OAt.geo_proj	PROJ:GlobalTheory.Mem.Top.Bl.OAt:0

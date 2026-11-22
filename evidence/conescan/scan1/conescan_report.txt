@@ -1,0 +1,286 @@
+meta: {"meta":{"exporter":{"name":"lean4export","version":"3.1.0"},"format":{"version":"3.1.0"},"lean":{"githash":"819816b2e0a3bf405af45ae5c7af2491d8f5bee6","version":"4.33.1"}}}
+lines: 1080769508  bytes: 61570595788  names: 14065150  exprs: 1065214335
+declaration records by kind: [("axiom", 3), ("def", 214241), ("inductive", 7969), ("opaque", 91), ("quot", 4), ("thm", 1246110)]
+total declaration records: 1468418
+expression records by kind: [("app", 989707003), ("bvar", 7426), ("const", 2131429), ("forallE", 23893670), ("lam", 47121325), ("letE", 2259622), ("natVal", 27168), ("proj", 65718), ("sort", 812), ("strVal", 162)]
+records flagged unsafe/partial: 0
+AXIOMS in export (3): ["propext", "Quot.sound", "Classical.choice"]
+QUOT primitives (4): ["Quot", "Quot.mk", "Quot.lift", "Quot.ind"]
+
+WATCHED NAMES: present in export (= in the dependency cone of the 5 exported theorems)?
+  PRESENT [thm]  riemannHypothesis   type-is-const: Some("RiemannHypothesis")   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  riemannZeta_eq_zero_re   type-is-const: Some("RiemannZetaZerosOnLine")   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  LFunction_ne_zero_of_half_lt_re   type-is-const: Some("DirichletLNonvanishingRightOfHalf")   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  LFunction_eq_zero_re   type-is-const: Some("DirichletLZerosOnLine")   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  LFunction_eq_zero_re_of_isPrimitive   type-is-const: Some("PrimitiveDirichletLZerosOnLine")   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  rhOfAll   type-is-const: Some("RiemannHypothesis")   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  allChi   type-is-const: Some("UpperTheory.EveryCharacter")   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  critAll   type-is-const: None   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  claimAll   type-is-const: None   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [def]  RiemannHypothesis   type-is-const: None   depends-on: []
+  PRESENT [def]  riemannZeta   type-is-const: None   depends-on: []
+  PRESENT [thm]  UpperTheory.FinalTheorems.everyCharacter   type-is-const: Some("UpperTheory.EveryCharacter")   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  UpperTheory.FinalTheorems.everyCharacter_of_row   type-is-const: None   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin   type-is-const: None   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  UpperTheory.Lit.every_character_of_theta_integrals_local_matching   type-is-const: None   depends-on: ["anyGeometry", "OAt.geo(proj)", "every_character_of_green_v_win", "GeoCl(type)"]
+  PRESENT [thm]  UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound   type-is-const: None   depends-on: ["anyGeometry", "OAt.geo(proj)", "GeoCl(type)"]
+  PRESENT [thm]  UpperTheory.Top.every_character_of_green_v_win   type-is-const: None   depends-on: []
+  PRESENT [thm]  UpperTheory.Top.zero_free_all_of_green_v_win   type-is-const: None   depends-on: []
+  ABSENT (name never interned)   UpperTheory.Top.plugAll
+  ABSENT (name never interned)   UpperTheory.Top.plugWin
+  ABSENT (name never interned)   UpperTheory.Lit.everyE₂
+  ABSENT (name never interned)   UpperTheory.Lit.hypsE₂
+  PRESENT [def]  GlobalTheory.Mem.Top.Bl.anyGeometry   type-is-const: Some("GlobalTheory.Mem.Top.Bl.GeoP")   depends-on: []
+  ABSENT (name never interned)   GlobalTheory.Mem.Top.Bl.geoOf
+  PRESENT [def]  GlobalTheory.Mem.Top.Bl.geoCl   type-is-const: None   depends-on: ["GeoCl(type)"]
+  PRESENT [inductive]  GlobalTheory.Mem.Top.Bl.GeoCl   type-is-const: None   depends-on: ["GeoCl.rec(elim)", "GeoCl(type)"]
+  PRESENT [inductive]  GlobalTheory.Mem.Top.Bl.GeoCl.rec   type-is-const: None   depends-on: ["GeoCl.rec(elim)", "GeoCl(type)"]
+  ABSENT (name never interned)   GlobalTheory.Mem.Top.Bl.GeoCl.casesOn
+  ABSENT (name never interned)   GlobalTheory.Mem.Top.Bl.GeoCl.recOn
+  PRESENT [inductive]  GlobalTheory.Mem.Top.Bl.OAt   type-is-const: None   depends-on: []
+  PRESENT [thm]  GlobalTheory.Mem.Top.Bl.OAt.geo   type-is-const: None   depends-on: ["OAt.geo(proj)"]
+  PRESENT [thm]  GlobalTheory.Mem.Top.Bl.OAt.lam   type-is-const: None   depends-on: []
+  PRESENT [def]  GlobalTheory.Mem.Top.Bl.OX   type-is-const: None   depends-on: []
+  PRESENT [def]  GlobalTheory.Mem.Top.Bl.parametersOfDependence   type-is-const: None   depends-on: ["anyGeometry", "GeoCl(type)"]
+  PRESENT [def]  GlobalTheory.Mem.Top.Bl.parametersOfExtension   type-is-const: None   depends-on: []
+  PRESENT [inductive]  GlobalTheory.Mem.Top.Bl.Parameters   type-is-const: None   depends-on: []
+  ABSENT (name never interned)   GlobalTheory.Mem.Top.Bl.prm0
+  ABSENT (name never interned)   GlobalTheory.Mem.Top.Bl.prm1
+  ABSENT (name never interned)   GlobalTheory.Mem.Top.Bl.prmR
+  ABSENT (name never interned)   GlobalTheory.Mem.Top.Bl.Prm
+  PRESENT [inductive]  GlobalTheory.Fc.HypsAlt   type-is-const: None   depends-on: []
+  ABSENT (name never interned)   GlobalTheory.Fc.Hyps
+  PRESENT [thm]  GlobalTheory.Glob.open_and_linked_of_stronger_extension_alt   type-is-const: None   depends-on: []
+  PRESENT [thm]  GlobalTheory.T.linkedAt_geometricWeakTies_of_tie   type-is-const: None   depends-on: []
+  PRESENT [thm]  GlobalTheory.T.open0_of_unitary_group_hypotheses   type-is-const: None   depends-on: ["anyGeometry", "GeoCl(type)"]
+  ABSENT (name never interned)   GlobalTheory.ShFam.IsGeoOf
+  ABSENT (name never interned)   GlobalTheory.ShFam.Pad.HasTrueSurf
+  ABSENT (name never interned)   sorryAx
+  ABSENT (name never interned)   Lean.ofReduceBool
+  ABSENT (name never interned)   Lean.ofReduceNat
+  ABSENT (name never interned)   Lean.trustCompiler
+  PRESENT [axiom]  propext   type-is-const: None   depends-on: []
+  PRESENT [axiom]  Quot.sound   type-is-const: None   depends-on: []
+  PRESENT [axiom]  Classical.choice   type-is-const: None   depends-on: []
+
+SEED bit 0 [anyGeometry]: 30 declarations transitively depend on it
+SEED bit 1 [geoOf]: 0 declarations transitively depend on it
+SEED bit 2 [GeoCl.rec(elim)]: 4 declarations transitively depend on it
+SEED bit 3 [OAt.geo(proj)]: 30 declarations transitively depend on it
+SEED bit 4 [plugAll]: 0 declarations transitively depend on it
+SEED bit 5 [every_character_of_green_v_win]: 13 declarations transitively depend on it
+SEED bit 6 [sorryAx]: 0 declarations transitively depend on it
+SEED bit 7 [GeoCl(type)]: 39 declarations transitively depend on it
+
+CHAIN[anyGeometry] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.Mem.Top.Bl.anyGeometry
+CHAIN[anyGeometry] LFunction_ne_zero_of_half_lt_re:
+       0. LFunction_ne_zero_of_half_lt_re
+       1. allChi
+       2. UpperTheory.FinalTheorems.everyCharacter
+       3. UpperTheory.FinalTheorems.everyCharacter_of_row
+       4. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       5. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       6. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       7. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       8. GlobalTheory.Mem.Top.Bl.anyGeometry
+CHAIN[anyGeometry] LFunction_eq_zero_re:
+       0. LFunction_eq_zero_re
+       1. claimAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.Mem.Top.Bl.anyGeometry
+CHAIN[anyGeometry] LFunction_eq_zero_re_of_isPrimitive:
+       0. LFunction_eq_zero_re_of_isPrimitive
+       1. critAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.Mem.Top.Bl.anyGeometry
+CHAIN[anyGeometry] riemannZeta_eq_zero_re:
+       0. riemannZeta_eq_zero_re
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.Mem.Top.Bl.anyGeometry
+CHAIN[geoOf] riemannHypothesis: NOT dependent
+CHAIN[geoOf] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[geoOf] LFunction_eq_zero_re: NOT dependent
+CHAIN[geoOf] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[geoOf] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[GeoCl.rec(elim)] riemannHypothesis: NOT dependent
+CHAIN[GeoCl.rec(elim)] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[GeoCl.rec(elim)] LFunction_eq_zero_re: NOT dependent
+CHAIN[GeoCl.rec(elim)] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[GeoCl.rec(elim)] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[OAt.geo(proj)] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.T.large_unramified_exponent_bundles_exist_alt
+      10. GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+      11. GlobalTheory.T.member_exists_baseLattice_alt
+      12. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+      13. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+      14. GlobalTheory.Mem.Top.Closing.memberE_closing_alt_alt
+      15. GlobalTheory.Mem.Top.Closing.divEx_geoCl
+      16. GlobalTheory.Mem.Top.Bl.OAt.geo
+      17. GlobalTheory.Mem.Top.Bl.OAt
+CHAIN[OAt.geo(proj)] LFunction_ne_zero_of_half_lt_re:
+       0. LFunction_ne_zero_of_half_lt_re
+       1. allChi
+       2. UpperTheory.FinalTheorems.everyCharacter
+       3. UpperTheory.FinalTheorems.everyCharacter_of_row
+       4. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       5. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       6. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       7. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       8. GlobalTheory.T.large_unramified_exponent_bundles_exist_alt
+       9. GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+      10. GlobalTheory.T.member_exists_baseLattice_alt
+      11. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+      12. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+      13. GlobalTheory.Mem.Top.Closing.memberE_closing_alt_alt
+      14. GlobalTheory.Mem.Top.Closing.divEx_geoCl
+      15. GlobalTheory.Mem.Top.Bl.OAt.geo
+      16. GlobalTheory.Mem.Top.Bl.OAt
+CHAIN[OAt.geo(proj)] LFunction_eq_zero_re:
+       0. LFunction_eq_zero_re
+       1. claimAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.T.large_unramified_exponent_bundles_exist_alt
+      10. GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+      11. GlobalTheory.T.member_exists_baseLattice_alt
+      12. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+      13. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+      14. GlobalTheory.Mem.Top.Closing.memberE_closing_alt_alt
+      15. GlobalTheory.Mem.Top.Closing.divEx_geoCl
+      16. GlobalTheory.Mem.Top.Bl.OAt.geo
+      17. GlobalTheory.Mem.Top.Bl.OAt
+CHAIN[OAt.geo(proj)] LFunction_eq_zero_re_of_isPrimitive:
+       0. LFunction_eq_zero_re_of_isPrimitive
+       1. critAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.T.large_unramified_exponent_bundles_exist_alt
+      10. GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+      11. GlobalTheory.T.member_exists_baseLattice_alt
+      12. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+      13. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+      14. GlobalTheory.Mem.Top.Closing.memberE_closing_alt_alt
+      15. GlobalTheory.Mem.Top.Closing.divEx_geoCl
+      16. GlobalTheory.Mem.Top.Bl.OAt.geo
+      17. GlobalTheory.Mem.Top.Bl.OAt
+CHAIN[OAt.geo(proj)] riemannZeta_eq_zero_re:
+       0. riemannZeta_eq_zero_re
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.T.large_unramified_exponent_bundles_exist_alt
+      10. GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+      11. GlobalTheory.T.member_exists_baseLattice_alt
+      12. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+      13. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+      14. GlobalTheory.Mem.Top.Closing.memberE_closing_alt_alt
+      15. GlobalTheory.Mem.Top.Closing.divEx_geoCl
+      16. GlobalTheory.Mem.Top.Bl.OAt.geo
+      17. GlobalTheory.Mem.Top.Bl.OAt
+CHAIN[plugAll] riemannHypothesis: NOT dependent
+CHAIN[plugAll] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[plugAll] LFunction_eq_zero_re: NOT dependent
+CHAIN[plugAll] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[plugAll] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[every_character_of_green_v_win] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Top.every_character_of_green_v_win
+CHAIN[every_character_of_green_v_win] LFunction_ne_zero_of_half_lt_re:
+       0. LFunction_ne_zero_of_half_lt_re
+       1. allChi
+       2. UpperTheory.FinalTheorems.everyCharacter
+       3. UpperTheory.FinalTheorems.everyCharacter_of_row
+       4. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       5. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       6. UpperTheory.Top.every_character_of_green_v_win
+CHAIN[every_character_of_green_v_win] LFunction_eq_zero_re:
+       0. LFunction_eq_zero_re
+       1. claimAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Top.every_character_of_green_v_win
+CHAIN[every_character_of_green_v_win] LFunction_eq_zero_re_of_isPrimitive:
+       0. LFunction_eq_zero_re_of_isPrimitive
+       1. critAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Top.every_character_of_green_v_win
+CHAIN[every_character_of_green_v_win] riemannZeta_eq_zero_re:
+       0. riemannZeta_eq_zero_re
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Top.every_character_of_green_v_win
+CHAIN[sorryAx] riemannHypothesis: NOT dependent
+CHAIN[sorryAx] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[sorryAx] LFunction_eq_zero_re: NOT dependent
+CHAIN[sorryAx] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[sorryAx] riemannZeta_eq_zero_re: NOT dependent

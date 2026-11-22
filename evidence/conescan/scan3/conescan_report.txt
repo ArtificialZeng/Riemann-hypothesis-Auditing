@@ -1,0 +1,297 @@
+meta: {"meta":{"exporter":{"name":"lean4export","version":"3.1.0"},"format":{"version":"3.1.0"},"lean":{"githash":"819816b2e0a3bf405af45ae5c7af2491d8f5bee6","version":"4.33.1"}}}
+lines: 1080769508  bytes: 61570595788  names: 14065150  exprs: 1065214335
+declaration records by kind: [("axiom", 3), ("def", 214241), ("inductive", 7969), ("opaque", 91), ("quot", 4), ("thm", 1246110)]
+total declaration records: 1468418
+expression records by kind: [("app", 989707003), ("bvar", 7426), ("const", 2131429), ("forallE", 23893670), ("lam", 47121325), ("letE", 2259622), ("natVal", 27168), ("proj", 65718), ("sort", 812), ("strVal", 162)]
+records flagged unsafe/partial: 0
+AXIOMS in export (3): ["propext", "Quot.sound", "Classical.choice"]
+QUOT primitives (4): ["Quot", "Quot.mk", "Quot.lift", "Quot.ind"]
+
+WATCHED NAMES: present in export (= in the dependency cone of the 5 exported theorems)?
+  PRESENT [thm]  riemannHypothesis   type-is-const: None   depends-on: ["proj_OAt.geo", "proj_OAt.lam", "proj_DivT.geo", "proj_DivX.geo", "proj_DV.Geo.anyfield", "GeoOver", "GeoTiedP", "DV.Geo"]
+  PRESENT [thm]  riemannZeta_eq_zero_re   type-is-const: Some("RiemannZetaZerosOnLine")   depends-on: ["proj_OAt.geo", "proj_OAt.lam", "proj_DivT.geo", "proj_DivX.geo", "proj_DV.Geo.anyfield", "GeoOver", "GeoTiedP", "DV.Geo"]
+  PRESENT [thm]  LFunction_ne_zero_of_half_lt_re   type-is-const: Some("DirichletLNonvanishingRightOfHalf")   depends-on: ["proj_OAt.geo", "proj_OAt.lam", "proj_DivT.geo", "proj_DivX.geo", "proj_DV.Geo.anyfield", "GeoOver", "GeoTiedP", "DV.Geo"]
+  PRESENT [thm]  LFunction_eq_zero_re   type-is-const: Some("DirichletLZerosOnLine")   depends-on: ["proj_OAt.geo", "proj_OAt.lam", "proj_DivT.geo", "proj_DivX.geo", "proj_DV.Geo.anyfield", "GeoOver", "GeoTiedP", "DV.Geo"]
+  PRESENT [thm]  LFunction_eq_zero_re_of_isPrimitive   type-is-const: Some("PrimitiveDirichletLZerosOnLine")   depends-on: ["proj_OAt.geo", "proj_OAt.lam", "proj_DivT.geo", "proj_DivX.geo", "proj_DV.Geo.anyfield", "GeoOver", "GeoTiedP", "DV.Geo"]
+  PRESENT [inductive]  GlobalTheory.Mem.Top.Bl.OAt   type-is-const: None   depends-on: []
+  PRESENT [inductive]  GlobalTheory.Mem.Top.Bl.OAt.rec   type-is-const: None   depends-on: []
+  ABSENT (name never interned)   GlobalTheory.Mem.Top.Bl.OAt.casesOn
+  PRESENT [thm]  GlobalTheory.Mem.Top.Bl.OAt.geo   type-is-const: None   depends-on: ["proj_OAt.geo"]
+  PRESENT [thm]  GlobalTheory.Mem.Top.Bl.OAt.lam   type-is-const: None   depends-on: ["proj_OAt.lam"]
+  PRESENT [inductive]  GlobalTheory.Mem.Top.Bl.DivT   type-is-const: None   depends-on: ["proj_DivX.geo", "proj_DV.Geo.anyfield", "GeoTiedP", "DV.Geo"]
+  PRESENT [inductive]  GlobalTheory.Mem.Top.Bl.DivT.rec   type-is-const: None   depends-on: ["proj_DivX.geo", "proj_DV.Geo.anyfield", "GeoTiedP", "DV.Geo"]
+  ABSENT (name never interned)   GlobalTheory.Mem.Top.Bl.DivT.casesOn
+  PRESENT [thm]  GlobalTheory.Mem.Top.Bl.DivT.geo   type-is-const: None   depends-on: ["proj_DivT.geo", "proj_DivX.geo", "proj_DV.Geo.anyfield", "GeoTiedP", "DV.Geo"]
+  PRESENT [def]  Formalism.L2.Geo.GeoTiedP   type-is-const: None   depends-on: ["proj_DivX.geo", "proj_DV.Geo.anyfield", "DV.Geo"]
+  ABSENT (name never interned)   Formalism.L2.Geo.GeoTiedP.geoTied
+  ABSENT (name never interned)   Formalism.L2.Geo.GeoTiedP.formsTieX
+  PRESENT [inductive]  Formalism.BasicNotions.DivX   type-is-const: None   depends-on: ["proj_DV.Geo.anyfield", "DV.Geo"]
+  PRESENT [def]  Formalism.BasicNotions.DivX.geo   type-is-const: None   depends-on: ["proj_DivX.geo", "DV.Geo"]
+  PRESENT [inductive]  Formalism.BasicNotions.DV.Geo   type-is-const: None   depends-on: ["DV.Geo"]
+  PRESENT [inductive]  Formalism.BasicNotions.DV.Geo.rec   type-is-const: None   depends-on: ["DV.Geo"]
+  ABSENT (name never interned)   Formalism.BasicNotions.DV.Geo.casesOn
+  PRESENT [def]  GlobalTheory.GeoGraft.GeoOver   type-is-const: None   depends-on: ["proj_DivX.geo", "proj_DV.Geo.anyfield", "GeoTiedP", "DV.Geo"]
+
+SEED bit 0 [OAt.rec] matched names: ["GlobalTheory.Mem.Top.Bl.OAt.rec"]
+SEED bit 0 [OAt.rec]: 0 declarations transitively depend on it
+SEED bit 1 [OAt.casesOn] matched names: []
+SEED bit 1 [OAt.casesOn]: 0 declarations transitively depend on it
+SEED bit 2 [proj_OAt.geo] matched names: ["PROJ GlobalTheory.Mem.Top.Bl.OAt.0"]
+SEED bit 2 [proj_OAt.geo]: 30 declarations transitively depend on it
+SEED bit 3 [proj_OAt.lam] matched names: ["PROJ GlobalTheory.Mem.Top.Bl.OAt.1"]
+SEED bit 3 [proj_OAt.lam]: 41 declarations transitively depend on it
+SEED bit 4 [proj_DivT.geo] matched names: ["PROJ GlobalTheory.Mem.Top.Bl.DivT.4"]
+SEED bit 4 [proj_DivT.geo]: 44 declarations transitively depend on it
+SEED bit 5 [DivT.rec] matched names: ["GlobalTheory.Mem.Top.Bl.DivT.rec"]
+SEED bit 5 [DivT.rec]: 0 declarations transitively depend on it
+SEED bit 6 [GeoTiedP.geoTied] matched names: []
+SEED bit 6 [GeoTiedP.geoTied]: 0 declarations transitively depend on it
+SEED bit 7 [GeoTiedP.formsTieX] matched names: []
+SEED bit 7 [GeoTiedP.formsTieX]: 0 declarations transitively depend on it
+SEED bit 8 [proj_DivX.geo] matched names: ["PROJ Formalism.BasicNotions.DivX.0"]
+SEED bit 8 [proj_DivX.geo]: 491 declarations transitively depend on it
+SEED bit 9 [proj_DV.Geo.anyfield] matched names: ["PROJ Formalism.BasicNotions.DV.Geo.*"]
+SEED bit 9 [proj_DV.Geo.anyfield]: 621 declarations transitively depend on it
+SEED bit 10 [DV.Geo.rec] matched names: ["Formalism.BasicNotions.DV.Geo.rec"]
+SEED bit 10 [DV.Geo.rec]: 0 declarations transitively depend on it
+SEED bit 11 [DivX.rec] matched names: ["Formalism.BasicNotions.DivX.rec"]
+SEED bit 11 [DivX.rec]: 0 declarations transitively depend on it
+SEED bit 12 [GeoCl.rec] matched names: ["GlobalTheory.Mem.Top.Bl.GeoCl.rec"]
+SEED bit 12 [GeoCl.rec]: 4 declarations transitively depend on it
+SEED bit 13 [GeoOver] matched names: ["GlobalTheory.GeoGraft.GeoOver"]
+SEED bit 13 [GeoOver]: 26 declarations transitively depend on it
+SEED bit 14 [GeoTiedP] matched names: ["Formalism.L2.Geo.GeoTiedP"]
+SEED bit 14 [GeoTiedP]: 60 declarations transitively depend on it
+SEED bit 15 [DV.Geo] matched names: ["Formalism.BasicNotions.DV.Geo"]
+SEED bit 15 [DV.Geo]: 736 declarations transitively depend on it
+
+CHAIN[OAt.rec] riemannHypothesis: NOT dependent
+CHAIN[OAt.rec] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[OAt.rec] LFunction_eq_zero_re: NOT dependent
+CHAIN[OAt.rec] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[OAt.rec] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[OAt.casesOn] riemannHypothesis: NOT dependent
+CHAIN[OAt.casesOn] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[OAt.casesOn] LFunction_eq_zero_re: NOT dependent
+CHAIN[OAt.casesOn] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[OAt.casesOn] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[proj_OAt.geo] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.T.large_unramified_exponent_bundles_exist_alt
+      10. GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+      11. GlobalTheory.T.member_exists_baseLattice_alt
+      12. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+      13. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+      14. GlobalTheory.Mem.Top.Closing.memberE_closing_alt_alt
+      15. GlobalTheory.Mem.Top.Closing.divEx_geoCl
+      16. GlobalTheory.Mem.Top.Bl.OAt.geo
+      17. GlobalTheory.Mem.Top.Bl.OAt
+CHAIN[proj_OAt.geo] LFunction_ne_zero_of_half_lt_re: DEPENDENT
+CHAIN[proj_OAt.geo] LFunction_eq_zero_re: DEPENDENT
+CHAIN[proj_OAt.geo] LFunction_eq_zero_re_of_isPrimitive: DEPENDENT
+CHAIN[proj_OAt.geo] riemannZeta_eq_zero_re: DEPENDENT
+CHAIN[proj_OAt.lam] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.T.large_unramified_exponent_bundles_exist_alt
+      10. GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+      11. GlobalTheory.T.member_exists_baseLattice_alt
+      12. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+      13. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+      14. GlobalTheory.Mem.Top.Closing.memberE_closing_alt_alt
+      15. GlobalTheory.Mem.Top.Closing.divEx_geoCl
+      16. GlobalTheory.Mem.Top.Bl.OAt.lam
+      17. GlobalTheory.Mem.Top.Bl.OAt
+CHAIN[proj_OAt.lam] LFunction_ne_zero_of_half_lt_re: DEPENDENT
+CHAIN[proj_OAt.lam] LFunction_eq_zero_re: DEPENDENT
+CHAIN[proj_OAt.lam] LFunction_eq_zero_re_of_isPrimitive: DEPENDENT
+CHAIN[proj_OAt.lam] riemannZeta_eq_zero_re: DEPENDENT
+CHAIN[proj_DivT.geo] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.T.large_unramified_exponent_bundles_exist_alt
+      10. GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+      11. GlobalTheory.T.member_exists_baseLattice_alt
+      12. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+      13. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+      14. GlobalTheory.T.geometric_parameter_uniform_alt
+      15. GlobalTheory.Mem.Top.Bl.exBL_isLinked_prmR_alt
+      16. GlobalTheory.T.eta_size_recursion_alt
+      17. GlobalTheory.Mem.Top.Bl.exBL_isLinked_alt
+      18. GlobalTheory.T.exists_reciprocity_record_compatible
+      19. GlobalTheory.Mem.Top.Bl.WPt.exists_recPinE_alt
+      20. GlobalTheory.T.exists_spectral_data_compatible
+      21. GlobalTheory.Mem.Top.Bl.WPt.exists_pinned_spectral_data_compatible
+      22. GlobalTheory.Mem.Top.Bl.DivT.geo
+      23. GlobalTheory.Mem.Top.Bl.DivT
+CHAIN[proj_DivT.geo] LFunction_ne_zero_of_half_lt_re: DEPENDENT
+CHAIN[proj_DivT.geo] LFunction_eq_zero_re: DEPENDENT
+CHAIN[proj_DivT.geo] LFunction_eq_zero_re_of_isPrimitive: DEPENDENT
+CHAIN[proj_DivT.geo] riemannZeta_eq_zero_re: DEPENDENT
+CHAIN[DivT.rec] riemannHypothesis: NOT dependent
+CHAIN[DivT.rec] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[DivT.rec] LFunction_eq_zero_re: NOT dependent
+CHAIN[DivT.rec] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[DivT.rec] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[GeoTiedP.geoTied] riemannHypothesis: NOT dependent
+CHAIN[GeoTiedP.geoTied] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[GeoTiedP.geoTied] LFunction_eq_zero_re: NOT dependent
+CHAIN[GeoTiedP.geoTied] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[GeoTiedP.geoTied] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[GeoTiedP.formsTieX] riemannHypothesis: NOT dependent
+CHAIN[GeoTiedP.formsTieX] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[GeoTiedP.formsTieX] LFunction_eq_zero_re: NOT dependent
+CHAIN[GeoTiedP.formsTieX] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[GeoTiedP.formsTieX] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[proj_DivX.geo] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.RL.LinkedAt
+       9. GlobalTheory.Mem.Top.Bl.BundleLinkage
+      10. GlobalTheory.Mem.Top.Bl.linkOf
+      11. GlobalTheory.Fc.BPt.D
+      12. GlobalTheory.EX.OB.LedPart.pt
+      13. GlobalTheory.EX.OB.divTr
+      14. Formalism.BasicNotions.DivX.geo
+      15. Formalism.BasicNotions.DivX
+CHAIN[proj_DivX.geo] LFunction_ne_zero_of_half_lt_re: DEPENDENT
+CHAIN[proj_DivX.geo] LFunction_eq_zero_re: DEPENDENT
+CHAIN[proj_DivX.geo] LFunction_eq_zero_re_of_isPrimitive: DEPENDENT
+CHAIN[proj_DivX.geo] riemannZeta_eq_zero_re: DEPENDENT
+CHAIN[proj_DV.Geo.anyfield] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.RL.LinkedAt
+       9. GlobalTheory.Mem.Top.Bl.BundleLinkage
+      10. GlobalTheory.Mem.Top.Bl.linkOf
+      11. GlobalTheory.Fc.BPt.D
+      12. GlobalTheory.EX.OB.LedPart.pt
+      13. GlobalTheory.EX.OB.divTr
+      14. Formalism.BasicNotions.DivX.Yv
+      15. Formalism.BasicNotions.DV.Geo.Var
+      16. Formalism.BasicNotions.DV.Geo
+CHAIN[proj_DV.Geo.anyfield] LFunction_ne_zero_of_half_lt_re: DEPENDENT
+CHAIN[proj_DV.Geo.anyfield] LFunction_eq_zero_re: DEPENDENT
+CHAIN[proj_DV.Geo.anyfield] LFunction_eq_zero_re_of_isPrimitive: DEPENDENT
+CHAIN[proj_DV.Geo.anyfield] riemannZeta_eq_zero_re: DEPENDENT
+CHAIN[DV.Geo.rec] riemannHypothesis: NOT dependent
+CHAIN[DV.Geo.rec] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[DV.Geo.rec] LFunction_eq_zero_re: NOT dependent
+CHAIN[DV.Geo.rec] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[DV.Geo.rec] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[DivX.rec] riemannHypothesis: NOT dependent
+CHAIN[DivX.rec] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[DivX.rec] LFunction_eq_zero_re: NOT dependent
+CHAIN[DivX.rec] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[DivX.rec] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[GeoCl.rec] riemannHypothesis: NOT dependent
+CHAIN[GeoCl.rec] LFunction_ne_zero_of_half_lt_re: NOT dependent
+CHAIN[GeoCl.rec] LFunction_eq_zero_re: NOT dependent
+CHAIN[GeoCl.rec] LFunction_eq_zero_re_of_isPrimitive: NOT dependent
+CHAIN[GeoCl.rec] riemannZeta_eq_zero_re: NOT dependent
+CHAIN[GeoOver] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.T.large_unramified_exponent_bundles_exist_alt
+      10. GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+      11. GlobalTheory.T.member_exists_baseLattice_alt
+      12. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+      13. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+      14. GlobalTheory.Mem.Top.Closing.memberE_closing_alt_alt
+      15. GlobalTheory.Mem.Top.Closing.divEx_geoCl
+      16. GlobalTheory.Mem.Top.DivRec.divEx_of_ox
+      17. GlobalTheory.Mem.Top.DivRec.divEx_prov
+      18. GlobalTheory.Mem.Top.DivRec.exists_divT
+      19. GlobalTheory.GeoGraft.GeoOver
+CHAIN[GeoOver] LFunction_ne_zero_of_half_lt_re: DEPENDENT
+CHAIN[GeoOver] LFunction_eq_zero_re: DEPENDENT
+CHAIN[GeoOver] LFunction_eq_zero_re_of_isPrimitive: DEPENDENT
+CHAIN[GeoOver] riemannZeta_eq_zero_re: DEPENDENT
+CHAIN[GeoTiedP] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+       9. GlobalTheory.T.large_unramified_exponent_bundles_exist_alt
+      10. GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+      11. GlobalTheory.T.member_exists_baseLattice_alt
+      12. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+      13. GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+      14. GlobalTheory.Mem.Top.Closing.memberE_closing_alt_alt
+      15. GlobalTheory.Mem.Top.Closing.divEx_geoCl
+      16. GlobalTheory.Mem.Top.DivRec.divEx_of_ox
+      17. GlobalTheory.Mem.Top.DivRec.divEx_prov
+      18. GlobalTheory.Mem.Top.DivRec.exists_divT
+      19. Formalism.L2.Geo.GeoTiedP
+CHAIN[GeoTiedP] LFunction_ne_zero_of_half_lt_re: DEPENDENT
+CHAIN[GeoTiedP] LFunction_eq_zero_re: DEPENDENT
+CHAIN[GeoTiedP] LFunction_eq_zero_re_of_isPrimitive: DEPENDENT
+CHAIN[GeoTiedP] riemannZeta_eq_zero_re: DEPENDENT
+CHAIN[DV.Geo] riemannHypothesis:
+       0. riemannHypothesis
+       1. rhOfAll
+       2. allChi
+       3. UpperTheory.FinalTheorems.everyCharacter
+       4. UpperTheory.FinalTheorems.everyCharacter_of_row
+       5. UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+       6. UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+       7. UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound
+       8. GlobalTheory.Fc.RL.LinkedAt
+       9. GlobalTheory.Mem.Top.Bl.BundleLinkage
+      10. GlobalTheory.Mem.Top.Bl.linkOf
+      11. GlobalTheory.Fc.BPt.D
+      12. GlobalTheory.EX.OB.LedPart.pt
+      13. GlobalTheory.EX.OB.divTr
+      14. Formalism.BasicNotions.DivX.geo
+      15. Formalism.BasicNotions.DV.Geo
+      16. Formalism.BasicNotions.DV.Geo
+CHAIN[DV.Geo] LFunction_ne_zero_of_half_lt_re: DEPENDENT
+CHAIN[DV.Geo] LFunction_eq_zero_re: DEPENDENT
+CHAIN[DV.Geo] LFunction_eq_zero_re_of_isPrimitive: DEPENDENT
+CHAIN[DV.Geo] riemannZeta_eq_zero_re: DEPENDENT

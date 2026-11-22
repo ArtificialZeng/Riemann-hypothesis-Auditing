@@ -1,0 +1,18 @@
+% Filled in from the actual runs (see evidence/).
+\newcommand{\conlecheSummary}{我们还在本机用独立检查器 con-leche 重放了完整的导出证明：1,468,418 个声明全部被接受，五个主定理全部被判定为 ``justified by the solution''，
+而用于比对的挑战导出是我们自己从官方 Mathlib 重建并逐字节核对过的。}
+\newcommand{\conlecheDetail}{%
+\begin{verdictbox}
+\textbf{结果：通过。}退出码 0。标准输出全文如下：
+\VerbatimInput[fontsize=\scriptsize,breaklines=true,breakanywhere=true]{../evidence/con-leche/compare.stdout.log}
+\end{verdictbox}
+
+\noindent 即：解答导出的 1,468,418 个声明全部在 \lean{--verified} 模式下被接受；挑战导出的 51,692 个声明被接受，
+其中 5 个以 \lean{sorry} 占位的定理——包括 \lean{riemannHypothesis}——全部由解答「证成」。这两个数字与 MIT 页面公布的 con-leche 结果完全一致。
+本机运行耗时 73 分 9 秒（解析 340.3 秒，检查 4022.3 秒，16 个工作线程），峰值内存 47.4\,GB；
+单个声明中最慢的是 \lean{GlobalTheory.HeightCounting.SideCopy.LamCopy.lam_copy}（374 秒）。日志见 \path{evidence/con-leche/}。
+
+这一步同时回答了两个问题：其一，证明项确实通过了一个独立于官方内核实现的检查器（因而 \S\ref{sec:hygiene} 中 \lean{kexactB}／\lean{kcopy} 所依赖的「内核把关」是经得起独立复核的）；
+其二，被证明的五个命题与「只导入 Mathlib 的五个陈述」是同一组命题——连同它们读到的每一个定义。
+}
+\input{results_scan3.tex}

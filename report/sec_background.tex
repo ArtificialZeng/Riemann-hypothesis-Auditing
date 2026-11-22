@@ -1,0 +1,49 @@
+\section{背景、审计对象与来源完整性}
+
+\subsection{事件时间线}
+
+\begin{itemize}
+\item \textbf{11 月 20 日}：Levent Alpöge 在 \url{https://alpo.ge/remark.pdf} 宣布与 Claude 合作得到黎曼猜想（以及 Dirichlet $L$-函数的广义黎曼猜想）的证明，并且\emph{只}公布了 Lean 形式化代码
+（14 个分卷 \path{lean.tar.gz.part01}–\path{part14}），没有公布人类可读的论文。公告原话是 ``Claude and I have also formalized the arguments without assumptions''。
+\item \textbf{11 月 21 日}：Lean 与 Mathlib 社区发表联合声明，认定陈述与证明均正确；MIT 的 Andrew Sutherland 公布了验证文件页，包括 61.57\,GB 的证明导出文件及多个独立内核的检查日志。
+\item \textbf{11 月 21–22 日}：Jenny Lorraine Nielsen 在 PhilArchive 发布并多次更新《Invalidity of the Alpoge Proposed Proof of the Riemann Hypothesis》，
+核心论据是几何谓词被定义为 \lean{True}，构造最终假设包的见证「其所需性质是空洞成立的」，结论是该发布「未被证明包含黎曼猜想的任何证明」。
+\item \textbf{11 月 22 日}：DEV Community 上一篇复核文章确认了 \lean{anyGeometry} 定义的存在，但明确表示
+\emph{没有}完成从 \path{Main.lean} 到 \lean{anyGeometry} 的依赖追踪，也没能找到「代码自称 degenerate 的模型」。这正是本报告补上的两处空白。
+\end{itemize}
+
+\subsection{审计对象与完整性核对}
+\label{sec:provenance}
+
+审计的可信度取决于「我们看的东西就是作者发布的东西」。下表中每一项哈希都是\emph{在本机重新计算}后与公布值比对的。
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{4.3cm}@{}}
+\toprule
+对象 & 来源与 SHA-256（本机计算） & 核对结果 \\
+\midrule
+作者原始源码包 \path{lean.tar.gz}（239,275,554 字节） & 从 \path{alpo.ge} 下载 14 个分卷后拼接；\texttt{9631b4f0…93f49c7fc} & 与 MIT 页面公布的哈希一致 \\
+源码树（175,187 个 \path{.lean} 文件） & 解包上述源码包；与 GitHub 镜像 \path{the-omega-institute/riemann-hypothesis}（提交 \texttt{c7d25b3b}）做 \texttt{diff -rq} & \path{src/} 逐文件一致；镜像仅多出社区添加的 \path{Challenge.lean}（及 \path{lakefile.toml} 末尾 5 行） \\
+证明导出 \path{solution.ndjson.zst}（7,699,933,588 字节） & 从 MIT 验证页下载；\texttt{61a8938a…a681b05381} & 与公布值一致 \\
+解压后的 \path{solution.ndjson}（61,570,595,788 字节） & \texttt{5ea74b91…f6be244e} & 与公布值一致 \\
+挑战命题导出 \path{challenge.ndjson}（350,862,311 字节） & 从 MIT 验证页下载；\texttt{bd484ac9…bdd6ab2b9} & 与公布值一致；\textbf{且与我们在本机用官方 Mathlib 独立重建的文件逐字节相同}（\S\ref{sec:rebuild}） \\
+Mathlib 版本 & \path{lakefile.toml} 钉住 \texttt{0df444a360ea…} & \texttt{git ls-remote} 证实它就是官方仓库的标签 \texttt{v4.33.1} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+导出目标（\path{export-targets.txt}）是五个主定理加上内核原语，因此导出文件\emph{恰好}是这五个定理的传递依赖闭包（依赖锥）：
+一个声明出现在导出文件里，当且仅当至少一个主定理（直接或间接）用到了它。这一点是第~\ref{sec:facts}~节内核级结论的基础。
+
+\subsection{使用的工具}
+
+\begin{itemize}
+\item \textbf{源码检索}：\texttt{git grep}／\texttt{ripgrep} 全库检索，以及一份一次性生成的声明头索引（1,061,434 条）。
+\item \textbf{conescan}（本次审计自写，约 320 行、无第三方依赖的 Rust 程序，源码随报告提交）：对 lean4export 的 NDJSON 流做单遍前向扫描，
+按表达式 DAG 做污点传播，精确算出「哪些声明传递依赖某个种子常量」，同时给出公理清单、声明计数和见证链。
+\item \textbf{con-leche}（\path{leanprover/con-leche}，提交 \texttt{bc667610}）：Lean FRO 的独立检查器，带有相对于集合论的一致性证明；我们在本机用官方 Lean \texttt{v4.36.0} 工具链从源码编译后运行。
+\item \textbf{官方工具链}：Lean \texttt{v4.33.1}／\texttt{v4.36.0} 发行包、\path{lean4export}（标签 \texttt{v4.33.0}，提交 \texttt{15f6055e}）、Mathlib 官方缓存。
+\item \textbf{交叉验证}：4 个 \texttt{agy} 代理（Gemini 4 Neon, XHigh）在只读条件下各自独立完成一项子审计（依赖追踪、$\Gamma$ 的逻辑角色、次要主张、卫生扫描），报告原文见仓库 \path{evidence/agy/}。
+凡被本报告采用的代理结论，都由主审计方回到源码或内核级导出上复核过；仅由代理给出而未复核的内容会明确标注。
+\end{itemize}

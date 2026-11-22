@@ -1,0 +1,75 @@
+\section{Q3 独立排查：有没有真正的 reward hacking}
+\label{sec:hygiene}
+
+这一节不依赖 Nielsen 的论证，而是按命题 3 的四条路，逐一寻找「能让 Lean 接受一个错误或被偷换的定理」的手法。
+
+\subsection{(i) 公理、\texttt{sorry} 与信任编译器的后门}
+
+对全部 175,187 个源文件做单遍正则扫描（原始命中 173,881 条，已随报告提交统计）：
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{5.2cm}r>{\raggedright\arraybackslash}X@{}}
+\toprule
+模式 & 命中数 & 说明 \\
+\midrule
+\lean{axiom} 声明 & \textbf{0} & 全库没有任何公理声明 \\
+\lean{sorry} & 5 & 全部在 \path{src/Challenge.lean} 第 19–27 行；该文件是社区为 Comparator 添加的，不在作者源码包内，也不被 \path{Main.lean} 导入 \\
+\lean{sorryAx}、\lean{admit} & 0 & \\
+\lean{native_decide}、\lean{ofReduceBool}、\lean{ofReduceNat}、\lean{trustCompiler} & 0 & 没有把编译器纳入可信基 \\
+\lean{implemented_by}、\lean{extern}、\lean{unsafe}、\lean{unsafeCast}、\lean{lcProof}、\lean{opaque}、\lean{csimp} & 0 & （\lean{allowUnsafeReducibility} 是一个 \lean{set_option} 名，见下） \\
+\texttt{decide +kernel} 等 & 151 & 由内核求值，不扩大可信基 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+内核级导出给出同样的结论，而且不依赖对源码的文本匹配：conescan 统计导出文件中的声明记录为
+\lean{thm} 1,246,110、\lean{def} 214,241、\lean{inductive} 7,969、\lean{opaque} 91、\lean{quot} 4、\textbf{\lean{axiom} 3}，
+三条公理的全名恰为 \lean{propext}、\lean{Quot.sound}、\lean{Classical.choice}；标记为 \lean{unsafe}／\lean{partial} 的记录为 0；
+\lean{sorryAx}、\lean{Lean.ofReduceBool}、\lean{Lean.ofReduceNat}、\lean{Lean.trustCompiler} 这些名字在导出中完全没有出现。
+声明总数 1,468,418 与 MIT 页面上 con-leche 报告的数字一致。
+
+\subsection{(ii) 命题有没有被偷换}
+
+\begin{itemize}
+\item \path{Main.lean} 的五个定理没有任何前提（文件见 \S\ref{sec:fact-path}）；项目级选项 \texttt{autoImplicit = false}，不存在隐式变量混入。
+\item 全库没有名为 \lean{RiemannHypothesis}、\lean{riemannZeta}、\lean{DirichletCharacter}、\lean{completedRiemannZeta} 的声明（声明头索引检索为空）；
+出现 \lean{RiemannHypothesis} 这个名字的 26 个文件（含社区添加的 \path{Challenge.lean}）都是在\emph{使用}它。有两处名为 \lean{LFunction} 的定义位于各自的命名空间内（\path{GJLocalZeta.lean}、\path{HeckeLFunction.lean}），
+与 Mathlib 的 \lean{DirichletCharacter.LFunction} 不冲突。
+\item 记号与宏：全库 1,695 处 \lean{notation} 全部是 \lean{local}，另有 1 处 \lean{scoped}；\emph{没有}全局记号。全局 \lean{macro} 共 22 处，全部是策略宏；
+全局 \lean{elab} 共 4 处（见下）。因此不存在通过记号劫持改变 \path{Main.lean} 或 \path{Statements.lean} 解析结果的可能。
+\item \path{Statements.lean} 只 \texttt{import Mathlib}；\path{lakefile.toml} 与 \path{lake-manifest.json} 把 Mathlib 钉在官方仓库的 \texttt{0df444a3…}，
+我们用 \texttt{git ls-remote} 证实这正是官方标签 \texttt{v4.33.1}；没有路径依赖或覆盖，额外的编译参数只有 \lean{--tstack=400000}。
+\item 最强的一项证据见 \S\ref{sec:rebuild}：我们在本机用官方工具链和官方 Mathlib 缓存独立生成了「只导入 Mathlib、陈述五个命题」的挑战导出，它与社区公布的文件逐字节相同；
+con-leche 的 \lean{--compare} 模式再把解答导出与它逐条比对。
+\end{itemize}
+
+\subsection{(iii) 有没有绕过或利用内核}
+
+值得逐一查看的元编程只有下面几处，它们才是「真正的作弊」可能藏身的地方：
+
+\paragraph{\texttt{BuildAid/D1..D5.lean}：\texttt{run\_cmd Lean.modifyEnv}。}乍看可疑，实际只是往库建议（library suggestions）的名字黑名单里加命名空间，与内核无关：
+\excerpt{buildaid}
+
+\paragraph{\texttt{cpt\_copy\_thms}：批量复制声明。}它用的是标准的 \lean{Lean.addDecl}，每条被复制的声明都要重新经过内核检查：
+\excerpt{cptcopy}
+
+\paragraph{\texttt{kexactB} 与 \texttt{kcopy}：把类型检查完全交给内核。}这两个自定义策略（\lean{kexactB}：50 个文件、234 处，另经简写宏 \lean{kc%} 在 32 个文件出现 182 处；\lean{kcopy}：含定义在内 4 个文件、5 处）直接把一个项赋给目标元变量，
+跳过精化器（elaborator）的类型核对；\lean{kcopy} 还会手工拼装原始投影项 \lean{Expr.proj}：
+\excerpt{kcopy}
+
+这是合法的工程手段（省掉精化器昂贵的定义等价检查），但它意味着这些证明的正确性\emph{只}由内核把关——如果内核在投影的类型检查上有漏洞，这里正是能被利用的位置。
+社区的验证说明也指出，Lean \texttt{v4.33.1} 自带内核单独通过只能算有限证据，裁决应由更新的内核和独立检查器作出。
+所以对这一条，源码阅读不能给出最终答案，必须靠独立内核重放——这正是 \S\ref{sec:conleche} 的内容。
+
+\paragraph{选项。}全库 \lean{set_option} 涉及 33 种选项，绝大多数是 \lean{maxHeartbeats} 等资源限制与 linter 开关；没有任何 \lean{debug.*} 选项（如 \lean{debug.skipKernelTC}）。
+\lean{allowUnsafeReducibility}（37 处）只影响精化器一侧的可约性标注，不影响内核。
+
+\subsection{(iv) 被检查的产物是不是声称的产物}
+
+见 \S\ref{sec:provenance} 的完整性核对：源码包、镜像、导出文件的哈希全部在本机复算并与公布值一致。
+唯一没有由我们亲自完成的一环是「由源码重新编译 17.5 万个模块并导出」；这一环我们依赖 MIT 页面所述的沙箱重建（其导出与公布文件逐字节相同），并在第~\ref{sec:limits}~节如实列为局限。
+
+\subsection{小结}
+
+按命题 3 的四条路逐一排查，没有发现任何一条成立的迹象。交叉验证代理 D 独立完成的卫生扫描得出了相同结论，并补充了两类本节未展开的良性机制（32 处内联 \lean{run_tac}、1 处 \lean{@[positivity]} 扩展）。
