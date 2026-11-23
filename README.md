@@ -42,7 +42,8 @@ artefact mismatch) and found none.
 * **Kernel-level dependency analysis.** Wrote `conescan` (Rust, no dependencies) and ran it over the published 61.57 GB proof export
   (1,468,418 declarations): exactly 30 declarations depend on `anyGeometry`, including all five headline theorems; the export contains exactly the
   three standard axioms.
-* **Independent kernel replay.** Built `con-leche` from source and ran `--verified --compare` on the full export on this machine.
+* **Independent kernel replay.** Built `con-leche` from source and ran `--verified --compare` on the full export on this machine:
+  exit code 0, 1,468,418 declarations accepted, all five theorems reported as "justified by the solution" (logs in `evidence/con-leche/`).
 * **Independent statement check.** Rebuilt the Mathlib-only challenge export from official Lean, official Mathlib cache and `lean4export`;
   the result is byte-identical to the published one.
 * **Cross-check.** Four independent `agy` agents (Gemini 4 Neon, XHigh) each audited one sub-question.
