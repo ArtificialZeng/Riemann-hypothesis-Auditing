@@ -1,0 +1,431 @@
+== census ==
+declaration records: 1468418 {'inductive': 7969, 'quot': 4, 'def': 214241, 'thm': 1246110, 'axiom': 3, 'opaque': 91}
+  project: {'thm': 1075031, 'def': 178305, 'inductive': 5568}
+  library: {'inductive': 2401, 'quot': 4, 'def': 35936, 'thm': 171079, 'axiom': 3, 'opaque': 91}
+type edges: 49376348  value edges: 106908310
+axioms: ['propext', 'Quot.sound', 'Classical.choice']
+opaque records not from the library: []
+
+== dependency cone of riemannHypothesis == {'all': 1468390, 'library': 209509, 'project': 1258881, 'project_theorems': 1075015, 'project_other': 183866}
+statement cone of riemannHypothesis: {'all': 4566, 'library': 4566, 'project': 0, 'project_theorems': 0, 'project_other': 0}
+
+== dependents of the objects the paper calls vacuous ==
+      30 declarations depend on GlobalTheory.Mem.Top.Bl.anyGeometry   (riemannHypothesis among them: True)
+      52 declarations depend on Formalism.L2.Geo.geoDegenerate   (riemannHypothesis among them: True)
+      41 declarations depend on Formalism.L2.Geo.algDegenerate   (riemannHypothesis among them: True)
+      42 declarations depend on Formalism.L2.Geo.padDegenerate   (riemannHypothesis among them: True)
+      44 declarations depend on Formalism.L2.Geo.mdlJunk   (riemannHypothesis among them: True)
+      42 declarations depend on Formalism.L2.Geo.cxJunk   (riemannHypothesis among them: True)
+      27 declarations depend on Formalism.L2.Geo.divXFl   (riemannHypothesis among them: True)
+      25 declarations depend on GlobalTheory.Mem.Top.DivRec.geoOver_stages   (riemannHypothesis among them: True)
+    3856 declarations depend on Formalism.L2.LPTiedPlaceholder   (riemannHypothesis among them: True)
+    3828 declarations depend on GlobalTheory.HeightCounting.NTiedGPlaceholder   (riemannHypothesis among them: True)
+      53 declarations depend on Formalism.BasicNotions.Examples₂.geoExample   (riemannHypothesis among them: True)
+      47 declarations depend on GlobalTheory.PointGeometry.pointGeo   (riemannHypothesis among them: True)
+      51 declarations depend on GlobalTheory.Mem.Top.DivRec.x0   (riemannHypothesis among them: True)
+      45 declarations depend on GlobalTheory.provisionalDivX   (riemannHypothesis among them: True)
+      28 declarations depend on GlobalTheory.GeoGraft.graft   (riemannHypothesis among them: True)
+  union over the objects flagged in [N] (anyGeometry, degenerate model, junk models, divXFl, geoOver_stages, geoExample), seeds included: {'all': 124, 'library': 0, 'project': 124, 'project_theorems': 104, 'project_other': 20}
+  cone of riemannHypothesis NOT depending on any flagged object: {'all': 1468266, 'library': 209509, 'project': 1258757, 'project_theorems': 1074911, 'project_other': 183846}
+  union (seeds included), inside the cone of riemannHypothesis: {'all': 3919, 'library': 0, 'project': 3919, 'project_theorems': 3049, 'project_other': 870}
+  cone of riemannHypothesis NOT depending on any of them: {'all': 1464471, 'library': 209509, 'project': 1254962, 'project_theorems': 1071966, 'project_other': 182996}
+
+== targets ==
+  riemannHypothesis [thm] in cone of main: True
+      dependency cone: {'all': 1468390, 'library': 209509, 'project': 1258881, 'project_theorems': 1075015, 'project_other': 183866}
+      statement cone : {'all': 4566, 'library': 4566, 'project': 0, 'project_theorems': 0, 'project_other': 0}
+      cone contains      : ['anyGeometry', 'geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'geoOver_stages', 'LPTiedPlaceholder', 'NTiedGPlaceholder', 'geoExample', 'pointGeo', 'x0', 'provisionalDivX', 'graft', 'GeoCl', 'Geo', 'GeoP']
+      statement contains : []
+  rhOfAll [thm] in cone of main: True
+      dependency cone: {'all': 1468389, 'library': 209509, 'project': 1258880, 'project_theorems': 1075014, 'project_other': 183866}
+      statement cone : {'all': 4566, 'library': 4566, 'project': 0, 'project_theorems': 0, 'project_other': 0}
+      cone contains      : ['anyGeometry', 'geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'geoOver_stages', 'LPTiedPlaceholder', 'NTiedGPlaceholder', 'geoExample', 'pointGeo', 'x0', 'provisionalDivX', 'graft', 'GeoCl', 'Geo', 'GeoP']
+      statement contains : []
+  allChi [thm] in cone of main: True
+      dependency cone: {'all': 1468379, 'library': 209504, 'project': 1258875, 'project_theorems': 1075009, 'project_other': 183866}
+      statement cone : {'all': 4802, 'library': 4800, 'project': 2, 'project_theorems': 1, 'project_other': 1}
+      cone contains      : ['anyGeometry', 'geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'geoOver_stages', 'LPTiedPlaceholder', 'NTiedGPlaceholder', 'geoExample', 'pointGeo', 'x0', 'provisionalDivX', 'graft', 'GeoCl', 'Geo', 'GeoP']
+      statement contains : []
+  UpperTheory.FinalTheorems.everyCharacter [thm] in cone of main: True
+      dependency cone: {'all': 1468378, 'library': 209504, 'project': 1258874, 'project_theorems': 1075008, 'project_other': 183866}
+      statement cone : {'all': 4802, 'library': 4800, 'project': 2, 'project_theorems': 1, 'project_other': 1}
+      cone contains      : ['anyGeometry', 'geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'geoOver_stages', 'LPTiedPlaceholder', 'NTiedGPlaceholder', 'geoExample', 'pointGeo', 'x0', 'provisionalDivX', 'graft', 'GeoCl', 'Geo', 'GeoP']
+      statement contains : []
+  UpperTheory.Top.every_character_of_green_v_win [thm] in cone of main: True
+      dependency cone: {'all': 228101, 'library': 132426, 'project': 95675, 'project_theorems': 74917, 'project_other': 20758}
+      statement cone : {'all': 32210, 'library': 19154, 'project': 13056, 'project_theorems': 4831, 'project_other': 8225}
+      cone contains      : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+      statement contains : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+  UpperTheory.Top.zero_free_all_of_green_v_win [thm] in cone of main: True
+      dependency cone: {'all': 228097, 'library': 132426, 'project': 95671, 'project_theorems': 74914, 'project_other': 20757}
+      statement cone : {'all': 32213, 'library': 19154, 'project': 13059, 'project_theorems': 4832, 'project_other': 8227}
+      cone contains      : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+      statement contains : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+  UpperTheory.Top.zeroFreeAll_of_topG [thm] in cone of main: True
+      dependency cone: {'all': 86273, 'library': 82389, 'project': 3884, 'project_theorems': 1681, 'project_other': 2203}
+      statement cone : {'all': 16148, 'library': 13062, 'project': 3086, 'project_theorems': 1007, 'project_other': 2079}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  UpperTheory.Top.shape_closed_link_n_of_green [thm] in cone of main: True
+      dependency cone: {'all': 218646, 'library': 127898, 'project': 90748, 'project_theorems': 70696, 'project_other': 20052}
+      statement cone : {'all': 32337, 'library': 19200, 'project': 13137, 'project_theorems': 4829, 'project_other': 8308}
+      cone contains      : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+      statement contains : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+  GlobalTheory.Fc.forall_goal_of_shape_of_hyps [thm] in cone of main: True
+      dependency cone: {'all': 114638, 'library': 96880, 'project': 17758, 'project_theorems': 8981, 'project_other': 8777}
+      statement cone : {'all': 32225, 'library': 19151, 'project': 13074, 'project_theorems': 4847, 'project_other': 8227}
+      cone contains      : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+      statement contains : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+  UpperTheory.Top.topDesWin [thm] in cone of main: True
+      dependency cone: {'all': 78703, 'library': 75030, 'project': 3673, 'project_theorems': 1393, 'project_other': 2280}
+      statement cone : {'all': 16570, 'library': 13226, 'project': 3344, 'project_theorems': 1087, 'project_other': 2257}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound [thm] in cone of main: True
+      dependency cone: {'all': 932347, 'library': 187913, 'project': 744434, 'project_theorems': 636383, 'project_other': 108051}
+      statement cone : {'all': 44784, 'library': 20916, 'project': 23868, 'project_theorems': 10082, 'project_other': 13786}
+      cone contains      : ['anyGeometry', 'geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'geoOver_stages', 'LPTiedPlaceholder', 'NTiedGPlaceholder', 'geoExample', 'pointGeo', 'x0', 'provisionalDivX', 'graft', 'GeoCl', 'Geo', 'GeoP']
+      statement contains : ['anyGeometry', 'LPTiedPlaceholder', 'NTiedGPlaceholder', 'GeoCl', 'Geo', 'GeoP']
+  UpperTheory.Lit.every_character_of_theta_integrals_local_matching [thm] in cone of main: True
+      dependency cone: {'all': 956802, 'library': 188360, 'project': 768442, 'project_theorems': 656103, 'project_other': 112339}
+      statement cone : {'all': 36891, 'library': 20535, 'project': 16356, 'project_theorems': 6536, 'project_other': 9820}
+      cone contains      : ['anyGeometry', 'geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'geoOver_stages', 'LPTiedPlaceholder', 'NTiedGPlaceholder', 'geoExample', 'pointGeo', 'x0', 'provisionalDivX', 'graft', 'GeoCl', 'Geo', 'GeoP']
+      statement contains : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+  Formalism.L2.DIV.divClausesR_of [thm] in cone of main: True
+      dependency cone: {'all': 71597, 'library': 70179, 'project': 1418, 'project_theorems': 1004, 'project_other': 414}
+      statement cone : {'all': 6204, 'library': 5903, 'project': 301, 'project_theorems': 69, 'project_other': 232}
+      cone contains      : []
+      statement contains : []
+  Formalism.L2.DIV.wordFacts_of [thm] in cone of main: True
+      dependency cone: {'all': 72710, 'library': 70887, 'project': 1823, 'project_theorems': 783, 'project_other': 1040}
+      statement cone : {'all': 13474, 'library': 11788, 'project': 1686, 'project_theorems': 651, 'project_other': 1035}
+      cone contains      : []
+      statement contains : []
+  ABSENT/AMBIGUOUS linkDIVt_closedK: 'linkDIVt_closedK: 0 candidates []'
+  Formalism.L2.DIV.closed_linkDIVt_of_closed_bridge_kernel [thm] in cone of main: True
+      dependency cone: {'all': 98339, 'library': 87614, 'project': 10725, 'project_theorems': 5292, 'project_other': 5433}
+      statement cone : {'all': 22986, 'library': 15220, 'project': 7766, 'project_theorems': 2675, 'project_other': 5091}
+      cone contains      : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+      statement contains : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+  Formalism.HC.zeroFreeOn_of_tiedWin_cyc [thm] in cone of main: True
+      dependency cone: {'all': 72945, 'library': 71075, 'project': 1870, 'project_theorems': 790, 'project_other': 1080}
+      statement cone : {'all': 13480, 'library': 11762, 'project': 1718, 'project_theorems': 644, 'project_other': 1074}
+      cone contains      : []
+      statement contains : []
+  GlobalTheory.Fc.HypsAlt.mk [inductive] in cone of main: True
+      dependency cone: {'all': 108232, 'library': 93630, 'project': 14602, 'project_theorems': 6493, 'project_other': 8109}
+      statement cone : {'all': 31703, 'library': 19145, 'project': 12558, 'project_theorems': 4604, 'project_other': 7954}
+      cone contains      : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+      statement contains : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+  UpperTheory.Top.TopG [def] in cone of main: True
+      dependency cone: {'all': 75016, 'library': 71810, 'project': 3206, 'project_theorems': 1161, 'project_other': 2045}
+      statement cone : {'all': 0, 'library': 0, 'project': 0, 'project_theorems': 0, 'project_other': 0}
+      cone contains      : ['Geo']
+      statement contains : []
+  UpperTheory.EveryCharacter [def] in cone of main: True
+      dependency cone: {'all': 51574, 'library': 51572, 'project': 2, 'project_theorems': 1, 'project_other': 1}
+      statement cone : {'all': 0, 'library': 0, 'project': 0, 'project_theorems': 0, 'project_other': 0}
+      cone contains      : []
+      statement contains : []
+  Formalism.HC.ZeroFreeAll [def] in cone of main: True
+      dependency cone: {'all': 51682, 'library': 51674, 'project': 8, 'project_theorems': 2, 'project_other': 6}
+      statement cone : {'all': 0, 'library': 0, 'project': 0, 'project_theorems': 0, 'project_other': 0}
+      cone contains      : []
+      statement contains : []
+  GlobalTheory.Mem.Top.DivRec.divEx_of_ox [thm] in cone of main: True
+      dependency cone: {'all': 119887, 'library': 106065, 'project': 13822, 'project_theorems': 7396, 'project_other': 6426}
+      statement cone : {'all': 28733, 'library': 18837, 'project': 9896, 'project_theorems': 3831, 'project_other': 6065}
+      cone contains      : ['anyGeometry', 'geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'geoOver_stages', 'geoExample', 'x0', 'graft', 'Geo', 'GeoP']
+      statement contains : ['anyGeometry', 'Geo', 'GeoP']
+  GlobalTheory.Mem.Top.DivRec.exists_divT [thm] in cone of main: True
+      dependency cone: {'all': 119602, 'library': 106008, 'project': 13594, 'project_theorems': 7265, 'project_other': 6329}
+      statement cone : {'all': 28510, 'library': 18795, 'project': 9715, 'project_theorems': 3744, 'project_other': 5971}
+      cone contains      : ['geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'geoOver_stages', 'geoExample', 'x0', 'graft', 'Geo']
+      statement contains : ['Geo']
+  Formalism.BasicNotions.DV.hExpl6 [def] in cone of main: True
+      dependency cone: {'all': 72622, 'library': 70773, 'project': 1849, 'project_theorems': 764, 'project_other': 1085}
+      statement cone : {'all': 13365, 'library': 11685, 'project': 1680, 'project_theorems': 627, 'project_other': 1053}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  GlobalTheory.EX.OB.setDiv [def] in cone of main: True
+      dependency cone: {'all': 66276, 'library': 64428, 'project': 1848, 'project_theorems': 822, 'project_other': 1026}
+      statement cone : {'all': 12781, 'library': 11208, 'project': 1573, 'project_theorems': 618, 'project_other': 955}
+      cone contains      : []
+      statement contains : []
+  Formalism.L2.DIV.WordFacts [def] in cone of main: True
+      dependency cone: {'all': 72706, 'library': 70887, 'project': 1819, 'project_theorems': 779, 'project_other': 1040}
+      statement cone : {'all': 13300, 'library': 11677, 'project': 1623, 'project_theorems': 624, 'project_other': 999}
+      cone contains      : []
+      statement contains : []
+  Formalism.L2.DIV.DivInputsR.mk [inductive] in cone of main: True
+      dependency cone: {'all': 37504, 'library': 37223, 'project': 281, 'project_theorems': 63, 'project_other': 218}
+      statement cone : {'all': 6069, 'library': 5791, 'project': 278, 'project_theorems': 61, 'project_other': 217}
+      cone contains      : []
+      statement contains : []
+  ABSENT/AMBIGUOUS SlopeBoundFamilyStatement: 'SlopeBoundFamilyStatement: 0 candidates []'
+  ABSENT/AMBIGUOUS degree_value_of_determinant: 'degree_value_of_determinant: 0 candidates []'
+  Formalism.L2.Geo.GeoTiedP [def] in cone of main: True
+      dependency cone: {'all': 66537, 'library': 64484, 'project': 2053, 'project_theorems': 817, 'project_other': 1236}
+      statement cone : {'all': 12847, 'library': 11216, 'project': 1631, 'project_theorems': 621, 'project_other': 1010}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  Formalism.L2.Geo.tiedX_fl [thm] in cone of main: True
+      dependency cone: {'all': 73023, 'library': 70635, 'project': 2388, 'project_theorems': 1111, 'project_other': 1277}
+      statement cone : {'all': 13490, 'library': 11374, 'project': 2116, 'project_theorems': 848, 'project_other': 1268}
+      cone contains      : ['geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'Geo']
+      statement contains : ['geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'Geo']
+  GlobalTheory.Mem.Top.Bl.tiedDataS_assemble_alt [thm] in cone of main: True
+      dependency cone: {'all': 81345, 'library': 75734, 'project': 5611, 'project_theorems': 2337, 'project_other': 3274}
+      statement cone : {'all': 19623, 'library': 14422, 'project': 5201, 'project_theorems': 1940, 'project_other': 3261}
+      cone contains      : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+      statement contains : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+  GlobalTheory.Mem.R3.Rw.WeightCaseCondition [def] in cone of main: True
+      dependency cone: {'all': 114206, 'library': 102801, 'project': 11405, 'project_theorems': 5845, 'project_other': 5560}
+      statement cone : {'all': 0, 'library': 0, 'project': 0, 'project_theorems': 0, 'project_other': 0}
+      cone contains      : []
+      statement contains : []
+  GlobalTheory.RealGeo.InGeo.mk [inductive] in cone of main: True
+      dependency cone: {'all': 83997, 'library': 79660, 'project': 4337, 'project_theorems': 1973, 'project_other': 2364}
+      statement cone : {'all': 20433, 'library': 16704, 'project': 3729, 'project_theorems': 1420, 'project_other': 2309}
+      cone contains      : []
+      statement contains : []
+  GlobalTheory.Mem.R3.Rw.exists_pre2_of_fine_of_resChar_mem [thm] in cone of main: True
+      dependency cone: {'all': 142426, 'library': 117413, 'project': 25013, 'project_theorems': 17512, 'project_other': 7501}
+      statement cone : {'all': 28797, 'library': 19050, 'project': 9747, 'project_theorems': 3967, 'project_other': 5780}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  Formalism.MainNotions.LinkGLOBAL [def] in cone of main: True
+      dependency cone: {'all': 75177, 'library': 71926, 'project': 3251, 'project_theorems': 1185, 'project_other': 2066}
+      statement cone : {'all': 15625, 'library': 12888, 'project': 2737, 'project_theorems': 929, 'project_other': 1808}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  Formalism.MainNotions.ChainTied [def] in cone of main: True
+      dependency cone: {'all': 74911, 'library': 71807, 'project': 3104, 'project_theorems': 1132, 'project_other': 1972}
+      statement cone : {'all': 15625, 'library': 12888, 'project': 2737, 'project_theorems': 929, 'project_other': 1808}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  Formalism.MainNotions.GlobalTheoremInputs [def] in cone of main: True
+      dependency cone: {'all': 74742, 'library': 71694, 'project': 3048, 'project_theorems': 1154, 'project_other': 1894}
+      statement cone : {'all': 15625, 'library': 12888, 'project': 2737, 'project_theorems': 929, 'project_other': 1808}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  ABSENT/AMBIGUOUS plugAll: 'plugAll: 0 candidates []'
+  ABSENT/AMBIGUOUS shapeWin: 'shapeWin: 0 candidates []'
+  ABSENT/AMBIGUOUS everyE₂: 'everyE₂: 0 candidates []'
+  ABSENT/AMBIGUOUS geoOf: 'geoOf: 0 candidates []'
+  ABSENT/AMBIGUOUS FrobeniusOrbitPlaceCount: 'FrobeniusOrbitPlaceCount: 0 candidates []'
+  Formalism.L2.DIV.height_chain_atR [thm] in cone of main: True
+      dependency cone: {'all': 55745, 'library': 55538, 'project': 207, 'project_theorems': 106, 'project_other': 101}
+      statement cone : {'all': 5427, 'library': 5314, 'project': 113, 'project_theorems': 22, 'project_other': 91}
+      cone contains      : []
+      statement contains : []
+  Formalism.L2.DIV.complex_height_cast_at [thm] in cone of main: True
+      dependency cone: {'all': 28702, 'library': 28665, 'project': 37, 'project_theorems': 24, 'project_other': 13}
+      statement cone : {'all': 4677, 'library': 4642, 'project': 35, 'project_theorems': 22, 'project_other': 13}
+      cone contains      : []
+      statement contains : []
+  Formalism.DivisorInequality.boundsMu [thm] in cone of main: True
+      dependency cone: {'all': 70453, 'library': 69732, 'project': 721, 'project_theorems': 581, 'project_other': 140}
+      statement cone : {'all': 5495, 'library': 5410, 'project': 85, 'project_theorems': 36, 'project_other': 49}
+      cone contains      : []
+      statement contains : []
+  Formalism.L2.DIV.RatFullFam.buRat_rrFull_closed_alt [thm] in cone of main: True
+      dependency cone: {'all': 113389, 'library': 96714, 'project': 16675, 'project_theorems': 8565, 'project_other': 8110}
+      statement cone : {'all': 31115, 'library': 19049, 'project': 12066, 'project_theorems': 4512, 'project_other': 7554}
+      cone contains      : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+      statement contains : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+  Formalism.L2.DIV.RatFullPt.buRational_of [thm] in cone of main: True
+      dependency cone: {'all': 79199, 'library': 75930, 'project': 3269, 'project_theorems': 1230, 'project_other': 2039}
+      statement cone : {'all': 16065, 'library': 13095, 'project': 2970, 'project_theorems': 958, 'project_other': 2012}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  GlobalTheory.Mem.R3.mjH_good [thm] in cone of main: True
+      dependency cone: {'all': 75894, 'library': 71812, 'project': 4082, 'project_theorems': 1764, 'project_other': 2318}
+      statement cone : {'all': 16872, 'library': 13174, 'project': 3698, 'project_theorems': 1415, 'project_other': 2283}
+      cone contains      : []
+      statement contains : []
+  ABSENT/AMBIGUOUS jM_lat: "jM_lat: 2 candidates ['Formalism.BasicNotions.DivX.jM_lat', 'GlobalTheory.Mem.R3.jM_lat']"
+  ABSENT/AMBIGUOUS jM_metric: "jM_metric: 2 candidates ['Formalism.BasicNotions.DivX.jM_metric', 'GlobalTheory.Mem.R3.jM_metric']"
+  GlobalTheory.Mem.R3.exists_mjHTie [thm] in cone of main: True
+      dependency cone: {'all': 74415, 'library': 70521, 'project': 3894, 'project_theorems': 1659, 'project_other': 2235}
+      statement cone : {'all': 16703, 'library': 13143, 'project': 3560, 'project_theorems': 1347, 'project_other': 2213}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  GlobalTheory.Mem.Top.DivRec.lamAre_of_eq [thm] in cone of main: True
+      dependency cone: {'all': 75724, 'library': 71515, 'project': 4209, 'project_theorems': 1842, 'project_other': 2367}
+      statement cone : {'all': 16927, 'library': 13182, 'project': 3745, 'project_theorems': 1416, 'project_other': 2329}
+      cone contains      : ['Geo']
+      statement contains : ['Geo']
+  Formalism.BasicNotions.kapSharp [def] in cone of main: True
+      dependency cone: {'all': 66407, 'library': 64636, 'project': 1771, 'project_theorems': 771, 'project_other': 1000}
+      statement cone : {'all': 12775, 'library': 11208, 'project': 1567, 'project_theorems': 617, 'project_other': 950}
+      cone contains      : []
+      statement contains : []
+  Formalism.VW.rh_of_every [thm] in cone of main: True
+      dependency cone: {'all': 53443, 'library': 53437, 'project': 6, 'project_theorems': 5, 'project_other': 1}
+      statement cone : {'all': 4805, 'library': 4803, 'project': 2, 'project_theorems': 1, 'project_other': 1}
+      cone contains      : []
+      statement contains : []
+  UpperTheory.Top.imprimitive [thm] in cone of main: True
+      dependency cone: {'all': 54950, 'library': 54938, 'project': 12, 'project_theorems': 5, 'project_other': 7}
+      statement cone : {'all': 4915, 'library': 4907, 'project': 8, 'project_theorems': 2, 'project_other': 6}
+      cone contains      : []
+      statement contains : []
+  UpperTheory.Top.supplyChi [thm] in cone of main: True
+      dependency cone: {'all': 102806, 'library': 97469, 'project': 5337, 'project_theorems': 4473, 'project_other': 864}
+      statement cone : {'all': 9019, 'library': 8657, 'project': 362, 'project_theorems': 101, 'project_other': 261}
+      cone contains      : []
+      statement contains : []
+  GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt [thm] in cone of main: True
+      dependency cone: {'all': 866404, 'library': 186896, 'project': 679508, 'project_theorems': 579250, 'project_other': 100258}
+      statement cone : {'all': 43896, 'library': 20643, 'project': 23253, 'project_theorems': 9806, 'project_other': 13447}
+      cone contains      : ['anyGeometry', 'geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'geoOver_stages', 'LPTiedPlaceholder', 'NTiedGPlaceholder', 'geoExample', 'pointGeo', 'x0', 'provisionalDivX', 'graft', 'GeoCl', 'Geo', 'GeoP']
+      statement contains : ['anyGeometry', 'LPTiedPlaceholder', 'NTiedGPlaceholder', 'GeoCl', 'Geo', 'GeoP']
+  GlobalTheory.Mem.Top.Bl.parametersOfDependence [def] in cone of main: True
+      dependency cone: {'all': 125209, 'library': 107690, 'project': 17519, 'project_theorems': 9385, 'project_other': 8134}
+      statement cone : {'all': 32253, 'library': 19441, 'project': 12812, 'project_theorems': 5559, 'project_other': 7253}
+      cone contains      : ['anyGeometry', 'LPTiedPlaceholder', 'NTiedGPlaceholder', 'GeoCl', 'Geo', 'GeoP']
+      statement contains : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo', 'GeoP']
+  GlobalTheory.Mem.Top.DivRec.divEx_prov [thm] in cone of main: True
+      dependency cone: {'all': 119880, 'library': 106065, 'project': 13815, 'project_theorems': 7393, 'project_other': 6422}
+      statement cone : {'all': 28727, 'library': 18837, 'project': 9890, 'project_theorems': 3829, 'project_other': 6061}
+      cone contains      : ['anyGeometry', 'geoDegenerate', 'algDegenerate', 'padDegenerate', 'mdlJunk', 'cxJunk', 'divXFl', 'geoOver_stages', 'geoExample', 'x0', 'graft', 'Geo', 'GeoP']
+      statement contains : ['anyGeometry', 'Geo', 'GeoP']
+  ABSENT/AMBIGUOUS GlobalTheory.Mem.Top.DivRec.divEx_geoCl: 'GlobalTheory.Mem.Top.DivRec.divEx_geoCl: 0 candidates []'
+  GlobalTheory.Fc.TopShapeAlt [def] in cone of main: True
+      dependency cone: {'all': 114414, 'library': 96880, 'project': 17534, 'project_theorems': 8851, 'project_other': 8683}
+      statement cone : {'all': 15626, 'library': 12888, 'project': 2738, 'project_theorems': 929, 'project_other': 1809}
+      cone contains      : ['LPTiedPlaceholder', 'NTiedGPlaceholder', 'Geo']
+      statement contains : ['Geo']
+  GlobalTheory.GLq.Green [def] in cone of main: True
+      dependency cone: {'all': 17992, 'library': 17970, 'project': 22, 'project_theorems': 4, 'project_other': 18}
+      statement cone : {'all': 0, 'library': 0, 'project': 0, 'project_theorems': 0, 'project_other': 0}
+      cone contains      : []
+      statement contains : []
+  UpperTheory.Top.VWin [def] in cone of main: True
+      dependency cone: {'all': 35958, 'library': 35858, 'project': 100, 'project_theorems': 51, 'project_other': 49}
+      statement cone : {'all': 0, 'library': 0, 'project': 0, 'project_theorems': 0, 'project_other': 0}
+      cone contains      : []
+      statement contains : []
+
+== direct references to watched names ==
+  GlobalTheory.Mem.Top.Bl.GeoCl.rec: declared=True; referrers outside its own declaration block: 0; inside own block: True
+  GlobalTheory.Mem.Top.Bl.GeoCl.casesOn: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  GlobalTheory.Mem.Top.Bl.GeoCl.recOn: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  GlobalTheory.Mem.Top.Bl.GeoCl.base: declared=True; referrers outside its own declaration block: 1; inside own block: True
+        V GlobalTheory.Mem.Top.Bl.geoCl_of
+  GlobalTheory.Mem.Top.Bl.GeoCl.step: declared=True; referrers outside its own declaration block: 1; inside own block: True
+        V GlobalTheory.Mem.OxMove.oAt_setDiv
+  GlobalTheory.Mem.Top.Bl.GeoCl: declared=True; referrers outside its own declaration block: 1; inside own block: True
+        V GlobalTheory.Mem.Top.Bl.geoCl
+  GlobalTheory.Mem.Top.Bl.OAt.rec: declared=True; referrers outside its own declaration block: 0; inside own block: False
+  GlobalTheory.Mem.Top.Bl.OAt.casesOn: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  GlobalTheory.Mem.Top.Bl.OAt.mk: declared=True; referrers outside its own declaration block: 3; inside own block: True
+        V GlobalTheory.Mem.OxMove.oAt_setDiv
+        V GlobalTheory.Mem.Top.Closing.divEx_geoCl
+        V GlobalTheory.Mem.Top.DivRec.divEx_prov
+  GlobalTheory.Mem.Top.Bl.OAt.geo: declared=True; referrers outside its own declaration block: 2; inside own block: False
+        V GlobalTheory.Mem.OxMove.oAt_setDiv
+        V GlobalTheory.Mem.Top.Closing.divEx_geoCl
+  GlobalTheory.Mem.Top.Bl.OAt.lam: declared=True; referrers outside its own declaration block: 3; inside own block: False
+        V GlobalTheory.Mem.OxMove.oAt_setDiv
+        V GlobalTheory.Mem.Top.Closing.divEx_geoCl
+        V GlobalTheory.T.parameter_of_discrete_series_ray_alt
+  Formalism.BasicNotions.DV.Geo.rec: declared=True; referrers outside its own declaration block: 0; inside own block: False
+  Formalism.BasicNotions.DV.Geo.casesOn: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  Formalism.BasicNotions.DV.Geo.mk: declared=True; referrers outside its own declaration block: 3; inside own block: True
+        V Formalism.BasicNotions.Examples₂.geoExample
+        V Formalism.L2.Geo.geoDegenerate
+        V GlobalTheory.PointGeometry.pointGeo
+  Formalism.BasicNotions.DivX.rec: declared=True; referrers outside its own declaration block: 0; inside own block: False
+  Formalism.BasicNotions.DivX.casesOn: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  Formalism.BasicNotions.DivX.mk: declared=True; referrers outside its own declaration block: 9; inside own block: True
+        V Formalism.L2.Geo.divXFl
+        V GlobalTheory.EX.OB.divTr
+        V GlobalTheory.GeoGraft.graft
+        V GlobalTheory.Mem.HD.ReQ.reQ
+        V GlobalTheory.Mem.R3.Rw.DivMv.divBack
+        V GlobalTheory.Mem.R3.Rw.Up.divBack
+        V GlobalTheory.Mem.Top.DivRec.x0
+        V GlobalTheory.provisionalDivX
+        V UpperTheory.GalC.Gen.divTr
+  Formalism.BasicNotions.DivT.rec: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  Formalism.BasicNotions.DivT.casesOn: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  Formalism.L2.Geo.GeoTiedP.geoTied: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  Formalism.L2.Geo.GeoTiedP.formsTieX: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  GlobalTheory.Mem.Top.Bl.geoOf: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  GlobalTheory.Mem.Top.Bl.anyGeometry: declared=True; referrers outside its own declaration block: 14; inside own block: False
+        V GlobalTheory.Fc.S0.Open0ProofU.open_orbit_of_unramified_exponents_alt
+        T GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+        V GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+        T GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+        V GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+        T GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+        V GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+        T GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+        V GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+        V GlobalTheory.Mem.Top.Bl.parametersOfDependence
+        T GlobalTheory.Mem.Top.Closing.divEx_geoCl
+        V GlobalTheory.Mem.Top.Closing.divEx_geoCl
+        ... (22 occurrences in all)
+  GlobalTheory.Mem.Top.Bl.geoCl: declared=True; referrers outside its own declaration block: 18; inside own block: False
+        V GlobalTheory.Fc.S0.Open0ProofU.open_orbit_of_unramified_exponents_alt
+        T GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+        V GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt
+        T GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+        V GlobalTheory.Fc.StageOneU.member_bundles_large_unramified_exponents_alt
+        T GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt
+        V GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt
+        T GlobalTheory.Mem.OxMove.oAt_setDiv
+        V GlobalTheory.Mem.OxMove.oAt_setDiv
+        T GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+        V GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_pair_alt
+        T GlobalTheory.Mem.Top.Bl.exists_baseLattice_of_prime_alt
+        ... (27 occurrences in all)
+  GlobalTheory.Mem.Top.Bl.geoCl_of: declared=True; referrers outside its own declaration block: 1; inside own block: False
+        V GlobalTheory.Mem.Top.Closing.divEx_geoCl
+  sorryAx: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  Lean.ofReduceBool: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  Lean.ofReduceNat: declared=False; referrers outside its own declaration block: 0; inside own block: False
+  Lean.trustCompiler: declared=False; referrers outside its own declaration block: 0; inside own block: False
+
+== direct projection reads ==
+  OAt field 0 (geo): 1 declarations contain the projection directly (1 theorems); fields: [0]; transitive dependents: 30
+        thm       GlobalTheory.Mem.Top.Bl.OAt.geo
+  OAt field 1 (lam): 1 declarations contain the projection directly (1 theorems); fields: [1]; transitive dependents: 41
+        thm       GlobalTheory.Mem.Top.Bl.OAt.lam
+  DV.Geo any field: 18 declarations contain the projection directly (0 theorems); fields: [0, 1, 2, 3, 4, 5, 6, 10, 15, 18, 19, 25, 46, 47, 48, 49, 50, 51]; transitive dependents: 10711
+        def       Formalism.BasicNotions.DV.Geo.Var
+        def       Formalism.BasicNotions.DV.Geo.Cl
+        def       Formalism.BasicNotions.DV.Geo.Dv
+        def       Formalism.BasicNotions.DV.Geo.dvGrp
+        def       Formalism.BasicNotions.DV.Geo.Fn
+        def       Formalism.BasicNotions.DV.Geo.fnField
+        def       Formalism.BasicNotions.DV.Geo.fnAlg
+        def       Formalism.BasicNotions.DV.Geo.H0
+        def       Formalism.BasicNotions.DV.Geo.supp
+        def       Formalism.BasicNotions.DV.Geo.dim
+        def       Formalism.BasicNotions.DV.Geo.Adl
+        def       Formalism.BasicNotions.DV.Geo.ofW
+        def       Formalism.BasicNotions.DV.Geo.inter
+        def       Formalism.BasicNotions.DV.Geo.twist
+        ... (18 in all)
+  DivX field 0 (geo): 1 declarations contain the projection directly (0 theorems); fields: [0]; transitive dependents: 3695
+        def       Formalism.BasicNotions.DivX.geo
+  DivT any field: 0 declarations contain the projection directly (0 theorems); fields: []; transitive dependents: 0
+
+== field accessors of DV.Geo == {'accessors_in_export': 18, 'accessor_names': ['Var', 'Cl', 'Dv', 'dvGrp', 'Fn', 'fnField', 'fnAlg', 'H0', 'supp', 'dim', 'Adl', 'ofW', 'inter', 'twist', 'vanishOn', 'arTop', 'arVol', 'nefA'], 'direct_referrers': 75, 'of_which_theorems': 47, 'theorems_whose_proof_refers': 20}
+
+== the abstract geometry interface versus its degenerate instance ==
+  declarations depending on the declaration block of Formalism.BasicNotions.DV.Geo: {'all': 10708, 'library': 0, 'project': 10708, 'project_theorems': 8102, 'project_other': 2606}
+  declarations depending on the declaration block of Formalism.BasicNotions.DivX: {'all': 10530, 'library': 0, 'project': 10530, 'project_theorems': 8008, 'project_other': 2522}
+  declarations depending on the declaration block of GlobalTheory.Mem.Top.Bl.GeoCl: {'all': 29, 'library': 0, 'project': 29, 'project_theorems': 26, 'project_other': 3}
+  declarations depending on the declaration block of GlobalTheory.Mem.Top.Bl.GeoP: {'all': 422, 'library': 0, 'project': 422, 'project_theorems': 375, 'project_other': 47}
+  declarations depending on the declaration block of GlobalTheory.Mem.Top.Bl.OAt: {'all': 410, 'library': 0, 'project': 410, 'project_theorems': 374, 'project_other': 36}
+  declarations depending on the declaration block of Formalism.L2.Geo.GeoTiedP: {'all': 3481, 'library': 0, 'project': 3481, 'project_theorems': 2674, 'project_other': 807}
+  not found Formalism.L2.Geo.GeoOver
+  not found Formalism.BasicNotions.DivT
+  declarations depending on the declaration block of Formalism.L2.LPTiedPlaceholder: {'all': 3850, 'library': 0, 'project': 3850, 'project_theorems': 3002, 'project_other': 848}
+  declarations depending on the declaration block of GlobalTheory.HeightCounting.NTiedGPlaceholder: {'all': 3822, 'library': 0, 'project': 3822, 'project_theorems': 2986, 'project_other': 836}
+
+written: ~/rh-audit/graph2/query/depquery.json

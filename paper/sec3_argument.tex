@@ -1,0 +1,35 @@
+\section{The argument under review}
+\label{sec:argument}
+
+We first state the argument of \N\ in a form that separates what it observes from what it infers. Section numbers refer to \N.
+The reconstruction was made twice, by us and independently by cross-check agent~H (Section~\ref{sec:agents}), with the same result.
+
+\begin{notebox}
+\textbf{Observations about the code}
+\begin{enumerate}[label=(A\arabic*),leftmargin=3.2em]
+\item The final theorem is a closed term of Mathlib's \lean{RiemannHypothesis}; the source has no \lean{axiom}, \lean{sorry}, \lean{native_decide}, \lean{unsafe} or \lean{opaque} declaration. \hfill (Abstract, \S12)
+\item The proof term reaches it along the route \lean{riemannHypothesis} $\leftarrow$ \lean{rhOfAll} $\leftarrow$ \lean{allChi} $\leftarrow$ \lean{everyCharacter} $\leftarrow\cdots\leftarrow$
+\lean{every_character_of_green_v_win} $\leftarrow$ \lean{zero_free_all_of_green_v_win} $\leftarrow$ \lean{zeroFreeAll_of_topG}. The theorem \lean{plugAll} is not on it. \hfill (\S1, \S7, \S11)
+\item On this route the witness of the hypothesis bundle \lean{HypsAlt} is built with \texttt{geoCl anyGeometry}, where \lean{anyGeometry} is the constant \lean{True}; two further ``shape'' inputs are supplied by \lean{trivial}. \hfill (\S2, \S7)
+\item The geometric datum is assembled from a degenerate model; the lattice conditions on it hold by \lean{rfl} because the seed is defined as a copy of the row-side data; the map from the lattice to sections is zero. \hfill (\S3--\S5)
+\item The lemmas that would extract geometric content are never called; one geometric field is vacuously true for the model; the degree equation is never proved. \hfill (\S6)
+\item The height of the divisor datum is zero when the datum is built and is then overwritten by an explicit formula \lean{hExpl6}, so ``height $=$ formula'' holds by \lean{rfl};
+two inequalities about that height are then proved by \lean{divClausesR_of} from about forty matrix estimates. \hfill (\S7)
+\end{enumerate}
+\textbf{Interpretation and requirements}
+\begin{enumerate}[label=(B\arabic*),leftmargin=3.2em]
+\item Hence the divisor side and the row side are one object, and the inequality that should trap a geometric height between a pairing and a main term compares a quantity with itself and holds by reflexivity. \hfill (Abstract, \S8)
+\item Hence what the kernel certifies is only the tautology ``RiemannHypothesis $=$ RiemannHypothesis'' under the supplied definitions. \hfill (Abstract, \S8)
+\item The argument that the source \emph{names} needs an independent geometric height. A formula that was written in to fit is not one, and a geometric argument cannot be both essential and trivially discharged. \hfill (\S8, \S9)
+\item The algebraic zero-free step is downstream of the bundle. Remove the bundle and the proof term has no route to the conclusion; so the objection that a kernel-checked closed term is a proof does not apply. \hfill (\S10, App.~A)
+\end{enumerate}
+\textbf{Conclusion}
+\begin{enumerate}[label=(C),leftmargin=3.2em]
+\item The release does not contain a proof of the Riemann Hypothesis. \hfill (Abstract, \S9, \S13)
+\end{enumerate}
+\end{notebox}
+
+Two features of this argument should be noted at once.
+First, (A1) is conceded by \N: the dispute is not about axioms, \lean{sorry} or the identity of the statement.
+Second, \N\ anticipates the obvious reply, namely that a kernel-checked closed term is a derivation of its statement whatever its intermediate steps look like, and answers it with (B4).
+The weight of the paper therefore rests on (B1)--(B4). Section~\ref{sec:facts} checks (A1)--(A6); Section~\ref{sec:inference} examines (B1)--(B4).

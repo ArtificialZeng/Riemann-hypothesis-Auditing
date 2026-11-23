@@ -1,0 +1,11 @@
+lines: 1080769508
+bytes: 61570595788
+expression records: 1065214335
+declaration records (graph nodes): 1468418
+declared names: 1484733
+records by kind: {"axiom": 3, "def": 214241, "inductive": 7969, "opaque": 91, "quot": 4, "thm": 1246110}
+type-dependency edges: 49376348
+value-dependency edges: 106908310
+expression-DAG visits during the walk: 2890194177
+watched names present in the export: ["Formalism.BasicNotions.DV.Geo.mk", "Formalism.BasicNotions.DV.Geo.rec", "Formalism.BasicNotions.DivX.mk", "Formalism.BasicNotions.DivX.rec", "GlobalTheory.Mem.Top.Bl.GeoCl", "GlobalTheory.Mem.Top.Bl.GeoCl.base", "GlobalTheory.Mem.Top.Bl.GeoCl.rec", "GlobalTheory.Mem.Top.Bl.GeoCl.step", "GlobalTheory.Mem.Top.Bl.OAt.geo", "GlobalTheory.Mem.Top.Bl.OAt.lam", "GlobalTheory.Mem.Top.Bl.OAt.mk", "GlobalTheory.Mem.Top.Bl.OAt.rec", "GlobalTheory.Mem.Top.Bl.anyGeometry", "GlobalTheory.Mem.Top.Bl.geoCl", "GlobalTheory.Mem.Top.Bl.geoCl_of"]
+watched names that never occur in the export: ["Formalism.BasicNotions.DV.Geo.casesOn", "Formalism.BasicNotions.DivT.casesOn", "Formalism.BasicNotions.DivT.rec", "Formalism.BasicNotions.DivX.casesOn", "Formalism.L2.Geo.GeoTiedP.formsTieX", "Formalism.L2.Geo.GeoTiedP.geoTied", "GlobalTheory.Mem.Top.Bl.GeoCl.casesOn", "GlobalTheory.Mem.Top.Bl.GeoCl.recOn", "GlobalTheory.Mem.Top.Bl.OAt.casesOn", "GlobalTheory.Mem.Top.Bl.geoOf", "Lean.ofReduceBool", "Lean.ofReduceNat", "Lean.trustCompiler", "sorryAx"]

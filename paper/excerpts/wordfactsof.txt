@@ -1,0 +1,19 @@
+theorem wordFacts_of {D : D7} (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) {d n : ℕ}
+    (Nc : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL)) (Rc : Submodule (𝓞 D.what₂.LL) (Fin n → D.what₂.LL))
+    (eN : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) (eR : (Fin n → D.what₂.LL) ≃ₗ[D.what₂.LL] D.div.RR.V)
+    (hN : (D.div.Nu u).L = Nc.map ((eN : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL)))
+    (hR : D.div.RR.L = Rc.map ((eR : (Fin n → D.what₂.LL) →ₗ[D.what₂.LL] D.div.RR.V).restrictScalars (𝓞 D.what₂.LL)))
+    (B : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] Module.Dual D.what₂.LL (Fin n → D.what₂.LL))
+    (hB : ∀ x y, D.div.Bk u (eN x) (eR y) = B x y)
+    (ht muC kap hu Fo2 rhs : ℝ)
+    (c1 : ∀ φ ∈ Nc, B φ ∈ Formalism.HN.dualLat Rc) (c2 : B ≠ 0 → ht ≤ hu - kap) (c3 : muC - kap + hu - Fo2 ≤ rhs)
+    (tHt : Formalism.HN.htMap (D.div.Nu u).b (D.div.Nu u).X D.div.RR.dualB D.div.RR.dualX (D.div.Bk u) = ht)
+    (tMu : muC = D.div.RR.muDual) (tH : hu - kap = D.div.h u) (tFo : Fo2 = L.Fo)
+    (tR : rhs ≤ L.MAIN u + C * (D.host.TT.card : ℝ) * L.sc.a * L.La +
+      C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) :
+    WordFacts L C Cabs u := by
+  refine ⟨oneMap_of_coord (D.div.Nu u) D.div.RR Nc Rc eN eR hN hR (D.div.Bk u) B hB c1, fun hne => ?_, ?_⟩
+  · rw [tHt, ← tH]
+    exact c2 (ne_zero_of_coord eN eR (D.div.Bk u) B hB hne)
+  · rw [← tMu, ← tH, ← tFo]
+    linarith

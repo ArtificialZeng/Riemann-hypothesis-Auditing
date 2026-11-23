@@ -1,0 +1,15 @@
+\section{Limits of this audit}
+\label{sec:limits}
+
+\begin{enumerate}
+\item \textbf{The mathematics was not read.} This note establishes that a particular objection fails and that standard mechanical checks pass. It does not explain the proof and is not a substitute for mathematical review.
+\item \textbf{The trust base remains.} The conclusion rests on the consistency of Lean's type theory with the three standard axioms, on the correctness of at least one of the checkers that accepted the export
+(we ran one, \texttt{con-leche}, ourselves; others are reported on the verification page), on the faithfulness of \texttt{lean4export}, and on the adequacy of Mathlib's definitions of the Riemann zeta function and of \lean{RiemannHypothesis}.
+None of these is questioned in \N, and we did not audit them beyond what Section~\ref{sec:defects} describes.
+\item \textbf{The source-to-export build was not reproduced.} See Section~\ref{sec:defects}, exit~(iv).
+\item \textbf{A dependency graph is syntactic.} It tells exactly which declarations a term refers to. Absence from the export means ``not used''; presence means ``referred to'', which is weaker than ``essential''.
+The split between library and release is by name against the Mathlib environment and may misplace a small number of automatically generated auxiliary declarations.
+\item \textbf{Counts measure extent, not depth.} That the bundle witness depends on \NpackageThm\ theorems shows that it is not obtained from nothing. It does not show that those theorems are deep; we did not grade them.
+\item \textbf{Not every agent finding was re-verified.} Those that were not are marked \textsf{G} without \textsf{S} or \textsf{K} in Table~\ref{tab:facts}.
+\item \textbf{The version of \N.} We reviewed the 17-page version with the hash given in Table~\ref{tab:prov}. \N\ has been revised more than once, and a later version may differ.
+\end{enumerate}

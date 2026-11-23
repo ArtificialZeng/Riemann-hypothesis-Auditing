@@ -1,0 +1,26 @@
+theorem divClausesR_of [IsTotallyComplex K] {Pl : Type} [Fintype Pl] [DecidableEq Pl] (wf0 : Df0.WF) (wf1 : Df1.WF)
+    (P : IndefCoreR Df0 Df1 Dc Sp N) (R : RecNums Bs.J Pl) (u : Dc.Mem) (Nu : Submodule (𝓞 K) (Fin (Dc.a u) → K))
+    (sg : HeightOneSpectrum (𝓞 K) → ℝ) (I : DivInputsR P R u Nu sg) : DivClausesR P R u Nu sg := by
+  have : Nonempty Bs.Ix := nonempty_Ix wf0 P.base.pos
+  have hsh := shiftEx K (Dc.a u) Nu I.Nu_lat (shiftZ sg) I.sg_fin
+  refine ⟨?_, ?_, ?_, ?_⟩
+  ·
+    exact P.cols.intoDual divIntoDualShift latticeGlue wf1 u Nu (shiftLat Nu sg) sg (shiftZ sg) I.val2
+      (fun w => Int.floor_le_ceil _) hsh.1
+  ·
+    have hX := fun v => OperatorNormFrames.opNormAt_nonneg (Pi.basisFun K (Fin (Dc.a u))) (Dc.Xc u) (Pi.basisFun K (Fin P.cols.D)).dualBasis
+      (Formalism.HN.dualFrame P.cols.XE) v (P.cols.col.B u)
+    by_cases hne : P.cols.col.B u = 0
+    · refine exists_cu _ (fun _ => R.hu - meanLog P.cols.κ) _ hX (fun v => Or.inl ?_) (le_of_eq ?_)
+      · rw [hne]; simp [Formalism.HN.opNormAt]
+      · have hn : (0 : ℝ) < (Fintype.card (InfinitePlace K) : ℝ) := by
+          have : 0 < Fintype.card (InfinitePlace K) := Fintype.card_pos
+          exact_mod_cast this
+        simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+        field_simp
+    · have nK := nK_of_cb I.cb (fun j v => ∑ l ∈ Finset.univ.filter (fun l => I.ch.lf l = j), I.hn.sz l v) I.nKcb
+      obtain ⟨Hv, Hm⟩ := height_chain_atR wf1 P.cols u hne I.X0 I.base_matrix_det_unit I.ch I.hn.hPn I.hn.sz I.nP nK
+      have h1 := I.hn.le_hu (∑ j, N.l6 j) I.eig6
+      refine exists_cu _ (fun v => I.hn.hPn + ∑ j, ∑ l ∈ Finset.univ.filter (fun l => I.ch.lf l = j), I.hn.sz l v -
+        Real.log (P.cols.κ v) - minOver (fun p => ∑ j, Real.log (P.cols.lam j Bs.μ0 p v))) _ hX (fun v => Or.inr (Hv v)) ?_
+      linarith [Hm, h1]

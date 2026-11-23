@@ -1,9 +1,8 @@
 # LaTeX build products
-report/*.aux
-report/*.log
-report/*.out
-report/*.toc
-report/pg-*.png
-report/fonttest*
-report/build*.log
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/pg-*.png
+paper/build*.log
 .DS_Store

@@ -1,0 +1,137 @@
+\section{Kernel-level data}
+\label{app:data}
+
+All numbers in this appendix are produced by \path{evidence/depgraph/depquery.py} from the dependency graph of the export and inserted into the text by \path{paper/make_tables.py}.
+
+\subsection{The export}
+
+\begin{center}\small
+\begin{tabular}{@{}lr@{\qquad}lr@{}}
+\toprule
+\multicolumn{2}{c}{\textbf{Size}} & \multicolumn{2}{c}{\textbf{Declaration records}}\\
+\midrule
+lines & \Nlines & theorems & 1,246,110 \\
+bytes & 61,570,595,788 & definitions & 214,241 \\
+expression nodes & \Nexprs & inductive blocks & 7,969 \\
+type-dependency edges & \NedgesT & opaque constants & 91 \\
+value-dependency edges & \NedgesV & quotient primitives & 4 \\
+library declarations & \Nlib & axioms & 3 \\
+declarations of the release & \Nproj & \textbf{total} & \textbf{\Ndecl} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The dependency cone of \lean{riemannHypothesis} alone has \NconeMain\ declarations (\NconeProj\ of the release, of which \NconeProjThm\ are theorems); the few remaining records belong to the statements of the other four theorems.
+Its statement cone has \NstmtMain\ declarations, \NstmtMainProj\ of them from the release.
+
+\subsection{Dependency cones along the route}
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}lrrrc@{}}
+\toprule
+Declaration & cone & release & theorems & flagged? \\
+\midrule
+\tableinput{tables/route.tex}
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent The columns give the size of the dependency cone, the number of its declarations that belong to the release, the number of those that are theorems, and whether the cone contains a flagged object, meaning any of \lean{anyGeometry}, \lean{geoDegenerate}, \lean{algDegenerate}, \lean{padDegenerate}, \lean{mdlJunk}, \lean{cxJunk}, \lean{divXFl}, \lean{geoOver_stages}, \lean{geoExample}, \lean{pointGeo}, \lean{x0}, \lean{provisionalDivX}, \lean{graft}.
+The following names, all mentioned in \N\ or in earlier accounts, do not occur in the export: \tableinput{tables/absent.tex}.
+
+\subsection{Dependents of individual objects}
+
+\begin{center}\small
+\begin{tabular}{@{}lrc@{}}
+\toprule
+Object & declarations depending on it & final theorem among them \\
+\midrule
+\tableinput{tables/dependents.tex}
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent The two structures whose names end in \texttt{Placeholder} are discussed in Appendix~\ref{app:erratum}. Excluding them, the union of the sets above has \Nflagged\ elements (\NflaggedThm\ theorems).
+For comparison, \NifaceDeps\ declarations depend on the interface type \lean{DV.Geo} and \NdivXdeps\ on the record \lean{DivX}.
+
+\subsection{Direct references to selected names}
+
+\begin{center}\small
+\begin{tabular}{@{}lc>{\raggedright\arraybackslash}p{8.2cm}@{}}
+\toprule
+Name & referrers outside its own block & which \\
+\midrule
+\tableinput{tables/watch.tex}
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{The \NanyGeo\ declarations that depend on \texttt{anyGeometry}}
+
+{\scriptsize
+\begin{longtable}{@{}rl>{\raggedright\arraybackslash}p{13.2cm}@{}}
+\toprule
+\# & kind & declaration \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\tableinput{tables/anygeo.tex}
+\end{longtable}
+}
+
+\section{Correction to the earlier version of this audit}
+\label{app:erratum}
+
+The earlier version (in Chinese, dated 23 November 2026) reported some counts obtained with \texttt{conescan} that were too low. The cause and the extent are as follows.
+
+\texttt{conescan} assigns a taint mark to an expression node when the node is created. The exporter emits the expressions of an inductive declaration, including the node for the type's own name, \emph{before} the declaration record.
+When an inductive type depended on a seed, that early node had therefore been created unmarked, and later declarations that referred to the type through the same shared node were not counted.
+Propagation through definitions and theorems was not affected, and neither was the detection of direct references to a seed.
+
+\begin{itemize}
+\item \textbf{Unaffected} (re-derived with \texttt{depgraph} and identical): \NanyGeo\ dependents of \lean{anyGeometry}; \NgeoDeg\ of \lean{geoDegenerate}; the counts for \lean{algDegenerate}, \lean{padDegenerate}, \lean{mdlJunk}, \lean{cxJunk}, \lean{divXFl}, \lean{geoOver_stages}, \lean{geoExample};
+the absence of \lean{plugAll} and of the other names listed above; the absence of any referrer of \lean{GeoCl.rec}; the two readers of \lean{OAt.geo}; the three axioms.
+\item \textbf{Corrected.} The earlier text said that 736 declarations involve the type \lean{DV.Geo} and that 621 of them read one of its fields. The correct statements are those of Section~\ref{sec:degenerate}:
+\NifaceDeps\ declarations depend on the type, \Nacc\ field accessors occur in the export, \NaccDirect\ declarations refer to an accessor directly, and \NaccThmProof\ of those are theorems whose proof does so.
+The count given for \lean{GeoTiedP} (60) should read \NgeoTiedP; the counts given for field projections of \lean{DivX} and \lean{DivT} are superseded by the direct-reference data of Appendix~\ref{app:data}.
+\item \textbf{Corrected.} Two structures with no fields, \lean{LPTiedPlaceholder} and \lean{NTiedGPlaceholder}, were reported with 117 and 82 dependents. The correct numbers are \NplaceLP\ and \NplaceNT:
+they are parameters of record types that are used widely, including in the type of the bundle \lean{HypsAlt}. A structure without fields has exactly one inhabitant and carries no information, so nothing can be smuggled through it; \N\ does not mention them.
+\end{itemize}
+
+None of the corrections changes a conclusion, but the earlier wording understated how widely the abstract geometry \emph{interface} is threaded through the data types, and the distinction now drawn in Section~\ref{sec:degenerate} between the interface and its trivial instances is the accurate one.
+The tool \texttt{depgraph} avoids the problem by resolving references when a declaration is complete, not when an expression is created.
+
+\section{Hashes and versions}
+\label{app:hashes}
+
+\begin{center}\scriptsize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Object & SHA-256 or commit \\
+\midrule
+\path{lean.tar.gz} (author's archive) & \texttt{9631b4f020199e580ba86178cb56c6e9b09f690c2369a80dc4334aa93f49c7fc} \\
+\path{solution.ndjson.zst} & \texttt{61a8938ad5f5e57397c1c0e3b954916af546d9004ade01c3555744a681b05381} \\
+\path{solution.ndjson} & \texttt{5ea74b912147c5c93cc2b6d70cc727cf908df2f62ac6a20480a3fa02f6be244e} \\
+\path{challenge.ndjson} (published and rebuilt) & \texttt{bd484ac9886a96f26b1d9a7a59ebd45b7a70d102c015d4f31f9302bbdd6ab2b9} \\
+The paper \N, version reviewed & \texttt{90b7c28e51e6cb8460480c7ecbb81162f1b910c24234f7664dcd1bafbc7ccf77} \\
+Mirror used & \path{the-omega-institute/riemann-hypothesis}, commit \texttt{c7d25b3bfd7906388bb8eb0774e027a2b756a7b6} \\
+Mathlib & \texttt{0df444a360eaa60ab8c11dca51a86af692955474} (official tag \texttt{v4.33.1}) \\
+con-leche & \texttt{bc6676101c488e21ce71a317b33905534d497e14}, built with Lean 4.36.0 \\
+lean4export & \texttt{15f6055e299ad5b89345e533cc2192f4cc00f659} (tag \texttt{v4.33.0}), built with Lean 4.33.1 \\
+Dependency graph \path{edges.bin} & \texttt{\edgesHash} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Reproduction}
+\label{app:repro}
+
+The file \path{evidence/REPRODUCE.md} in the repository gives the commands. In outline (about 80\,GB of disk; the checker run needs about 48\,GB of memory):
+\begin{enumerate}
+\item download the fourteen parts of the archive and the two exports, and compare the hashes above;
+\item \texttt{cargo build --release} in \path{evidence/conescan}, then \texttt{depgraph OUT watch\_names.txt < solution.ndjson} (one pass, about eight minutes, 17\,GB of memory);
+\item dump the Mathlib constant names with \path{evidence/depgraph/DumpNames.lean}, run \path{depquery.py}, then \path{paper/make_tables.py};
+\item build \texttt{con-leche} and run it with \texttt{--verified --compare};
+\item rebuild the challenge export with \path{evidence/challenge-rebuild/run2.sh} and compare it byte for byte;
+\item compile the two files in \path{evidence/toy} with any recent Lean~4.
+\end{enumerate}

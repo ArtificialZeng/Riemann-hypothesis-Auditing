@@ -1,0 +1,44 @@
+\section{Introduction}
+\label{sec:intro}
+
+On 20 November 2026 Levent Alpöge announced a proof of the Riemann Hypothesis, and of the generalized Riemann Hypothesis for Dirichlet $L$-functions, obtained with the AI system Claude~\cite{alpoge}.
+The announcement was accompanied by a Lean~4 development of 175,187 source files and by no human-readable paper.
+Within a day the Lean and Mathlib communities reported that the statements are the intended ones and that the proof checks~\cite{community}, and a verification page with the complete kernel-level export of the proof and the logs of several independent checkers was published~\cite{mit}.
+
+Nielsen~\N\ disputes the result. The paper reads the source and reports that the part of the development named after arithmetic geometry is empty of geometric content:
+a geometry predicate is defined to be \lean{True}, the geometric datum is assembled from objects that the source itself calls \emph{degenerate} and \emph{junk},
+the lattice conditions on that datum hold by \lean{rfl} because the datum was defined as a copy, and the height that enters the central inequality is installed by assignment.
+From this \N\ concludes that the formalization certifies only a tautology and that the release contains no proof of the Riemann Hypothesis.
+
+This note audits that argument. It does not try to prove or to disprove the Riemann Hypothesis, and it is not a referee report on the mathematics of the release.
+It asks two narrower questions that can be settled by inspecting the published artefacts:
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3em]
+\item Are the observations of \N\ about the code true?
+\item If they are true, does the conclusion of \N\ follow?
+\end{enumerate}
+
+\begin{verdictbox}
+\textbf{Findings.}
+\textbf{Q1: largely yes.} We confirm the observations in the source, and we confirm at the level of the kernel export that the objects flagged by \N\ lie in the dependency cone of \lean{riemannHypothesis}
+(Section~\ref{sec:facts}). A few citations in \N\ are inaccurate, and two headline descriptions (that the squeeze holds ``by reflexivity'', and that what is certified is a ``tautology'') are false as statements about the code.
+
+\textbf{Q2: no.} The step from ``these witnesses are trivial'' to ``the theorem is unproved'' is not valid for a closed, kernel-checked theorem (Section~\ref{sec:inference}).
+A trivially discharged slot in such a proof is a slot the proof does not need. The objection would have force against a theorem that still carried the weakened predicate as a hypothesis, or against one that used an axiom; the final theorem here does neither.
+We looked independently for the ways in which a kernel-checked theorem can nevertheless be wrong (extra axioms, a substituted statement, an exploited kernel defect, a mismatch between source and checked artefact) and found none (Section~\ref{sec:defects}).
+\end{verdictbox}
+
+\paragraph{What is and is not claimed here.}
+The claim defended is conditional and precise: \emph{given} that the published export is accepted by the Lean kernel and by independent checkers as a derivation of Mathlib's \lean{RiemannHypothesis} from the three standard axioms,
+the observations of \N\ give no reason to doubt that it is one. The trust base that remains (the soundness of Lean's logic, the correctness of at least one kernel implementation, and the adequacy of Mathlib's definition of the Riemann zeta function)
+is discussed in Section~\ref{sec:limits}; \N\ does not challenge any part of it.
+We have not read the mathematics of the release and we express no view on why the proof works.
+Section~\ref{sec:credit} states what \N\ does establish, which is of real interest for anyone who wants to understand the proof.
+
+\paragraph{Method.}
+Every source excerpt in this note is cut mechanically, with its true line numbers, from the author's original archive, whose hash we verified.
+Every statement about what the proof term \emph{uses} is derived from the kernel-level export~\cite{mit} rather than from text search:
+we wrote a program that extracts the complete declaration-level dependency graph of the export (\Ndecl\ declarations, \Nedges\ edges) and answer reachability questions on that graph.
+The tools, their outputs, the logs of the independent checker run and the reports of eight read-only cross-check agents are in the accompanying repository~\cite{repo}.
+An earlier version of this audit was written from the abstract and public summaries of \N; the present version is based on the full text.
+Appendix~\ref{app:erratum} corrects an undercount in that earlier version.
