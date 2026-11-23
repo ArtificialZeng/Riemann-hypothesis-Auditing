@@ -1,0 +1,74 @@
+\section{结论摘要}
+
+\subsection{审计问题}
+
+网络流传的质疑（见委托人提供的截图与新闻）可以归结为一句话：证明库里有这样一行定义
+\begin{Verbatim}[fontsize=\small,frame=single,rulecolor=\color{gray!50}]
+def anyGeometry : GeoP := fun _ _ _ => True
+\end{Verbatim}
+\noindent 于是「原本需要认真证明的条件被设置成了自动成立，整个程序因此顺利通过检查」，1740 万行的证明是「能过 Lean 的假推理」。
+本报告\textbf{不}证明也不反证黎曼猜想；本报告只回答三个可以机械核查的问题：
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3em]
+\item \textbf{事实}：Nielsen 关于代码的各项陈述是否属实？特别是，这个恒真谓词是否真的位于主定理的依赖链上？
+\item \textbf{逻辑}：如果属实，能否由此推出「该证明无效／空洞」？
+\item \textbf{独立排查}：撇开 Nielsen 的论证，这份证明是否存在任何\emph{真正的} Lean reward hacking（额外公理、\lean{sorry}、偷换命题、绕过内核等）？
+\end{enumerate}
+
+\subsection{结论}
+
+\begin{verdictbox}
+\begin{enumerate}[label=\textbf{A\arabic*.},leftmargin=3em]
+\item \textbf{事实基本属实，且比公开分析所确认的更强。}\lean{anyGeometry} 的定义逐字属实（24 个文件、118 行引用）。
+我们对官方公布的 61.57\,GB 内核级证明导出文件做了逐声明的依赖传播，确认：五个主定理全部依赖 \lean{anyGeometry}
+（依赖锥共 1,468,418 个声明，其中恰有 30 个依赖它），也全部依赖代码自称退化的几何模型 \lean{geoDegenerate} 等。
+唯一的细节出入是：Nielsen 点名的 \lean{plugAll} 本身\emph{不在}依赖锥内，真正在路径上的是与之平行的孪生定理
+\lean{every_character_of_green_v_win}（实质相同）。
+\item \textbf{推理不成立。}「中间定义平凡 $\Rightarrow$ 证明无效」是一个不合逻辑的推断（non sequitur）：
+  \begin{itemize}
+  \item \emph{一般层面}：\lean{riemannHypothesis} 是无前提的闭定理，类型就是 Mathlib 的常量 \lean{RiemannHypothesis}。
+  「空洞为真」只可能发生在\emph{带前提}的命题上；定义只是缩写，不可能凭空增加可证命题。据公开转述，Nielsen 的论文也承认该发布能对着 Mathlib 的 \lean{RiemannHypothesis} 通过类型检查。
+  \item \emph{具体层面}：几何谓词 $\Gamma$ 在主路径上是「只写不读」的槽位——所有接收它的引理都对任意 $\Gamma$ 成立；
+  封装它的归纳类型 \lean{GeoCl} 的消去子（recursor）在整个依赖锥中\emph{从未被任何声明引用}；最终假设包 \lean{HypsAlt} 的类型根本不含 $\Gamma$。
+  把一个从不被读取的槽位填成 \lean{True}，等价于删除这个槽位，对结论没有任何影响。
+  \end{itemize}
+\item \textbf{未发现真正的 reward hacking。}源码中 \lean{axiom} 声明 0 处；\lean{sorry} 仅 5 处且全部在社区后加、不属于提交内容的 \path{Challenge.lean}；
+\lean{native_decide}、\lean{implemented_by}、\lean{unsafe}、\lean{opaque}、\lean{extern} 均为 0；
+导出文件中的公理恰为 \lean{propext}、\lean{Quot.sound}、\lean{Classical.choice} 三条；
+没有对 \lean{RiemannHypothesis}、\lean{riemannZeta} 等名字的重定义或记号劫持；Mathlib 钉在官方标签 \texttt{v4.33.1}。
+\conlecheSummary
+\end{enumerate}
+\end{verdictbox}
+
+\subsection{逐条核查表}
+
+Nielsen 论文正文受 PhilArchive 的反爬验证保护，本次审计未能取得全文（见第~\ref{sec:limits}~节）；下表所列主张取自其摘要被公开转述的句子、
+其本人在 X 上的表述，以及 DEV Community 上对该文的逐项复核文章。
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{3.7cm}>{\centering\arraybackslash}p{1.35cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.35cm}@{}}
+\toprule
+编号 & Nielsen 的主张 & 事实核查 & 依据（本报告章节） & 能否推出「证明无效」\\
+\midrule
+C1 & 几何谓词被定义为 \lean{True} & \OK & \path{OverIx.lean:19} 逐字属实（\S\ref{sec:fact-def}） & \NOTFOLLOW \\
+C2 & 它被传入构造最终假设包的各处，并经 \lean{plugAll} 得到全体特征的结论 & \PARTLY & 确在依赖锥内（内核级确认）；但 \lean{plugAll} 不在锥内，实际路径是其孪生定理（\S\ref{sec:fact-path}） & \NOTFOLLOW \\
+C3 & 几何见证由代码自称 degenerate 的模型构造 & \OK & \lean{geoDegenerate}、\lean{mdlJunk} 等确在锥内（\S\ref{sec:fact-degenerate}） & \NOTFOLLOW \\
+C4 & 格见证「按定义」满足其性质 & \PARTLY & \texttt{nprimeDef := fun \_ => rfl} 属实；其余格性质是实证的（\S\ref{sec:fact-rfl}） & \NOTFOLLOW \\
+C5 & 高度方程由 \lean{rfl} 成立，因为高度函数被赋值为自己的公式 & \OK & \texttt{h\_eq := fun \_ => rfl}（\S\ref{sec:fact-rfl}） & \NOTFOLLOW \\
+C6 & 能从几何见证中提取内容的引理从未被调用 & \OK & 属实，且可加强为内核级结论：\lean{GeoCl.rec} 在锥中零引用（\S\ref{sec:fact-unused}） & \NOTFOLLOW；这恰恰是「死参数」的证据 \\
+C7 & 因此该发布未被证明包含 RH 的任何证明 & \NO & 见第~\ref{sec:logic}~节 & —— \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{怎样读这个结论}
+
+\begin{itemize}
+\item 本报告的结论是\textbf{条件于可信基}的：Lean 的类型论及其（多个相互独立的）内核实现是可靠的；Mathlib 对 $\zeta$ 与 \lean{RiemannHypothesis} 的定义表达了通常意义下的黎曼猜想；
+我们核对过哈希的导出文件确由已公布的源码生成（最后一点我们依赖 MIT 方面的沙箱重建，未能在 7 小时内自行重建 17.5 万个模块，见第~\ref{sec:limits}~节）。
+\item 本报告\textbf{没有}阅读并理解这 1740 万行证明的数学内容，也不对「这个证明的数学思想是什么」发表意见。
+Nielsen 的观察确实揭示了一件值得解释的事：库中那套「真几何」谓词（\lean{geoOf}、\lean{IsGeoOf}、\lean{HasTrueSurf}）完全不在最终定理的依赖锥内。
+这是一个关于\emph{如何理解与讲述}这份证明的合理问题，但它不是一个关于证明\emph{是否有效}的问题。
+\end{itemize}

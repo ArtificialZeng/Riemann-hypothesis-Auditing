@@ -1,0 +1,80 @@
+\section{本机独立复现}
+\label{sec:replication}
+
+除了阅读源码，本次审计在一台 Apple Silicon Mac（16 核、128\,GB 内存）上独立完成了下面四项可复现的实验。全部脚本、日志与输出见仓库 \path{evidence/}。
+
+\subsection{conescan：内核级依赖锥分析}
+\label{sec:conescan}
+
+\paragraph{方法。}lean4export 的 NDJSON 导出按依赖顺序给出名字、表达式结点（每个结点一行，子结点以编号引用）和声明记录。
+conescan 单遍读取整个文件，为每个表达式结点维护一个 16 位污点掩码：引用了种子常量或已被污染的声明的 \lean{const} 结点被置位，复合结点取其子结点的并；
+每条声明记录的类型与值（归纳类型则包括所有构造子类型、递归子类型与计算规则右端）决定该声明的掩码。
+由于声明按依赖顺序出现，一遍扫描即可得到「传递依赖某种子」的\emph{精确}声明集合，并为每个被污染的声明记下一个直接见证，从而还原出依赖链。
+种子可以是常量名，也可以是「对结构 $S$ 的第 $i$ 个字段的投影」这样的表达式模式。
+
+\paragraph{自检。}(1) 统计到的行数、字节数与声明总数（1,468,418）和官方数字一致；(2) 以 \lean{every_character_of_green_v_win} 为种子时，传播正确地到达了全部五个主定理（这是源码层面已知的依赖）；
+(3) 两遍独立扫描中 \lean{anyGeometry} 与 \lean{OAt.geo} 投影的计数相同（各 30）。
+
+\paragraph{注意。}conescan 是依赖分析器，不是类型检查器；它回答「谁用了谁」，不回答「证明对不对」。后者由下一小节负责。
+
+\paragraph{主要结果。}见 \S\ref{sec:fact-path}、\S\ref{sec:fact-degenerate}、\S\ref{sec:fact-unused} 以及附录~\ref{app:conescan}。\scanThreeSummary
+
+\subsection{con-leche：对 61.57\,GB 导出证明的独立内核重放与命题比对}
+\label{sec:conleche}
+
+con-leche 是 Lean FRO 发布的独立检查器，自带「不接受 \lean{False} 的证明」的形式化一致性证明，使用自己的项表示，不依赖官方内核的 C++ 实现。
+我们用官方 Lean \texttt{v4.36.0} 发行包从源码编译（提交 \texttt{bc667610}，593 个构建任务），然后运行
+\begin{Verbatim}[fontsize=\small,frame=single,rulecolor=\color{gray!50}]
+con-leche --verified --compare challenge.ndjson solution.ndjson
+\end{Verbatim}
+\noindent 其中 \lean{--verified} 是一致性定理所覆盖的模式；\lean{--compare} 先检查解答导出的全部声明，再检查挑战导出，
+并要求挑战中每个以 \lean{sorry} 占位的定理在解答中有同名、同类型的常量，且「该类型读到的一切声明在两边逐条相同」。
+
+\conlecheDetail
+
+\subsection{独立重建挑战命题导出}
+\label{sec:rebuild}
+
+\lean{--compare} 的意义取决于挑战文件本身是否可信：它必须真的只是「官方 Mathlib + 五个命题陈述」。我们没有把这一点当作既定事实，而是自己重建了一遍：
+
+\begin{enumerate}
+\item 下载官方 Lean \texttt{v4.33.1} 发行包；
+\item 建立一个只含 \path{Challenge.lean}（5 个带 \lean{sorry} 的定理，仅 \texttt{import Mathlib}）的工程，Mathlib 钉在 \texttt{0df444a3}；
+\item 用 \texttt{lake exe cache get} 从 Mathlib 官方缓存取得 8,690 个预编译文件（不在本机编译 Mathlib）；
+\item 用 \path{lean4export}（标签 \texttt{v4.33.0}）按 \path{export-targets.txt} 的目标导出。
+\end{enumerate}
+
+\begin{verdictbox}
+重建得到的 \path{my_challenge.ndjson} 为 350,862,311 字节，SHA-256 为 \texttt{bd484ac9…bdd6ab2b9}，与社区公布的 \path{challenge.ndjson} \textbf{逐字节相同}（\texttt{cmp} 无差异）。
+因此，用来比对的「标准答案」确实只由官方 Mathlib 和五个命题陈述决定，与证明库无关。
+\end{verdictbox}
+
+{\small 顺带一提：MIT 页面写该文件解压后为 350,862,970 字节，与我们得到的 350,862,311 字节相差 659 字节，但 SHA-256 与页面公布值一致，且与本机重建结果一致，应为页面上的笔误。}
+
+\subsection{玩具模型}
+
+\path{evidence/toy/ToyGeometry.lean}（95 行）在 Lean 4.36.0 下编译通过，输出为：
+\VerbatimInput[fontsize=\small,frame=single,rulecolor=\color{gray!50}]{../evidence/toy/ToyGeometry.out}
+\noindent 即：经由恒真谓词得到的闭定理 \lean{Toy.target} 不依赖任何公理；而真正作弊的 \lean{Toy.bad₁} 立刻被 \texttt{\#print axioms} 指认。
+
+\subsection{交叉验证：四个独立的 \texttt{agy} 代理}
+
+按委托人的建议，我们启动了四个 \texttt{agy --model gemini-4-neon-xhigh} 代理，在只读条件下各自独立审计一个子问题。
+它们启动时主审计方尚未形成结论，提示词要求「对证明和对批评者都保持怀疑」；但需如实说明，代理 B 的提示词里带有「无前提的闭定理不可能空洞」这一提示，
+因此它在这一点上的一致不能算完全独立。提示词原文与报告全文见 \path{evidence/agy/}。结果如下：
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+代理 & 子问题 & 独立得出的结论（与主审计方的关系） \\
+\midrule
+A & 声明级依赖追踪 & \lean{anyGeometry} 在 \lean{riemannHypothesis} 的依赖锥内；\leanu{everyE₂}／\lean{plugAll}／\lean{Hyps} 不在；\lean{geoOf} 完全不在。\textbf{与 conescan 的内核级结果一致。} \\
+B & $\Gamma$ 的逻辑角色 & 全部消费引理对任意 $\Gamma$ 成立；\lean{OAt.geo} 与 \lean{GeoCl} 没有提取内容的消去；最终假设包不含 $\Gamma$；「$\Gamma:=\mtt{True}$ 揭示的是一个残留的未用槽位而非逻辑缺陷」。\textbf{与第~\ref{sec:logic}~节一致。} \\
+C & 次要主张 (iii)–(vi) & 首先指出 \lean{geoDegenerate}／\lean{mdlJunk} 等定义的存在（主审计方随后在源码与内核级导出上复核属实）；(v) 机制属实；(vi) 属实；(iv) 作为笼统表述不成立。 \\
+D & 卫生扫描 & 0 \lean{axiom}、0 \lean{native_decide} 等；\lean{sorry} 仅在 \path{Challenge.lean}；无名字劫持；并指出 \lean{kexactB}／\lean{kcopy} 的存在（主审计方复核并写入 \S\ref{sec:hygiene}）。 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+四个代理的结论彼此一致，也与主审计方一致：事实属实，推理不成立。需要说明的是，代理与主审计方读的是同一份源码，因此这是对\emph{阅读与推理}的交叉验证，而不是对源码真实性的独立来源。

@@ -1,0 +1,135 @@
+\section{Q2 逻辑核查：由这些事实能否推出「证明无效」}
+\label{sec:logic}
+
+\subsection{被审计的推理}
+
+把 Nielsen 的论证整理成标准形式：
+
+\begin{notebox}
+\begin{enumerate}[label=(P\arabic*),leftmargin=3em]
+\item 几何谓词被实例化为恒真谓词，几何见证来自一个退化模型，若干等式由 \lean{rfl} 成立。\hfill（事实，属实）
+\item 这些见证进入了构造最终假设包的过程。\hfill（事实，属实）
+\item 所以见证「所需的性质是空洞成立的」，见证「是废的」。\hfill（解释）
+\item 所以该发布并不包含黎曼猜想的证明。\hfill（结论）
+\end{enumerate}
+\end{notebox}
+
+从 (P1)(P2) 到 (P3)(P4) 这一步是全部论证的承重点。它不成立，原因有一般性的，也有针对这份代码的具体原因。
+
+\subsection{一般性原因：闭定理没有「空洞为真」的余地}
+
+\paragraph{命题 1（定义是保守的）。}在 Lean 的类型论里，\texttt{def c : T := v} 只是给一个已经通过类型检查的闭项 $v$ 起名字。
+任何用到 $c$ 的证明项，把 $c$ 全部展开（$\delta$-约化）之后仍然是类型不变的合法证明项。因此「某个中间定义取了平凡的值」\emph{不可能}让原本不可证的命题变得可证。
+把证明里所有的 \lean{anyGeometry} 换成 \texttt{fun \_ \_ \_ => True}，得到的是同一个证明。
+
+\paragraph{命题 2（空洞为真只属于带前提的命题）。}「空洞成立」说的是形如 $H \to P$ 的命题：当 $H$ 不可满足，或 $H$ 被人为弱化到与 $P$ 无关时，证明 $H\to P$ 并不能说明 $P$。
+而本案的最终定理是
+\begin{Verbatim}[fontsize=\small,frame=single,rulecolor=\color{gray!50}]
+theorem riemannHypothesis : RiemannHypothesis := rhOfAll
+\end{Verbatim}
+\noindent 它没有任何前提；内核级扫描确认其类型就是常量 \lean{RiemannHypothesis}，而 con-leche 的比对（\S\ref{sec:conleche}）表明这个常量及其读到的全部声明，与只导入 Mathlib 的挑战导出逐条相同。
+中间引理当然有前提，但每一个前提在被使用的那一刻，都必须由一个内核检查过的证明项来满足——「前提被满足得很轻松」不是「前提没有被满足」。
+
+\paragraph{命题 3（内核接受意味着什么）。}如果内核接受了 $t : \mtt{RiemannHypothesis}$，且 $t$ 的依赖只含三条标准公理，那么要否定「RH（按 Mathlib 的表述）已被证明」，逻辑上只剩四条路：
+
+\begin{enumerate}[label=(\roman*)]
+\item 证明用了额外公理或 \lean{sorry}；
+\item 被证明的命题不是黎曼猜想（名字被劫持、Mathlib 被改动、定义本身有误）；
+\item 内核实现有错误，而且被这份证明利用了；
+\item 被检查的产物不是声称的产物（导出文件与源码不对应）。
+\end{enumerate}
+
+Nielsen 的论证不属于其中任何一条，而且据公开转述，其论文自己也承认该发布能对着 Mathlib 的 \lean{RiemannHypothesis} 通过类型检查。
+一旦承认这一点，「见证是否平凡」在逻辑上就与「定理是否成立」无关了。(i)–(iv) 四条路我们在第~\ref{sec:hygiene}、\ref{sec:replication}~节逐一排查。
+
+\subsection{为什么直觉会出错：把谓词改弱，对生产者和消费者的作用相反}
+
+「把该证的条件改成 True 就能蒙混过关」这个直觉，在只有\emph{一方}被检查时是对的。但一个谓词在证明里总是同时面对两方：
+
+\begin{itemize}
+\item \textbf{生产者}——要证明谓词成立的一方。谓词越弱，它越轻松；弱到 \lean{True}，只需写 \lean{trivial}。
+\item \textbf{消费者}——要\emph{利用}谓词成立来推出别的东西的一方。谓词越弱，它越艰难；弱到 \lean{True}，它从中什么也得不到。
+\end{itemize}
+
+作弊要得逞，必须让生产者占到便宜而消费者不付出代价。在 Lean 里这只有三种做法：让消费者不存在（把弱化的谓词直接留在\emph{最终}定理的陈述里），
+让消费者不受检查（\lean{axiom}／\lean{sorry}），或者换掉最终的陈述。只要最终陈述固定、且没有公理，消费者就必须在\emph{没有}该谓词内容的条件下把结论证出来——
+那么这个谓词本来就是多余的。
+
+随报告附带的 \path{evidence/toy/ToyGeometry.lean} 用不到一百行代码复现了这个结构，并在 Lean 4.36.0 下编译通过：
+\begin{itemize}
+\item \textbf{Part A}：一个带 \lean{geo} 槽位的证书、一个对任意 $\Gamma$ 成立的消费者引理、一个不含 $\Gamma$ 的假设包、一个用 \lean{trivial} 填槽位的生产者。
+最终的闭定理成立，\texttt{\#print axioms} 报告它\emph{不依赖任何公理}。
+\item \textbf{Part B}：一旦消费者真的需要谓词的内容（需要 $\forall n,\ \Gamma\,n \to 0<n$），取 $\Gamma := \mtt{True}$ 会让这个条件直接变成假命题——我们给出了它的否定的证明。没有免费的午餐。
+\item \textbf{Part C}：真正的作弊长什么样——额外公理（被 \texttt{\#print axioms} 揭穿）、把前提留在最终定理里、偷换目标命题。
+\end{itemize}
+
+\subsection{具体原因：在这份代码里，几何槽是「只写不读」的死参数}
+
+一般性论证已经足够，但我们仍然逐项核实了 $\Gamma$ 在这份代码里的实际角色，因为它直接回答「那它为什么在那里」。
+
+\paragraph{证据 E1：$\Gamma$ 是参数记录里的一个字段，消费它的引理全部对任意 $\Gamma$ 成立。}
+
+\excerpt{params}
+\excerpt{prm1}
+
+主路径上接收 \texttt{geoCl anyGeometry} 的引理都把 $\Gamma$ 当作\emph{任意}参数。例如单调性引理与「几何弱相容」引理的陈述（节选）：
+
+\excerpt{mono_sig}
+\excerpt{geo0_sig}
+
+内核级扫描也印证了这一点。下列声明在导出文件中\emph{不}依赖 \lean{anyGeometry}，也就是说它们是在不知道 $\Gamma$ 是什么的情况下被证明或定义的：
+\begin{itemize}
+\item \lean{GlobalTheory.Glob.open_and_linked_of_stronger_extension_alt}；
+\item \lean{GlobalTheory.T.linkedAt_geometricWeakTies_of_tie}；
+\item \lean{GlobalTheory.Mem.Top.Bl.parametersOfExtension} 与 \lean{GlobalTheory.Mem.Top.Bl.OX}。
+\end{itemize}
+
+\paragraph{证据 E2：下游真正需要的那条「几何」性质是被证明出来的，不是被假设出来的。}
+主路径需要的十二条「开放参数陈述」里有一条名为 \lean{geo}：
+
+\excerpt{openstmt}
+
+它在 \lean{anyGeometry} 参数下的证明并没有用到 $\Gamma$ 的内容，而是由除子条件（\lean{hDiv}）、联结条件（\lean{hTie}）和射线类域论推出：
+
+\excerpt{openorbit}
+
+\paragraph{证据 E3：最终假设包的类型里没有 $\Gamma$。}
+最终被 \lean{every_character_of_green_v_win} 消费的假设包是 \lean{HypsAlt}，一个含四十余个字段的结构（节选）：
+
+\excerpt{hypsalt}
+
+它的类型不含 \lean{GeoP}。内核级扫描确认 \lean{GlobalTheory.Fc.HypsAlt}、\lean{every_character_of_green_v_win}、\lean{zero_free_all_of_green_v_win} 均不依赖 \lean{anyGeometry} 或 \lean{GeoCl}：
+从假设包到「全体 Dirichlet 特征在 $\operatorname{Re} s>1/2$ 无零点」的那一段推导，是在一个完全看不见几何槽的世界里完成的。
+
+\paragraph{证据 E4：槽里的东西从未被读出。}
+如 \S\ref{sec:fact-unused} 所述，\lean{GeoCl.rec} 在依赖锥中零引用；\lean{OAt} 的 \lean{geo} 字段的两处读取都只是把它转交给 \lean{GeoCl} 的构造子。
+对任意 $\Gamma$ 证明的引理按参数性无法窥视 $\Gamma$ 的内容；取 $\Gamma=\mtt{True}$ 时本就无内容可读；取 $\Gamma = \mtt{GeoCl}\,(\cdots)$ 时又从未被消去。三种情形合起来就是全部情形。
+
+\begin{verdictbox}
+\textbf{结论。}在通往 \lean{riemannHypothesis} 的整条路径上，几何谓词 $\Gamma$ 是一个只被写入、被搬运、从未被读取的槽位。
+把它实例化为 \lean{True} 与把这个字段从结构里删掉是等价的；对一个不被读取的槽位而言，\lean{True} 恰恰是最诚实的填法
+（换成「真几何」\lean{geoOf}，反而要额外证明一批下游根本不用的几何事实）。
+这是代码里的一个\emph{死参数}，不是证明里的一个\emph{漏洞}。
+
+退化模型 \lean{geoDegenerate} 和「由 \lean{rfl} 成立」的等式（C3–C5）情形略有不同，结论相同。那里的抽象几何接口 \lean{DV.Geo} 并非无人读取（\S\ref{sec:fact-degenerate}）：
+一小层泛型声明是对\emph{任意}满足接口约束的几何数据证明的，证明库随后挑了一个平凡的实例代入。这是「给抽象接口选一个具体模型」的标准做法；
+\emph{这个模型是否足以推出关于真实 $L$-函数的结论}，由内核逐步检查，不取决于模型的名字好不好听。
+如果一个平凡模型不足以支撑结论，后果是下游某个引理证不出来、内核报错，而不是一个通过检查的假定理。
+\end{verdictbox}
+
+\subsection{公平地说：Nielsen 的观察确实说明了什么}
+
+\begin{itemize}
+\item 它说明这份形式化证明\textbf{没有}通过这个接口使用任何非平凡的几何输入：\lean{geoOf}、\lean{IsGeoOf}、\lean{HasTrueSurf} 以及围绕它们的一批引理写在库里，却不在最终定理的依赖锥内。
+最自然的解读是它们属于某条早期或备选路线留下的脚手架；全库有约三千个以 \texttt{\_alt}／\texttt{\_alt\_alt} 结尾的平行版本声明，也指向同一个方向。
+\item 它提醒读者：\emph{名字不是证据}。看到 \path{…/AbelianVarietyTheory/…}、\lean{Geo}、\lean{HasTrueSurf} 这样的名字，并不能推断证明「用了」相应的数学；
+同理，看到 \lean{anyGeometry}、\lean{geoDegenerate}、\lean{mdlJunk} 这样的名字，也不能推断证明「是假的」。能下结论的只有项和类型。
+\item 它指向一个真实而尚未解决的问题：作者只发布了 Lean 代码，并自述「在完全掌握其周边数学之前就拿出了完整论证」。这份证明的数学思想究竟是什么、哪些部分是本质的，
+目前没有人类可读的说明。\textbf{这是一个关于理解的问题，不是一个关于有效性的问题。}
+\end{itemize}
+
+\subsection{关于「让模型造一条能过 Lean 的假推理链」的说法}
+
+委托人转来的评论称：让任意模型「不用真的证明，只需要制造足够长的能过 Lean 的逻辑链假装在推理」，就能得到一个「证明黎曼猜想」的结果。
+这个说法混淆了两件事。一条\emph{最终命题正确、不含额外公理}而又通过内核的推理链，按定义就是一个证明——内核不关心链条长短，也不存在「假装通过」。
+模型能够造假的地方只有命题 3 中列出的 (i)(ii)(iv)：加公理、留 \lean{sorry}、换命题、换产物。这些全部可以机械地检查，而且本案中全部检查过了。

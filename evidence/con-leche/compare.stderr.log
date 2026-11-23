@@ -1,0 +1,52 @@
+con-leche: reading challenge.ndjson
+con-leche: reading solution.ndjson
+con-leche: checking: 1468418 declarations on 16 workers t=340.3s
+con-leche: check 146842 (10%) t=429.3s busy=15/16
+con-leche: check 293684 (20%) t=778.6s busy=15/16
+con-leche: check 440526 (30%) t=1368.3s busy=15/16, oldest theorem GlobalTheory.AddLaw.diagX_mul_addZ (#437074) 12.813s
+con-leche: check 587368 (40%) t=1877.1s busy=15/16, oldest theorem GlobalTheory.PrimeRecip.table_ok._proof_1_1 (#570391) 45.058s
+con-leche: check 734209 (50%) t=2233.9s busy=15/16
+con-leche: check 881051 (60%) t=2770.4s busy=15/16, oldest theorem GlobalTheory.HeightCounting.SideCopy.LamCopy.lam_copy (#829554) 328.088s
+con-leche: check 1027893 (70%) t=3090.0s busy=15/16
+con-leche: check 1174735 (80%) t=3455.0s busy=15/16
+con-leche: check 1321577 (90%) t=3889.5s busy=15/16
+con-leche: check 1468418 (100%) t=4362.3s busy=0/16
+con-leche: check done: 1468418 declarations t=4362.6s (check 4022.3s)
+con-leche: done: parse 340.3s, check 4022.3s, 16 workers t=4362.6s
+con-leche: stats: phases: parse 340.3s (index 10.0s), check 4022.3s
+con-leche: stats: check pool: 4022.260s wall, 16 workers, 1468418 records, busy 64306.981s (99.9%); tail 0.880s after the last start, 16 busy then, 2.194s worker-time in it (15.5%)
+con-leche: stats: slowest checks: 374.408s theorem GlobalTheory.HeightCounting.SideCopy.LamCopy.lam_copy (#829554); 202.050s theorem GlobalTheory.HeightCounting.SideCopy.sigSpan_copy (#829660); 142.739s theorem GlobalTheory.Mem.R3.SelectionPairing.sp_pin (#856529); 134.388s theorem PI.PC.loop_run._proof_1_1 (#571290); 124.315s theorem Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.PrimeCountingLemmas.factorial_ladder_one_forty_one._proof_1_1 (#226690)
+con-leche: checking: 51692 declarations on 16 workers t=4376.6s
+con-leche: check 5170 (10%) t=4377.3s busy=15/16
+con-leche: check 10339 (20%) t=4377.9s busy=15/16
+con-leche: check 15508 (30%) t=4378.2s busy=15/16
+con-leche: check 20677 (40%) t=4378.8s busy=15/16
+con-leche: check 25846 (50%) t=4379.5s busy=15/16
+con-leche: check 31016 (60%) t=4380.3s busy=15/16
+con-leche: check 36185 (70%) t=4381.2s busy=15/16
+con-leche: check 41354 (80%) t=4382.6s busy=15/16
+con-leche: check 46523 (90%) t=4383.8s busy=15/16
+con-leche: check 51692 (100%) t=4385.5s busy=0/16
+con-leche: check done: 51692 declarations t=4385.5s (check 8.8s)
+con-leche: done: parse 4376.6s, check 8.8s, 16 workers t=4385.5s
+con-leche: stats: phases: parse 4376.6s (index 3.6s), check 8.8s
+con-leche: stats: check pool: 8.868s wall, 16 workers, 51692 records, busy 138.086s (97.3%); tail 0.206s after the last start, 16 busy then, 0.903s worker-time in it (27.2%)
+con-leche: stats: slowest checks: 0.268s theorem Lean.Omega.Constraint.add_sat (#2979); 0.267s theorem _private.Init.Data.Nat.Div.Lemmas.0.Nat.div_le_iff_le_mul._proof_1_1 (#3118); 0.266s theorem Lean.Omega.IntList.dot_set_left (#3034); 0.264s theorem _private.Init.Data.Nat.Lemmas.0.Nat.add_eq_right._proof_1_1 (#3060); 0.263s theorem _private.Init.Data.Nat.Div.Lemmas.0.Nat.lt_of_div_eq_zero._proof_1_1 (#3109)
+     4388.48 real     18295.41 user       578.63 sys
+         40108294144  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+            10868757  page reclaims
+                  97  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+              509423  voluntary context switches
+            31544612  involuntary context switches
+      71796842664327  instructions retired
+      37589660017511  cycles elapsed
+         47360313712  peak memory footprint

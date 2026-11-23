@@ -1,0 +1,12 @@
+  if let .const S us := tgt.getAppFn then
+    if ownStruct env S then
+      let ctor := getStructureCtor env S
+      let fields := getStructureFields env S
+      let mut acc := mkAppN (mkConst ctor.name us) (tgt.getAppArgs.extract 0 ctor.numParams)
+      for i in [:fields.size] do
+        let accTy ← whnf (← inferType acc)
+        let .forallE _ fty _ bi := accTy | throwError "kcopy: constructor type of {S} is not a ∀"
+        let p := Expr.proj S i e
+        let v ← if bi.isInstImplicit then pure p else copyAt probe p fty (path ++ "." ++ toString fields[i]!) (fuel - 1)
+        acc := mkApp acc v
+      return acc

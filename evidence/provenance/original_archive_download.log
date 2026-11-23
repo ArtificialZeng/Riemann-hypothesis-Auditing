@@ -1,0 +1,27 @@
+total 482160
+drwxr-xr-x  17 user  staff       544 Nov 23 03:55 .
+drwxr-xr-x  13 user  staff       416 Nov 23 03:55 ..
+-rw-r--r--   1 user  staff         0 Nov 23 03:54 download.log
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:54 lean.tar.gz.part01
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:54 lean.tar.gz.part02
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part03
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part04
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part05
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part06
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part07
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part08
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part09
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part10
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part11
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part12
+-rw-r--r--   1 user  staff  18000000 Nov 23 03:55 lean.tar.gz.part13
+-rw-r--r--   1 user  staff   5275554 Nov 23 03:55 lean.tar.gz.part14
+-rw-r--r--  1 user  staff  239275554 Nov 23 03:55 lean.tar.gz
+9631b4f020199e580ba86178cb56c6e9b09f690c2369a80dc4334aa93f49c7fc  lean.tar.gz
+expected 9631b4f020199e580ba86178cb56c6e9b09f690c2369a80dc4334aa93f49c7fc (239,275,554 bytes)
+lean
+lake-manifest.json
+lakefile.toml
+lean-toolchain
+src
+  175187

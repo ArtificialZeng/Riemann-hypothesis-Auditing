@@ -1,0 +1,100 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage[a4paper,margin=2.15cm]{geometry}
+\usepackage{fontspec}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{booktabs,tabularx,longtable,array,multirow}
+\usepackage{enumitem}
+\usepackage{fvextra}
+\usepackage{newunicodechar}
+\usepackage[most]{tcolorbox}
+\usepackage{url}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!55!black,citecolor=blue!50!black]{hyperref}
+\usepackage{fancyhdr}
+
+% ---------- fonts: monospace with wide Unicode coverage for Lean ----------
+\setmonofont{DejaVuSansMono.ttf}[Scale=0.80,BoldFont=DejaVuSansMono-Bold.ttf,ItalicFont=DejaVuSansMono-Oblique.ttf,BoldItalicFont=DejaVuSansMono-BoldOblique.ttf]
+\newfontfamily\mathfb{STIX Two Math}[Scale=0.88]
+\newunicodechar{𝒞}{{\mathfb 𝒞}}
+\newunicodechar{𝓞}{{\mathfb 𝓞}}
+\newunicodechar{𝒜}{{\mathfb 𝒜}}
+\newunicodechar{𝒮}{{\mathfb 𝒮}}
+
+% ---------- macros ----------
+\makeatletter\g@addto@macro{\UrlBreaks}{\do\_\do\.}\makeatother
+\Urlmuskip=0mu plus 2mu
+\DeclareUrlCommand\lean{\urlstyle{tt}}
+\DeclareUrlCommand\path{\urlstyle{tt}}
+\newcommand{\leanu}[1]{\texttt{#1}}
+\newcommand{\mtt}[1]{\text{\texttt{#1}}}% identifiers with non-ASCII characters
+\newcommand{\OK}{\textcolor{green!45!black}{\textbf{属实}}}
+\newcommand{\PARTLY}{\textcolor{orange!70!black}{\textbf{部分属实}}}
+\newcommand{\NO}{\textcolor{red!70!black}{\textbf{不成立}}}
+\newcommand{\NOTFOLLOW}{\textcolor{red!70!black}{推不出}}
+\definecolor{boxgray}{gray}{0.955}
+\newtcolorbox{verdictbox}[1][]{enhanced,breakable,colback=blue!3,colframe=blue!45!black,boxrule=0.8pt,arc=2pt,left=7pt,right=7pt,top=6pt,bottom=6pt,#1}
+\newtcolorbox{notebox}[1][]{enhanced,breakable,colback=boxgray,colframe=gray!55,boxrule=0.5pt,arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,#1}
+\newtcolorbox{warnbox}[1][]{enhanced,breakable,colback=orange!6,colframe=orange!70!black,boxrule=0.6pt,arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,#1}
+
+\makeatletter\newcommand{\tableinput}[1]{\@@input #1 }\makeatother
+\input{excerpts/excerpts_meta.tex}
+\newcommand{\excerpt}[2][]{%
+  \par\smallskip\noindent{\scriptsize\color{black!62}\csname ex@#2@file\endcsname\ \ 第 \csname ex@#2@first\endcsname--\csname ex@#2@last\endcsname\ 行}\par\vspace{-0.55em}%
+  \VerbatimInput[numbers=left,firstnumber=\csname ex@#2@first\endcsname,breaklines=true,breakanywhere=true,fontsize=\scriptsize,frame=single,rulecolor=\color{gray!50},numbersep=4pt,xleftmargin=2.1em,framesep=3pt,#1]{excerpts/#2.txt}\vspace{-0.3em}}
+\fvset{breaklines=true,breakanywhere=true}
+\input{results.tex}
+
+\setlist{itemsep=0.15em,topsep=0.3em,parsep=0.1em}
+\setlength{\emergencystretch}{3.5em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small anyGeometry 质疑的独立审计报告}\fancyhead[R]{\small 2026-11-23}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\headheight}{14pt}
+\hypersetup{pdftitle={anyGeometry := True 能否推翻黎曼猜想的 Lean 证明？独立审计报告},pdfauthor={Claude (Anthropic), commissioned by ArtificialZeng}}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{2.2cm}
+{\LARGE\bfseries \texttt{anyGeometry := True} 能否推翻\\[0.35em]黎曼猜想的 Lean 证明？\par}
+\vspace{0.9cm}
+{\Large 对 Jenny Lorraine Nielsen「证明无效」论证的独立审计报告\par}
+\vspace{0.5cm}
+{\large An independent audit of the ``vacuous geometry predicate'' objection\\ to Alpöge's Lean proof of the Riemann Hypothesis\par}
+\vspace{1.6cm}
+\begin{tabularx}{0.94\textwidth}{@{}r>{\raggedright\arraybackslash}X@{}}
+审计对象： & Levent Alpöge（与 Claude 合作）2026-11-20 发布的 Lean 4 证明库（约 1740 万行，175,187 个模块）\\[0.25em]
+被审计的质疑： & J.~L.~Nielsen, \emph{Invalidity of the Alpoge Proposed Proof of the Riemann Hypothesis}\\
+ & （PhilArchive, 2026-11-21 起多次更新）\\[0.25em]
+审计执行： & Claude（Anthropic，Claude Code 代理），受 ArtificialZeng 委托\\[0.25em]
+交叉验证： & 4 个独立的 \texttt{agy} 代理（Gemini 4 Neon, XHigh）\\[0.25em]
+审计日期： & 2026 年 11 月 23 日（单次会话，时间预算 7 小时）\\[0.25em]
+报告版本： & v1.0
+\end{tabularx}
+\vfill
+\begin{verdictbox}
+\textbf{一句话结论：打假不成立。}Nielsen 指出的代码\emph{事实}基本属实——而且我们在内核级证明导出文件上确认了
+公开讨论中此前悬而未决的一点：\lean{anyGeometry} 以及代码自称 \emph{degenerate}/\emph{junk} 的几何模型，\emph{确实}位于
+\lean{riemannHypothesis} 的依赖锥之内。但由这些事实推出「证明无效／空洞」的\emph{推理}不成立：
+最终定理是不带任何前提的闭命题，其类型就是 Mathlib 的 \lean{RiemannHypothesis}；该「几何槽」在整条证明路径上只写不读，
+是一个死参数而不是一个漏洞。我们未发现该证明存在任何真正的 reward hacking。
+\end{verdictbox}
+\vspace{0.6cm}
+{\small 本报告的全部证据、脚本与日志随报告一并提交于\\ \url{https://github.com/ArtificialZeng/Riemann-hypothesis-Auditing}\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\input{sec_summary.tex}
+\input{sec_background.tex}
+\input{sec_facts.tex}
+\input{sec_logic.tex}
+\input{sec_hygiene.tex}
+\input{sec_replication.tex}
+\input{sec_limits.tex}
+\appendix
+\input{sec_appendix.tex}
+\end{document}

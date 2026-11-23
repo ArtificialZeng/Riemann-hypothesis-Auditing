@@ -1,0 +1,14 @@
+kind	in_type	in_value	direct_witness	name
+thm	0	1	UpperTheory.Top.every_character_of_green_v_win	UpperTheory.Lit.every_character_of_theta_integrals_local_matching
+thm	0	1	UpperTheory.Lit.every_character_of_theta_integrals_local_matching	UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin
+thm	0	1	UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin	UpperTheory.FinalTheorems.everyCharacter_of_row
+thm	0	1	UpperTheory.FinalTheorems.everyCharacter_of_row	UpperTheory.FinalTheorems.everyCharacter
+thm	0	1	UpperTheory.FinalTheorems.everyCharacter	allChi
+thm	0	1	allChi	rhOfAll
+thm	0	1	rhOfAll	riemannHypothesis
+thm	0	1	rhOfAll	riemannZeta_eq_zero_re
+thm	0	1	allChi	LFunction_ne_zero_of_half_lt_re
+thm	0	1	allChi	claimAll
+thm	0	1	claimAll	LFunction_eq_zero_re
+thm	0	1	allChi	critAll
+thm	0	1	critAll	LFunction_eq_zero_re_of_isPrimitive

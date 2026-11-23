@@ -1,0 +1,16 @@
+OAt.rec	GlobalTheory.Mem.Top.Bl.OAt.rec
+OAt.casesOn	*.OAt.casesOn
+proj_OAt.geo	PROJ:GlobalTheory.Mem.Top.Bl.OAt:0
+proj_OAt.lam	PROJ:GlobalTheory.Mem.Top.Bl.OAt:1
+proj_DivT.geo	PROJ:GlobalTheory.Mem.Top.Bl.DivT:4
+DivT.rec	GlobalTheory.Mem.Top.Bl.DivT.rec
+GeoTiedP.geoTied	Formalism.L2.Geo.GeoTiedP.geoTied
+GeoTiedP.formsTieX	Formalism.L2.Geo.GeoTiedP.formsTieX
+proj_DivX.geo	PROJ:Formalism.BasicNotions.DivX:0
+proj_DV.Geo.anyfield	PROJ:Formalism.BasicNotions.DV.Geo:*
+DV.Geo.rec	Formalism.BasicNotions.DV.Geo.rec
+DivX.rec	Formalism.BasicNotions.DivX.rec
+GeoCl.rec	GlobalTheory.Mem.Top.Bl.GeoCl.rec
+GeoOver	GlobalTheory.GeoGraft.GeoOver
+GeoTiedP	Formalism.L2.Geo.GeoTiedP
+DV.Geo	Formalism.BasicNotions.DV.Geo

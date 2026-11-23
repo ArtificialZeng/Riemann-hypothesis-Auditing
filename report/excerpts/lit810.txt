@@ -1,0 +1,2 @@
+theorem UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin (O : _root_.UpperTheory.LiteratureTheorems.OpenLiteratureStatements) (hV : UpperTheory.Top.VWin) : UpperTheory.EveryCharacter :=
+  _root_.UpperTheory.Lit.every_character_of_theta_integrals_local_matching (_root_.UpperTheory.LiteratureTheorems.published_results_eigen O) (_root_.UpperTheory.LiteratureTheorems.published_results_first O) (_root_.UpperTheory.LiteratureTheorems.thet …[本行在报告中截断]

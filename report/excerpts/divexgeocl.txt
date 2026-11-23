@@ -1,0 +1,11 @@
+theorem divEx_geoCl (h1 : GlobalTheory.NT.RayField) (h2 : GlobalTheory.Published.PrincipalIdealSt) (h3 : GlobalTheory.Published.CMCurveGoodOutsidePrimeSt)
+    (R : RPosition) (N : NCondition) (S : SPosition) : DivEx ⟨R, N, S, OX (geoCl anyGeometry)⟩ := by
+  have h := GlobalTheory.Mem.Top.DivRec.divEx_of_ox h1 h2 h3 ⟨R, N, S, OX anyGeometry⟩ rfl
+  refine GlobalTheory.Mem.Top.Bl.StepW.trans h (GlobalTheory.Mem.Top.Bl.StepW.of_all ?_)
+  intro K B f T w _ _ hw Z l
+  obtain ⟨Y, hY1, hY2, hY3, hY4⟩ := hw Z
+    { g := l.g, coh := l.coh, Wt := l.Wt, p0 := l.p0, what₂ := l.what₂, rx := l.rx, nch := l.nch, n := l.n, xd := l.xd,
+      chiT := l.chiT, nx := l.nx, col := l.col, real := l.real, dsig_eq := l.dsig_eq, del := l.del, sx := l.sx }
+  refine ⟨Y, hY1, hY2, hY3, fun O t e1 e2 e3 => ?_⟩
+  obtain ⟨o⟩ := hY4 O t e1 e2 e3
+  exact ⟨⟨geoCl_of o.geo, o.lam⟩⟩

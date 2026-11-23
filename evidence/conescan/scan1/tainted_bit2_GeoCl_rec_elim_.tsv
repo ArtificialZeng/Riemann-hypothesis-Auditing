@@ -1,0 +1,5 @@
+kind	in_type	in_value	direct_witness	name
+inductive	1	0	GlobalTheory.Mem.Top.Bl.GeoCl.rec	GlobalTheory.Mem.Top.Bl.GeoCl.base
+inductive	1	0	GlobalTheory.Mem.Top.Bl.GeoCl.rec	GlobalTheory.Mem.Top.Bl.GeoCl.step
+inductive	1	0	GlobalTheory.Mem.Top.Bl.GeoCl.rec	GlobalTheory.Mem.Top.Bl.GeoCl.rec
+inductive	1	0	GlobalTheory.Mem.Top.Bl.GeoCl.rec	GlobalTheory.Mem.Top.Bl.GeoCl
