@@ -1,0 +1,178 @@
+\section{Q2: the conclusion does not follow}
+\label{sec:inference}
+
+\subsection{What a kernel certificate says}
+\label{sec:kernel}
+
+Three elementary facts about Lean's logic carry most of the argument. None is specific to this release.
+
+\begin{proposition}[Definitions are conservative]\label{prop:cons}
+A definition \texttt{def c : T := v} names a closed term $v$ that has already been type-checked. If a proof term $t$ of a statement $P$ mentions $c$ and $P$ does not, then replacing $c$ by $v$ throughout $t$ gives a proof of $P$ that does not mention $c$.
+Hence no choice of auxiliary definitions can make provable a statement that was not provable without them.
+\end{proposition}
+
+\begin{proposition}[Vacuity needs a hypothesis]\label{prop:vac}
+A statement is vacuously true when it has the form $H \to P$ and $H$ cannot be met, or when $H$ has been weakened until it no longer bears on $P$. A proof of such a statement says nothing about $P$.
+A statement with no hypothesis leaves no room for this: a proof of $P$ is a proof of $P$.
+Intermediate lemmas do have hypotheses, but in a closed proof every hypothesis of every lemma that is applied is discharged by a checked proof term.
+That a hypothesis was discharged \emph{easily} does not mean it was not discharged.
+\end{proposition}
+
+\begin{proposition}[The four exits]\label{prop:exits}
+Suppose a checker accepts a closed term $t$ with $t : \mtt{RiemannHypothesis}$ whose dependencies contain only the axioms \lean{propext}, \lean{Quot.sound} and \lean{Classical.choice}.
+Then the Riemann Hypothesis, as formalized in Mathlib, has been derived, unless one of the following holds:
+\begin{enumerate}[label=(\roman*)]
+\item the derivation uses a further axiom or \lean{sorry} after all;
+\item the statement proved is not the Riemann Hypothesis (a hijacked name, a modified library, a wrong definition in Mathlib);
+\item the checker is unsound and the term exploits this;
+\item the object that was checked is not the object that is claimed.
+\end{enumerate}
+\end{proposition}
+
+The argument of \N\ takes none of these exits. It grants that the term type-checks against Mathlib's statement without extra axioms (A1) and then argues from the \emph{content of intermediate definitions}.
+By Proposition~\ref{prop:cons} that content cannot matter to whether the final statement has been derived.
+\N\ is aware of this reply and rejects it in Appendix~A; we come to that in Section~\ref{sec:remove}. First we examine the two descriptions on which the title claim of \N\ rests.
+
+\subsection{``Only a tautology'' (B2)}
+\label{sec:taut}
+
+\N\ states that the formalization certifies only the tautology ``RiemannHypothesis $=$ RiemannHypothesis'' under the supplied definitions, and that the kernel accepts the term because a term that is definitionally an identity always type-checks (Abstract, \S8).
+As a description of the checked artefact this is wrong on each count.
+
+\begin{itemize}
+\item \textbf{The type is not an equation.} The certified declaration is \texttt{theorem riemannHypothesis : RiemannHypothesis}. Its type is the proposition \lean{RiemannHypothesis}, which unfolds in Mathlib to the statement that every zero of \lean{riemannZeta} other than the trivial ones and $s = 1$ has real part $1/2$.
+The proposition $\mtt{RiemannHypothesis} = \mtt{RiemannHypothesis}$ is a different proposition, proved by \lean{rfl}; no term of that kind has type \lean{RiemannHypothesis}.
+\item \textbf{The statement does not involve the supplied definitions.} In the dependency graph, the statement cone of \lean{riemannHypothesis} (Definition~\ref{def:cones}) consists of \NstmtMain\ declarations.
+All of them are library declarations; none was declared by the release (\textsf{K}). The phrase ``under the supplied definitions'' would be apt for a theorem whose \emph{statement} mentioned \lean{anyGeometry} or \lean{hExpl6}. This one mentions neither.
+\item \textbf{The statement is the one in Mathlib.} We rebuilt the export of the five statements from official Lean 4.33.1, the official Mathlib cache and nothing else, and obtained a file identical byte for byte to the published challenge export (Section~\ref{sec:rebuild}).
+The checker \texttt{con-leche}, in comparison mode, accepts the full proof export as a justification of exactly those statements (Section~\ref{sec:conleche}).
+\end{itemize}
+
+Whatever one thinks of the route, the destination is fixed, and it is not an identity.
+
+\subsection{``Compares a quantity with itself'' (B1)}
+\label{sec:squeeze}
+
+The central factual claim of \N\ is that, because of the three definitional steps, the inequality at the heart of the argument compares a quantity with itself and holds by reflexivity (Abstract, \S8, \S10).
+The statement in question is the following; it has three conjuncts, of which \N\ quotes the second and third.
+
+\excerpt{wordfacts}
+
+The second conjunct bounds the height of the pairing \lean{Bk} from above by \texttt{D.div.h u}. The third bounds $\mu^\vee + h - F_o$ from above by the main term plus error terms.
+After substituting the installed value $h = \mtt{hExpl6}$ they read
+\[
+\mathrm{ht}\bigl(\mtt{Bk}\,u\bigr) \;\le\; \mtt{hExpl6}(u)
+\qquad\text{and}\qquad
+\mu^\vee + \mtt{hExpl6}(u) - F_o \;\le\; \mathrm{MAIN}(u) + \text{error}.
+\]
+Neither has the form $X \le X$: the left side of the first is a mean of logarithms of operator norms of the pairing, the right side of the second is the main term, and \lean{hExpl6} is a sum of explicit size and weight terms (Section~\ref{sec:height-facts}).
+Nor are they proved by reflexivity. \lean{WordFacts} is established by \lean{wordFacts_of} from separately proved clauses:
+
+\excerpt{wordfactsof}
+
+The hypothesis \lean{tH} is where ``height $=$ formula'' enters; it is the only ingredient that comes from \lean{rfl}. The clauses \lean{c2} and \lean{c3} are the two inequalities, and they come from here:
+
+\excerpt{divclauses}
+\excerpt{divclausesof}
+
+The proof of the third clause occupies lines 210--245 of the same file; it invokes, among others,
+
+\excerpt{divclausesof2}
+\excerpt{divclausesof3}
+
+The input record \lean{DivInputsR} has \NdivInputs\ fields: lattice and frame conditions, bounds on operator norms along a chain of matrices, an eigenvalue bound, valuation bounds at finitely many places, a covolume-type bound and numerical side conditions (\textsf{S}; listed field by field by agent~G).
+Agent~G traced where such a record is constructed on the live route and examined thirteen of its fields; it reports that each is supplied by a lemma with a substantive proof and none by \lean{rfl}, \lean{trivial} or elimination of an empty type (\textsf{G-G}).
+
+\begin{verdictbox}
+\textbf{Kernel-level result (K).} The dependency cone of \lean{Formalism.L2.DIV.divClausesR_of} contains \NdivClausesAll\ declarations, of which \NdivClausesProj\ belong to the release and \textbf{\NdivClausesThm} of those are theorems.
+It contains none of the objects flagged in \N: not \lean{anyGeometry}, not the degenerate or junk models, not \lean{divXFl}. A proof by reflexivity has an empty cone.
+\end{verdictbox}
+
+This is also what \N\ itself says in \S7, where the two inequalities are attributed to \lean{divClausesR_of} and described as estimates on matrices that make no use of the geometric certificate, and in the table of \S8, where ``height $=$ formula'' is marked as true by \lean{rfl} but the two inequalities are not.
+The Abstract and \S8 of \N\ thus assert something that \S7 of \N\ and the code both contradict.
+What holds by \lean{rfl} is that a slot contains a formula. The inequalities about that formula are theorems.
+
+\subsection{``Assigned, not derived'' (B3)}
+\label{sec:assigned}
+
+Once (B1) is set aside, what \N\ has shown about the height is this: the quantity $h$ that stands between the pairing and the main term is not introduced as the height of a geometric object and then computed; it is introduced as a formula, and the two bounds are proved for the formula.
+\N\ objects that the height was chosen to fit, and that inequalities about a chosen formula say nothing about a geometric height (\S8).
+
+The second half of that sentence is true, and irrelevant to validity. To prove $A \le C$ it suffices to exhibit some $h$ with $A \le h$ and $h \le C$.
+The logic asks nothing about where $h$ came from; in particular it does not ask that $h$ be ``independent'' of $A$ and $C$ or that it have a geometric meaning.
+Choosing the intermediate quantity so that both bounds can be proved is what proving such a statement consists of, and the bounds still have to be proved.
+They are not free: with a different value in the slot, for instance the initial value $0$, the same two lines would be different statements, and the release does not prove those.
+
+\N\ concedes the essential point in \S8 when it observes that adding the two inequalities cancels $h$ and leaves a comparison between the pairing and the main term, established by \lean{divClausesR_of}.
+That comparison is a statement about the arithmetic data alone, it is what the downstream argument consumes, and it has been proved.
+The remaining objection is that this is not the argument that the identifiers and the directory names of the release announce.
+That is so (Section~\ref{sec:credit}). But a derivation is not invalidated by the names of its lemmas.
+
+The accompanying file \path{evidence/toy/ToyInterpolant.lean} reproduces the pattern in a dozen lines of Lean: a record with a height slot, an overwrite, \texttt{h\_eq := rfl}, two honest bounds for the installed formula,
+and a closed conclusion in which the height no longer appears. It also shows the bounds failing for the slot's initial value.
+
+Finally, \N, \S9 says that a geometric argument cannot be both essential and trivially discharged. We agree with the sentence. Together with the fact that the geometric slot \emph{is} trivially discharged in a proof the kernel accepts, it yields by contraposition that the geometric slot is not essential.
+\N\ draws the opposite conclusion by taking essentiality as a premise, which is the point at issue.
+
+\subsection{``Remove the package and no route remains'' (B4)}
+\label{sec:remove}
+
+Appendix~A of \N\ addresses the reply based on Proposition~\ref{prop:exits}. It says that the reply assumes that removing the vacuous inputs leaves an independent derivation behind,
+and that this is not so, since the algebraic step consumes the package assembled from \texttt{geoCl anyGeometry} and the two \lean{trivial} inputs (also \S10).
+
+The reply assumes no such thing. It says that the term as it stands, with those inputs in place, is a derivation. Nothing has to be removed, and no second route is needed.
+
+The test proposed in \N, deleting an input and observing that the term no longer reaches its conclusion, does not measure soundness.
+Every argument of every lemma application fails it, because a term with a missing argument is not a term. Agent~H gave a minimal example:
+\begin{Verbatim}[fontsize=\small,frame=single,rulecolor=\color{gray!50}]
+structure Wrap (P : Prop) where
+  dummy : P
+  real  : 2 + 2 = 4
+theorem t : 2 + 2 = 4 := (Wrap.mk (P := True) trivial rfl).real
+\end{Verbatim}
+\noindent Delete the package \texttt{Wrap.mk …} and \texttt{t} has no route to its conclusion. Yet \texttt{t} is sound and does not depend, in any sense that matters, on \texttt{dummy : True}.
+
+The test that does measure whether a derivation relies on the \emph{content} of an input is replacement: would the derivation go through with a different input of the same type?
+For the inputs that \N\ calls vacuous the answer can be read off the statements of the consumers.
+
+\paragraph{The geometry predicate.} The lemmas on the route that receive \texttt{geoCl anyGeometry} are stated for an arbitrary predicate $\Gamma$. For example:
+
+\excerpt{mono_sig}
+
+Agent~H lists further consumers on the route of the same form, among them \lean{rowFun_at_gridA_alt}, \lean{linked_bundles_l3_of_open_alt} and \lean{allRows_of_open0_alt} (\textsf{G-H}; we confirmed the quantifier $\forall\,\Gamma$ in the three statements, \textsf{S}, and their presence in the export, \textsf{K}); agent~B of the first round reached the same conclusion for the whole route.
+A lemma proved for all $\Gamma$ cannot use any property of $\Gamma$. Applying it to $\Gamma = \mtt{True}$ is as legitimate as applying it to any other value, and it would be equally provable for any other value.
+
+\paragraph{The two shape inputs.} As shown in Section~\ref{sec:route}, they are proofs of \lean{True} demanded by a lemma that is generic in two propositions \lean{V} and \lean{NR} and by a shape theorem stated for $\mtt{V} = \mtt{NR} = \mtt{True}$.
+
+\paragraph{The bundle.} The object handed to the algebraic step is a proof of the proposition \texttt{Nonempty (HypsAlt …)}.
+The type \lean{HypsAlt} does not mention the geometry predicate: its dependency cone contains neither \lean{GeoP} nor \lean{GeoCl} nor \lean{anyGeometry} (\textsf{K}); it does contain the interface type \lean{DV.Geo}, through the family records, but none of its trivial instances.
+Since \texttt{Nonempty (…)} is a proposition, proofs of it are indistinguishable to anything that consumes them. The algebraic step cannot depend on \emph{how} the bundle was shown to be inhabited, only on the fact that it is.
+
+\excerpt{hypsalt}
+
+\paragraph{Upstream and downstream.} \N\ describes the algebraic estimates as downstream of the vacuous package. In the order of application that is right. In the order of dependency it is the reverse, and the dependency order is the one that matters for what has been proved.
+
+\begin{verdictbox}
+\textbf{Kernel-level result (K).}
+\begin{itemize}
+\item \lean{UpperTheory.Top.every_character_of_green_v_win}, which derives the conclusion about all Dirichlet characters from \emph{any} proof of \texttt{Nonempty (HypsAlt …)}, has a dependency cone of \NgreenAll\ declarations,
+\NgreenProj\ of them from the release (\NgreenThm\ theorems). The cone contains none of the flagged objects. The algebraic step was proved without them.
+\item The theorem that supplies the bundle, \lean{nonempty_hyps_definite_side_of_closed_bound}, has a cone of \NpackageAll\ declarations, \NpackageProj\ from the release, of which \textbf{\NpackageThm} are theorems.
+Of all \NconeProj\ release declarations in the cone of \lean{riemannHypothesis}, \Nflagged\ depend on any flagged object and \textbf{\NfreeProj} do not.
+\end{itemize}
+\end{verdictbox}
+
+The package is thus not vacuous. Inhabiting \lean{HypsAlt} takes more than six hundred thousand theorems; a predicate set to \lean{True} occupies one parameter slot along the way, in lemmas that hold for every value of that slot.
+
+\subsection{Why the intuition misleads}
+\label{sec:asym}
+
+The feeling that setting a condition to \lean{True} is a way of cheating is sound when only one party is checked. In a proof a predicate always faces two.
+The \emph{producer}, who must show that the predicate holds, gains when it is weakened; at \lean{True} the producer writes \lean{trivial}.
+The \emph{consumer}, who must derive something from it, loses exactly as much; from \lean{True} the consumer learns nothing.
+For weakening to pay, the producer must gain while the consumer does not lose. In Lean that happens in three ways: the consumer does not exist (the weakened predicate is left in the \emph{final} statement);
+the consumer is not checked (an axiom or \lean{sorry}); or the final statement is exchanged for another. With the final statement fixed and no axioms, the consumer has to reach the conclusion without the content of the predicate, and then the predicate was not needed.
+
+The file \path{evidence/toy/ToyGeometry.lean} shows the three situations side by side: a closed theorem obtained through a predicate set to \lean{True}, with no axioms;
+a consumer that really needs the predicate, for which setting it to \lean{True} makes the required lemma \emph{false}; and the cheating variants, each caught by \texttt{\#print axioms} or visible in the statement.
+The objection of \N\ would be correct against the third kind of development. The release is of the first kind.

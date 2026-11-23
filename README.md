@@ -1,68 +1,127 @@
-# Riemann-hypothesis-Auditing
+# The Invalidity of "The Invalidity of Alpöge's Proof of the Riemann Hypothesis"
 
-Independent audit of the claim that Levent Alpöge's Lean 4 proof of the Riemann Hypothesis
-(released 2026-11-20, written with Claude) is invalid because its geometry predicate is defined as
+A kernel-level audit of the vacuous-witness objection to the Lean formalization.
 
-```lean
-def anyGeometry : GeoP := fun _ _ _ => True
-```
+**Zijian Zeng** — Institute of Computer Science and Digital Innovation, UCSI University, Kuala Lumpur, 56000, Malaysia
+(<zijianzeng@foxmail.com>; <1002266693@ucsiuniversity.edu.my>)
 
-The objection is due to Jenny Lorraine Nielsen, *Invalidity of the Alpoge Proposed Proof of the Riemann Hypothesis* (PhilArchive, 2026-11-21).
-This repository does **not** try to prove or disprove the Riemann Hypothesis. It checks whether that objection is correct.
+**Paper (PDF): [`paper/invalidity_of_the_invalidity.pdf`](paper/invalidity_of_the_invalidity.pdf)** · audit date 23 November 2026
 
-**Report (Chinese, PDF): [`report/audit_report.pdf`](report/audit_report.pdf)**
+---
 
-## Verdict
+On 20 November 2026 Levent Alpöge released a Lean 4 development claimed to prove the Riemann Hypothesis.
+J. L. Nielsen's paper *The Invalidity of Alpöge's Proof of the Riemann Hypothesis* argues that the release contains
+no proof, because on the route to the final theorem a geometry predicate is the constant `True`, the geometric
+witness is a degenerate model, lattice identifications hold by `rfl`, and a height is installed by assignment.
 
-**The objection does not hold.** Its factual observations are largely correct; the inference from them to "the proof is invalid" is not.
+This repository audits **that argument**. It does not try to prove or disprove the Riemann Hypothesis, and it is not
+a review of the mathematics of the release.
 
-| # | Claim | Fact check | Does invalidity follow? |
-|---|---|---|---|
-| C1 | The geometry predicate is defined to be `True` | True (`OverIx.lean:19`; 118 lines in 24 files) | No |
-| C2 | It feeds the construction of the final hypothesis bundle, via `plugAll` | Partly: it **is** in the dependency cone of `riemannHypothesis` (kernel-level), but `plugAll` itself is not – its parallel twin `every_character_of_green_v_win` is | No |
-| C3 | The geometric witness is built from a model the code itself calls degenerate | True (`geoDegenerate`, `mdlJunk`, … are in the cone) | No |
-| C4 | The lattice witness holds its properties by definition | Partly (`nprimeDef := fun _ => rfl`) | No |
-| C5 | The height equation holds by `rfl` | True (`h_eq := fun _ => rfl`) | No |
-| C6 | Lemmas that would extract content from the geometric witnesses are never called | True, and stronger: `GeoCl.rec` is referenced by no declaration in the cone | No – this is what makes the slot a dead parameter |
-| C7 | Hence the release contains no proof of RH | **Does not follow** | – |
+## Result
 
-Why the inference fails, in two sentences: `riemannHypothesis : RiemannHypothesis` is a closed theorem with no hypotheses whose type is Mathlib's
-own constant, so there is nothing for a "vacuously satisfied" premise to attach to, and definitions cannot make new statements provable.
-In this particular code the geometry slot `Γ` is write-only along the whole proof path – every lemma that receives it is proved for arbitrary `Γ`,
-the final bundle `HypsAlt` does not mention it, and nothing ever eliminates a `GeoCl` proof – so instantiating it with `True` is equivalent to deleting it.
+| Question | Answer |
+|---|---|
+| Are Nielsen's observations about the code true? | **Largely yes.** Confirmed in the source and at the level of the kernel export. A few citations are inaccurate, and two headline descriptions are false as statements about the code. |
+| Does the conclusion "the release contains no proof of RH" follow? | **No.** |
 
-We also looked, independently of the objection, for real ways to cheat a Lean proof (extra axioms, `sorry`, a swapped statement, kernel bypass,
-artefact mismatch) and found none.
+Why the conclusion does not follow:
 
-## What was actually done
+1. **What is certified is not a tautology.** The kernel certifies a closed term of type Mathlib's `RiemannHypothesis`
+   using only `propext`, `Quot.sound`, `Classical.choice`. Its statement depends on 4,566 declarations, all in Mathlib
+   and none in the release. It is not an equation `X = X`, and auxiliary definitions cannot change what it says.
+2. **The squeeze is not proved by reflexivity.** The two inequalities are proved by `divClausesR_of` from 38
+   hypotheses (operator-norm, valuation and covolume bounds). Its dependency cone holds 1,004 theorems of the release
+   and none of the flagged objects. Section 7 of Nielsen's paper says the same; its Abstract and Section 8 contradict it.
+3. **Deleting an input is not a test of soundness; replacing it is.** The consumers on the route are stated for
+   arbitrary inputs (`∀ Γ : GeoP`, `∀ V NR : Prop`), and the bundle handed to the final step is a proposition whose
+   type does not mention the geometry predicate.
+4. **The numbers.** Of 1,468,418 declarations in the proof export, 30 depend on `anyGeometry` and 124 on any of the
+   objects flagged as vacuous. The hypothesis bundle said to be hollow is established using 636,383 theorems of the
+   release, and the final algebraic step (`every_character_of_green_v_win`) depends on none of the flagged objects.
 
-* **Provenance.** Downloaded the author's 14-part archive, matched its SHA-256 against the published value, and verified the audited mirror's `src/`
-  is byte-identical to it (only the community-added `Challenge.lean` differs).
-* **Source reading.** Located every use of `anyGeometry` and traced the chain from `Main.lean`; hygiene scan of all 175,187 files.
-* **Kernel-level dependency analysis.** Wrote `conescan` (Rust, no dependencies) and ran it over the published 61.57 GB proof export
-  (1,468,418 declarations): exactly 30 declarations depend on `anyGeometry`, including all five headline theorems; the export contains exactly the
-  three standard axioms.
-* **Independent kernel replay.** Built `con-leche` from source and ran `--verified --compare` on the full export on this machine:
-  exit code 0, 1,468,418 declarations accepted, all five theorems reported as "justified by the solution" (logs in `evidence/con-leche/`).
-* **Independent statement check.** Rebuilt the Mathlib-only challenge export from official Lean, official Mathlib cache and `lean4export`;
-  the result is byte-identical to the published one.
-* **Cross-check.** Four independent `agy` agents (Gemini 4 Neon, XHigh) each audited one sub-question.
+What Nielsen's paper **does** establish: the formal proof does not use the geometric interpretation that its
+identifiers and directory names advertise. That is a finding about exposition, and a useful one; it is not a finding
+about validity.
+
+Independently of the objection, we looked for the ways a kernel-checked theorem can still be wrong (extra axioms, a
+substituted statement, an exploited kernel defect, a mismatch between source and checked artefact) and found none.
+
+## How it was checked
+
+* **Provenance.** SHA-256 of the author's archive and of both published exports recomputed and matched; mirror
+  `src/` identical to the archive.
+* **Kernel-level dependency graph.** `depgraph` (Rust, written for this audit) extracts the complete
+  declaration-level dependency graph of the 61.57 GB proof export: 1,468,418 declarations, 156 million edges, with
+  statement dependencies and proof dependencies kept apart. `depquery.py` answers reachability questions on it.
+* **Independent kernel replay.** `con-leche --verified --compare` on the complete export: exit code 0, all
+  1,468,418 declarations accepted, all five theorems "justified by the solution".
+* **Independent statement check.** The Mathlib-only statement export rebuilt from official Lean and the official
+  Mathlib cache; byte-identical to the published one.
+* **Two toy Lean files** reproducing the patterns at issue (`evidence/toy/`).
+
+## Independent verification by Gemini 4 Neon
+
+A second, independent line of verification was run with **Google Gemini 4 Neon (XHigh)** through the `agy` CLI:
+eight read-only agents, each from an empty context, each on one sub-question, none shown the main analysis.
+Several findings in the paper originated with these agents:
+
+* the location of the degenerate and junk models, which a public review had searched for and not found (agent C);
+* that the custom tactics `kexactB` / `kcopy` make an independent kernel replay necessary (agent D);
+* that the "copied" lattices are substantive objects with proved lemmas (agent E);
+* that the row-side condition `InGeo` is established by substantive proofs, and that the structure carrying the
+  vacuous field `degHH_def` is never constructed (agent F);
+* two mis-cited sites in Nielsen's paper, and that the pairing `Bk` is tied to the period pairing by a proved
+  statement (agent G);
+* an independent 13-step reconstruction and assessment of the argument, and the minimal counterexample to the
+  "remove the package" test (agent H).
+
+All eight reached the same overall assessment as the main analysis. Prompts and full reports: `evidence/agy/`.
 
 ## Limits
 
-* Nielsen's full paper sits behind a bot check and could not be retrieved; the claims audited are those in its publicly quoted abstract,
-  the author's public posts, and a third-party review that quotes it.
-* The 175,187-module library was not rebuilt from source here; the link "export ⇐ source" relies on the published sandbox rebuild.
-* The mathematics was not read. This is an audit of an argument about validity, not a referee report on the proof.
-
-Details are in section 7 of the report.
+* The mathematics was not read. This is an audit of an argument about validity.
+* The trust base remains: Lean's logic, at least one correct checker, `lean4export`, and the adequacy of Mathlib's
+  definitions. Nielsen's paper does not question any of these.
+* The build from the 175,187 source files to the export was not reproduced here; the export itself was checked directly.
+* A dependency graph is syntactic, and counting theorems measures extent, not depth.
 
 ## Layout
 
 ```
-report/      audit_report.pdf and its LaTeX sources, generated excerpts and tables
-evidence/    REPRODUCE.md, conescan (source + outputs), con-leche logs, hygiene scan, challenge rebuild,
-             provenance log, toy Lean model, agy agent prompts and reports
+paper/       the paper (PDF and LaTeX), generated excerpts and tables, make_excerpts.py, make_tables.py
+evidence/    REPRODUCE.md
+  conescan/      Rust sources: src/bin/depgraph.rs (graph extractor), src/main.rs (earlier single-pass analyser)
+  depgraph/      depquery.py, watch list, query outputs, hashes of the graph files
+  con-leche/     logs of the independent checker run
+  challenge-rebuild/, provenance/, hygiene/, toy/
+  agy/           prompts and reports of the eight Gemini agents (round 1: A–D, round 2: E–H)
 ```
 
-Audit performed on 2026-11-23 by Claude (Anthropic) running in Claude Code, at the request of the repository owner.
+## Versions
+
+* **v2** (this paper, English): based on the full text of Nielsen's paper; adds the dependency graph, the second
+  round of agents and a correction of an undercount in v1 (Appendix B of the paper).
+* **v1** (a report in Chinese, merged as PR #1): superseded; available in the git history.
+
+## Contributions
+
+The author posed the question, directed the work and is responsible for the conclusions. Claude Code (Anthropic)
+carried out the main analysis and drafted the text under the author's direction. Gemini 4 Neon (Google), through
+`agy`, performed the independent verification. Neither AI system is an author.
+
+## 中文摘要
+
+本仓库审计的是一个**论证**，而不是黎曼猜想本身：J. L. Nielsen 的论文认为 Alpöge 发布的 Lean 证明“不包含黎曼猜想的证明”，
+理由是几何谓词被定义为 `True`、几何见证是退化模型、格等式由 `rfl` 成立、高度是赋值得到的公式。
+
+结论：**这些代码观察基本属实，但推不出“证明无效”。**
+
+1. 内核认证的是 Mathlib 的 `RiemannHypothesis` 的闭项，只用三条标准公理；其陈述依赖的 4,566 个声明全部来自 Mathlib，不是“同义反复”。
+2. 核心的两条不等式不是由自反性成立，而是由 `divClausesR_of` 从 38 条假设证明的；其依赖锥含 1,004 个本库定理，不含任何被点名的对象。
+3. “删掉输入后无路可走”不是可靠性检验；应当检验“换一个输入是否仍成立”，而路径上的消费者都是对任意输入陈述的。
+4. 1,468,418 个声明中只有 30 个依赖 `anyGeometry`、124 个依赖任何被点名的对象；被称为“空洞”的假设包由 636,383 个定理支撑。
+
+Nielsen 论文真正说明的是：形式化证明没有使用其标识符所宣称的几何解释。这是关于表述的发现，不是关于有效性的发现。
+
+独立验证由 Google Gemini 4 Neon（XHigh，经 `agy`）的八个只读代理完成，论文中多处发现最先出自这些代理（见上文及论文第 7 节）。
+论文正文为英文：[`paper/invalidity_of_the_invalidity.pdf`](paper/invalidity_of_the_invalidity.pdf)。

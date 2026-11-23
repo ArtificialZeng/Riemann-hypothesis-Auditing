@@ -1,0 +1,60 @@
+\section{An independent search for real defects}
+\label{sec:defects}
+
+Since the argument of \N\ cannot establish invalidity, one may still ask whether the release is invalid for some other reason.
+Proposition~\ref{prop:exits} lists the possibilities, and each can be checked mechanically. This section does not depend on \N.
+
+\subsection{Exit (i): axioms, \texttt{sorry}, trusting the compiler}
+
+A single-pass scan of all 175,187 source files gives: 0 \lean{axiom} declarations; 0 occurrences of \lean{native_decide}, \lean{ofReduceBool}, \lean{implemented_by}, \lean{extern}, \lean{unsafe}, \lean{opaque}, \lean{csimp};
+5 occurrences of \lean{sorry}, all in \path{src/Challenge.lean}, a file added by the community for the comparison tool, absent from the author's archive and not imported by \path{Main.lean}.
+The kernel export gives the same answer without relying on text: the only axiom records are \lean{propext}, \lean{Quot.sound} and \lean{Classical.choice}; no record is flagged unsafe or partial;
+the names \lean{sorryAx}, \lean{Lean.ofReduceBool}, \lean{Lean.ofReduceNat} and \lean{Lean.trustCompiler} do not occur; all 91 opaque constants are library declarations.
+This agrees with \N\ (\S12) and with the first-round hygiene scan of agent~D.
+
+\subsection{Exit (ii): a substituted statement}
+\label{sec:rebuild}
+
+The five theorems in \path{Main.lean} have no hypotheses. No declaration of the release is named \lean{RiemannHypothesis}, \lean{riemannZeta} or \lean{DirichletCharacter}.
+All 1,695 \lean{notation} commands in the release are \lean{local} and one is \lean{scoped}; there is no global notation and no global macro other than tactic macros, so the parsing of \path{Main.lean} cannot have been altered.
+Mathlib is pinned at the official tag \texttt{v4.33.1} with no path override.
+
+The strongest check is a reconstruction. The comparison of a proof export with a statement export is only as good as the statement export, so we rebuilt it:
+official Lean 4.33.1 binaries; a project containing only the five statements with \lean{sorry} and \texttt{import Mathlib}; 8,690 precompiled files from the official Mathlib cache; \texttt{lean4export} at tag \texttt{v4.33.0}.
+
+\begin{verdictbox}
+The rebuilt file has 350,862,311 bytes and SHA-256 \texttt{bd484ac9…bdd6ab2b9}. It is \textbf{byte-identical} to the published \path{challenge.ndjson}.
+The reference against which the proof is compared is therefore determined by official Mathlib and the five statements alone.
+\end{verdictbox}
+
+\subsection{Exit (iii): the kernel}
+\label{sec:conleche}
+
+The release contains metaprogramming that deserves a look, and this is where a real exploit would have to hide.
+The files \path{BuildAid/D1..D5.lean} call \lean{Lean.modifyEnv}, but only to extend a deny-list for library suggestions.
+A command \lean{cpt_copy_thms} copies declarations in bulk through the standard \lean{Lean.addDecl}, so each copy passes the kernel.
+Two custom tactics, \lean{kexactB} (234 uses) and \lean{kcopy}, assign a term to the goal without elaborator-side type checking; \lean{kcopy} builds raw projection terms:
+
+\excerpt{kcopy}
+
+This is legitimate engineering, but it means that those proofs are guarded by the kernel alone. If a kernel had a defect in the checking of projections, this is where it could be exploited.
+Reading the source cannot settle that; an independent replay can.
+
+We built \texttt{con-leche}~\cite{conleche}, a checker with its own term representation and a formalized consistency argument, from source at commit \texttt{bc667610} and ran
+\begin{Verbatim}[fontsize=\small,frame=single,rulecolor=\color{gray!50}]
+con-leche --verified --compare challenge.ndjson solution.ndjson
+\end{Verbatim}
+\noindent on the complete 61.57\,GB export. The run ended with exit code 0 and this output:
+\VerbatimInput[fontsize=\scriptsize,frame=single,rulecolor=\color{gray!50},breaklines=true,breakanywhere=true]{../evidence/con-leche/compare.stdout.log}
+\noindent All 1,468,418 declarations of the proof export were accepted, and each of the five statements of the challenge export was found to be justified by a constant of the same name and type whose statement reads the same declarations on both sides.
+The run took 73 minutes on 16 cores with a peak of 47.4\,GB of memory. The verification page~\cite{mit} reports the same counts for \texttt{con-leche} and passes by further independent kernels, which we did not re-run.
+
+\subsection{Exit (iv): source versus checked artefact}
+
+The hashes in Table~\ref{tab:prov} tie the archive, the mirror and the two exports to the published values.
+The one link we did not reproduce is the build that turns the 175,187 source files into the proof export; for it we rely on the sandboxed rebuild reported on the verification page.
+This limitation affects the claim that the \emph{source} proves the theorem. It does not affect the claim that the \emph{export} does: the export was checked directly, and the dependency analysis of this note was performed on it.
+
+\subsection{Result}
+
+None of the four exits shows any sign of being open.

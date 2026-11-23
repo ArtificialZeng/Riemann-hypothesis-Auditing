@@ -1,0 +1,63 @@
+\section{Independent verification by Gemini agents}
+\label{sec:agents}
+
+A substantial part of the checking in this note was not done by the main analysis but by a second, independent line of verification, and the note would be weaker without it.
+Eight agents were run through the \texttt{agy} command-line tool with Google's Gemini~4 Neon model at its highest reasoning setting.
+This is a different model family from the system used for the main analysis (Section~\ref{sec:contrib}), which is the reason for using it: an error of reading or of reasoning made by one is less likely to be repeated by the other.
+
+Each agent started from an empty context. It received one sub-question, read-only access to the source tree and, in the second round, the text of \N.
+It did not see our notes, the dependency graph, or any conclusion of ours, and it was instructed to cite file and line for every claim, to answer ``not verified'' rather than guess, and to report what the code says whichever side that favours.
+Four agents (A--D) worked on the claims of \N\ as publicly summarized; four (E--H) worked on the full text. The prompts and the complete reports are in the repository.
+
+\begin{table}[ht]
+\centering\small
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Agent & Sub-question & What it established \\
+\midrule
+A & declaration-level dependency trace & Found by source reading the chain from \lean{riemannHypothesis} to \lean{anyGeometry}, and that \lean{plugAll}, \leanu{everyE₂} and \lean{geoOf} are off it. The kernel graph later gave the same answer. \\
+B & logical role of the predicate $\Gamma$ & Every consumer on the route is stated for arbitrary $\Gamma$; no elimination of \lean{OAt.geo} or \lean{GeoCl}; the final bundle type does not contain $\Gamma$. \\
+C & the secondary claims & \textbf{First located} \lean{geoDegenerate}, \lean{mdlJunk} and the related definitions, which a public review had searched for and not found. \\
+D & hygiene scan & No axioms, no \lean{native_decide}, \lean{sorry} only in the community file; \textbf{first pointed out} that \lean{kexactB} and \lean{kcopy} make an independent kernel replay necessary. \\
+\midrule
+E & \N, \S2--\S4 & Verified every row of the model table; found that the three discarded hypotheses of \lean{divEx_of_ox} are theorems proved in the release; \textbf{showed that the ``copied'' lattices are substantive objects} with proved lemmas. \\
+F & \N, \S5--\S6 & \Fsummary \\
+G & \N, \S7--\S8 & Traced \lean{wordFacts_of} to \lean{divClausesR_of} and listed all \NdivInputs\ fields of the input record; audited thirteen of them on the live route; \textbf{found two mis-cited sites in \N}; \textbf{found that} \lean{Bk} \textbf{is tied to the period pairing by a proved statement}. Its answer to the key question: the inequalities are substantive, not reflexive. \\
+H & the argument of \N\ (Abstract, \S8--\S10, App.~A) & An independent reconstruction of the argument in thirteen steps and an assessment of each; the \texttt{Wrap} example of Section~\ref{sec:remove}; a list of universally quantified consumers; the contraposition of Section~\ref{sec:assigned}; a list of what would constitute a real defect and of what legitimately follows from \N. \\
+\bottomrule
+\end{tabularx}
+\caption{The eight independent agents (Gemini~4 Neon). Bold marks findings that originated with the agent and were then adopted here.}
+\label{tab:agents}
+\end{table}
+
+All eight agents reached the same overall assessment as the main analysis: the observations of \N\ about the code are largely accurate, and the inference to invalidity does not hold.
+Agreement between two systems is evidence, not proof, and three qualifications apply.
+The agents and the main analysis read the same source tree, so this is a cross-check of reading and reasoning, not an independent source of the code.
+The prompts were written by us; the prompt of agent~B contained a hint towards its answer, and agent~H was given as premises the four facts that \N\ itself concedes or that Section~\ref{sec:facts} establishes.
+And an agent's statement is used in this note as a fact only where it was re-checked in the source or in the kernel graph; otherwise it is labelled \textsf{G} in Table~\ref{tab:facts}.
+
+\section{What the paper under review does establish}
+\label{sec:credit}
+
+Rejecting the conclusion of \N\ should not obscure what its reading of the code has achieved. Four things follow from it, and from the kernel-level confirmation given here.
+
+\begin{enumerate}
+\item \textbf{The formal proof does not use the geometry that the release is named after.}
+The predicate \lean{geoOf}, the conditions \lean{IsGeoOf} and \lean{HasTrueSurf} and the lemmas around them are in the source and outside the dependency cone of the final theorem.
+The interface \lean{DV.Geo} is instantiated only by trivial models. Whatever the proof term proves, it does not prove it by way of heights on an arithmetic variety supplied through this interface.
+\item \textbf{The height in the central inequality is an explicit formula.} The release contains no statement identifying \lean{hExpl6} with the height of a geometric object.
+If such an identification belongs to the idea behind the proof, it is not part of what was formalized. Equally, the formal proof does not need it.
+\item \textbf{Names are not evidence, in either direction.} A directory called \path{AbelianVarietyTheory} does not show that the proof uses abelian varieties; this is the valuable half of the lesson of \N.
+An identifier called \lean{mdlJunk} does not show that the proof is junk; that is the other half. Only terms and types decide.
+\item \textbf{An explanation is still owed.} A theorem of this importance whose proof is certified but not yet understood is in an unusual state, and the map drawn in \N\ of which parts of the release are live and which are dead is a real contribution to changing that.
+As agent~H put it, the fitting response to these findings is not to declare the theorem unproved but to strip the unused scaffolding and to set out the argument that the proof term actually carries out.
+\N\ cites an exposition of the proof by Jaswal~\cite{jaswal}; we have not examined it and take no position on it.
+\end{enumerate}
+
+These are statements about exposition and about the relation between a formal proof and an informal narrative. They are compatible with the theorem being proved, and on the evidence of Sections~\ref{sec:inference} and~\ref{sec:defects} it is.
+
+\paragraph{A remark on ``long chains that pass Lean''.}
+The episode prompted the informal claim that any language model can be made to output a sufficiently long chain of steps that passes Lean while only pretending to reason.
+A chain that passes the kernel, ends in the intended statement and uses no extra axiom is a proof; the kernel does not grade sincerity.
+What a model can fake is one of the four exits of Proposition~\ref{prop:exits}, and each of them is detectable by the mechanical checks of Section~\ref{sec:defects}.

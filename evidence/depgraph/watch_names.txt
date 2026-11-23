@@ -1,0 +1,31 @@
+# Names whose DIRECT occurrences are recorded per declaration (recursors and eliminators share a
+# graph node with their inductive type, so they need a name-level check).
+GlobalTheory.Mem.Top.Bl.GeoCl.rec
+GlobalTheory.Mem.Top.Bl.GeoCl.casesOn
+GlobalTheory.Mem.Top.Bl.GeoCl.recOn
+GlobalTheory.Mem.Top.Bl.GeoCl.base
+GlobalTheory.Mem.Top.Bl.GeoCl.step
+GlobalTheory.Mem.Top.Bl.GeoCl
+GlobalTheory.Mem.Top.Bl.OAt.rec
+GlobalTheory.Mem.Top.Bl.OAt.casesOn
+GlobalTheory.Mem.Top.Bl.OAt.mk
+GlobalTheory.Mem.Top.Bl.OAt.geo
+GlobalTheory.Mem.Top.Bl.OAt.lam
+Formalism.BasicNotions.DV.Geo.rec
+Formalism.BasicNotions.DV.Geo.casesOn
+Formalism.BasicNotions.DV.Geo.mk
+Formalism.BasicNotions.DivX.rec
+Formalism.BasicNotions.DivX.casesOn
+Formalism.BasicNotions.DivX.mk
+Formalism.BasicNotions.DivT.rec
+Formalism.BasicNotions.DivT.casesOn
+Formalism.L2.Geo.GeoTiedP.geoTied
+Formalism.L2.Geo.GeoTiedP.formsTieX
+GlobalTheory.Mem.Top.Bl.geoOf
+GlobalTheory.Mem.Top.Bl.anyGeometry
+GlobalTheory.Mem.Top.Bl.geoCl
+GlobalTheory.Mem.Top.Bl.geoCl_of
+sorryAx
+Lean.ofReduceBool
+Lean.ofReduceNat
+Lean.trustCompiler

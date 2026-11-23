@@ -1,5 +1,0 @@
-theorem everyE₂ (P : S0.HypothesesUE) (F : GlobalTheory.FunPr.Hypotheses₂) (hA : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
-    (hM : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) (hX : GlobalTheory.CovTop.CovolX) (hL : GlobalTheory.Published.LocalLanglandsGL) (hV : VWin) :
-    UpperTheory.EveryCharacter :=
-  plugAll (GlobalTheory.GreenBridge.green_of_regular P.greenRegularCharacters) hV
-    (hypsE₂ P F hA hM hX hL fun cDep => UpperTheory.N.boundAtTwoThree_at_prm_of_prints P.nLink (prm1 hL cDep))

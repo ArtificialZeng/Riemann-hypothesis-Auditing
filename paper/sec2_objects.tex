@@ -1,0 +1,56 @@
+\section{The artefacts}
+\label{sec:objects}
+
+Table~\ref{tab:prov} lists what was audited. Each hash was recomputed on our machine and compared with the published value.
+
+\begin{table}[ht]
+\centering\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.7cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{4.4cm}@{}}
+\toprule
+Object & Origin and SHA-256 (computed locally) & Check \\
+\midrule
+Author's source archive \path{lean.tar.gz} (239,275,554 bytes) & 14 parts from \path{alpo.ge}, concatenated; \texttt{9631b4f0…93f49c7fc} & equals the hash on the verification page~\cite{mit}; the same archive \N\ cites \\
+Source tree (175,187 \path{.lean} files) & unpacked archive, compared by \texttt{diff -rq} with the mirror~\cite{mirror} at commit \texttt{c7d25b3b} & \path{src/} identical file by file; the mirror adds only the community file \path{Challenge.lean} \\
+Proof export \path{solution.ndjson.zst} (7,699,933,588 bytes) & verification page; \texttt{61a8938a…a681b05381} & equals the published value \\
+Unpacked \path{solution.ndjson} (61,570,595,788 bytes) & \texttt{5ea74b91…f6be244e} & equals the published value \\
+Statement export \path{challenge.ndjson} (350,862,311 bytes) & verification page; \texttt{bd484ac9…bdd6ab2b9} & equals the published value, \textbf{and is byte-identical to our own rebuild from official Mathlib} (Section~\ref{sec:rebuild}) \\
+Mathlib & pinned in \path{lakefile.toml} at \texttt{0df444a360ea…} & \texttt{git ls-remote}: this is the official tag \texttt{v4.33.1} \\
+The paper \N\ (17 pages) & title page dated 20 November 2026; \texttt{90b7c28e…bc7ccf77} & the version reviewed here \\
+\bottomrule
+\end{tabularx}
+\caption{Artefacts and integrity checks. Full hashes are in Appendix~\ref{app:hashes}.}
+\label{tab:prov}
+\end{table}
+
+\paragraph{The export is the dependency cone.}
+The export was produced by \texttt{lean4export} with the five headline theorems as targets, so it contains exactly the declarations that at least one of them uses, directly or indirectly.
+A name that does not occur in the export is therefore not used by the proof, whatever the source text suggests.
+The export has \Nlines\ lines and contains \Nexprs\ expression nodes and \Ndecl\ declaration records:
+1,246,110 theorems, 214,241 definitions, 7,969 inductive blocks, 91 opaque constants, 4 quotient primitives and \textbf{3 axioms}, namely \lean{propext}, \lean{Quot.sound} and \lean{Classical.choice}.
+
+\paragraph{Library and release.}
+To separate the release from the library it builds on, we dumped the names of all \NmathlibNames\ constants of the environment obtained by \texttt{import Mathlib} at the pinned version.
+A declaration of the export whose name is not among them was declared by the release. By this criterion the export consists of \Nlib\ library declarations and \Nproj\ declarations of the release,
+of which \NprojThm\ are theorems. All 91 opaque constants and all three axioms belong to the library.
+
+\paragraph{Tools.}
+\begin{itemize}
+\item \textbf{depgraph} (written for this audit; one Rust file, no dependencies). It reads the export once, stores the expression DAG, and for every declaration walks the DAG of its type and of its value,
+recording which declarations are referenced. References found in the \emph{type} (the statement) are kept apart from those found in the \emph{value} (the proof or the definition body).
+It also records every structure projection and every direct reference to a list of watched names such as recursors. The result is a graph with \Ndecl\ nodes, \NedgesT\ type edges and \NedgesV\ value edges.
+\item \textbf{depquery} (Python). Reachability queries on that graph; see Definition~\ref{def:cones}.
+\item \textbf{conescan} (written for the earlier version). A single-pass taint propagation over the same export. Its results for definitions and theorems agree with depgraph; see Appendix~\ref{app:erratum} for a limitation.
+\item \textbf{con-leche}~\cite{conleche}. The independent checker of the Lean FRO, built from source and run on the complete export (Section~\ref{sec:conleche}).
+\item \textbf{Official tool chain.} Lean 4.33.1 and 4.36.0 release binaries, \texttt{lean4export} at tag \texttt{v4.33.0}, the official Mathlib build cache.
+\item \textbf{Cross-checks.} Eight read-only agents (Gemini~4 Neon), each given one sub-question and the source tree; four in the earlier round and four on the full text of \N.
+Their reports are in the repository. A finding of an agent is used here only where we re-checked it in the source or in the graph, or else it is marked as an agent finding.
+\end{itemize}
+
+\begin{definition}\label{def:cones}
+For a declaration $X$ of the export:
+the \emph{dependency cone} of $X$ is the set of declarations that $X$ refers to transitively, through types and values;
+the \emph{statement cone} of $X$ is what the statement of $X$ refers to: the type of $X$ and then, transitively, the type and value of every definition, inductive type or axiom reached, but only the \emph{type} of every theorem reached
+(a proof that occurs inside a statement matters only through what it proves);
+the \emph{dependents} of $X$ are the declarations whose dependency cone contains $X$.
+\end{definition}

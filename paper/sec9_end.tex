@@ -1,0 +1,44 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+The paper under review reads the Lean release closely and reports, correctly, that its geometric layer is hollow: a predicate that is \lean{True}, an interface instantiated by trivial models, lattice conditions that hold because the datum was built as a copy, and a height that is a formula.
+We have confirmed these observations in the source and, where it matters, in the kernel-level export of the proof.
+
+The conclusion that the release contains no proof of the Riemann Hypothesis does not follow from them.
+It rests on two descriptions of the code that are false (that the central inequality holds by reflexivity, and that only a tautology is certified) and on a test of soundness, deletion of an input, that every valid derivation fails.
+The certified object is a closed term of Mathlib's statement with the three standard axioms. The inequalities are theorems with \NdivClausesThm\ theorems behind them. The consumers of the trivial inputs are quantified over all inputs.
+The hollow layer is a part of the proof term that the proof does not need.
+
+The title of this note is deliberately symmetrical with the title of the paper it answers, and the symmetry should not be over-read.
+We do not claim that the mathematics of the release has been understood or reviewed, only that this objection to it is invalid; and what the objection uncovered about the distance between the formal proof and its own vocabulary remains worth the attention of anyone who sets out to explain the proof.
+
+\section*{Contributions, tools and acknowledgements}
+\addcontentsline{toc}{section}{Contributions, tools and acknowledgements}
+\label{sec:contrib}
+
+This audit is the product of a person and two AI systems, and the division of labour should be stated plainly.
+
+The author posed the question, supplied the paper under review, set the scope and the standard of evidence, directed the work and is responsible for the text and its conclusions.
+
+\emph{Claude Code} (Anthropic) carried out the main line of analysis under the author's direction: it wrote the programs \texttt{conescan}, \texttt{depgraph} and \texttt{depquery}, ran them and the \texttt{con-leche} replay,
+rebuilt the challenge export, selected the source excerpts and drafted this text.
+
+\emph{Gemini~4 Neon} (Google), run as eight independent agents through the \texttt{agy} tool, performed the independent verification described in Section~\ref{sec:agents}.
+Several findings used in this note originated with those agents and not with the main analysis: the location of the degenerate and junk models, the observation that the custom tactics call for an independent kernel replay,
+the substantive nature of the copied lattices, the two mis-cited sites, the link between \lean{Bk} and the period pairing, and the minimal counterexample to the deletion test.
+The main analysis, for its part, made an error in the first version of this audit, an undercount that came to light when the dependency graph was rebuilt with a second program (Appendix~\ref{app:erratum}). The results are stronger for having been obtained twice, by different systems.
+
+Neither AI system is an author, and neither can take responsibility for the conclusions; the author does.
+The author thanks J.~L.~Nielsen for a paper whose careful reading of the source made this audit possible, and the maintainers of the verification page and of the mirrors for making the artefacts available.
+
+\begin{thebibliography}{9}
+\bibitem[N]{nielsen} J.~L.~Nielsen, \emph{The Invalidity of Alpöge's Proof of the Riemann Hypothesis: Vacuously true geometric and lattice witnesses in the Lean formalization},
+Center for Topological Physics, Lawrence, Kansas; title page dated 20 November 2026, 17~pages. PhilArchive record \url{https://philarchive.org/rec/NIEIOT-2}.
+\bibitem{alpoge} L.~Alpöge, \emph{Remark}, 20 November 2026. \url{https://alpo.ge/remark.pdf}
+\bibitem{community} Lean and Mathlib communities, statement on the formalization, 21 November 2026. \url{https://leanprover-community.github.io/blog/posts/riemann-hypothesis/}
+\bibitem{mit} A.~V.~Sutherland, verification files for the release (proof export, challenge export, checker logs). \url{https://math.mit.edu/~drew/grh/}
+\bibitem{mirror} Mirrors of the release: \url{https://github.com/the-omega-institute/riemann-hypothesis} (commit \texttt{c7d25b3b}, used here) and \url{https://github.com/Deicyde/riemann-hypothesis} (commit \texttt{712a6aef}, cited in \N).
+\bibitem{conleche} \texttt{con-leche}, an independent checker for Lean~4 exports. \url{https://github.com/leanprover/con-leche}
+\bibitem{jaswal} M.~Jaswal, \emph{The Riemann hypothesis for Dirichlet $L$-functions [after Levent Alpöge]}, version~1, 21 November 2026; cited in \N. Not examined in this note.
+\bibitem{repo} Repository of this audit: programs, outputs, logs, agent prompts and reports. \url{https://github.com/ArtificialZeng/Riemann-hypothesis-Auditing}
+\end{thebibliography}

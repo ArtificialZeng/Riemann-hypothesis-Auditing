@@ -1,0 +1,168 @@
+\section{Q1: the observations are largely correct}
+\label{sec:facts}
+
+This section checks (A1)--(A6). The short answer is that \N\ read the code carefully and reports it accurately, and that the kernel-level export confirms the points on which a text search could mislead.
+Table~\ref{tab:facts} at the end of the section collects the individual checks.
+Three kinds of evidence are distinguished throughout: \textsf{S}, read by us in the source; \textsf{K}, derived from the kernel export through the dependency graph;
+\textsf{G}, established by one of the independent Gemini agents (the letter names the agent; see Section~\ref{sec:agents}).
+
+\subsection{The predicate and its wrapper (A3)}
+
+\excerpt{anygeo}
+
+Two predicates of the same type stand side by side. \lean{geoOf} asks for a positive integer $c$ with \lean{IsGeoOf} and for \lean{HasTrueSurf}; \lean{anyGeometry} returns \lean{True} on every input.
+The predicate enters the development through a certificate \lean{OAt} with a field \lean{geo}, and through an inductive closure:
+
+\excerpt{geocl}
+
+The place where the \lean{geo} field is filled with \lean{trivial} is the one \N\ names:
+
+\excerpt{divexprov}
+
+\subsection{The route, and what lies on it (A2, A3)}
+\label{sec:route}
+
+\excerpt{main}
+\excerpt{zfa}
+
+The lines above are the last two links of the route described in \N, \S7. One level up, the witness \lean{h} is produced by \lean{nonempty_hyps_definite_side_of_closed_bound},
+whose proof passes \texttt{geoCl anyGeometry} to three lemmas:
+
+\excerpt{siegel_a}
+
+A text search shows that an identifier is \emph{mentioned}; whether the proof term \emph{uses} it has to be read off the kernel export.
+
+\begin{verdictbox}
+\textbf{Kernel-level result (K).} In the dependency graph of the export, exactly \textbf{\NanyGeo} declarations depend on \lean{GlobalTheory.Mem.Top.Bl.anyGeometry}, and all five headline theorems are among them.
+One chain is
+{\small\lean{riemannHypothesis} $\to$ \lean{rhOfAll} $\to$ \lean{allChi} $\to$ \lean{UpperTheory.FinalTheorems.everyCharacter} $\to$ \lean{…everyCharacter_of_row}
+$\to$ \lean{…every_character_of_literature_of_vWin} $\to$ \lean{UpperTheory.Lit.every_character_of_theta_integrals_local_matching}
+$\to$ \lean{UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound} $\to$ \lean{anyGeometry}.}
+
+The names \lean{plugAll}, \lean{shapeWin}, \leanu{everyE₂}, \lean{linkDIVt_closedK} and \lean{geoOf} do not occur in the export: they are not used by any of the five theorems.
+\end{verdictbox}
+
+So (A2) and (A3) hold, including the correction that \N\ itself makes to earlier accounts: the route does not pass through \lean{plugAll} but through its twin \lean{zero_free_all_of_green_v_win}.
+
+One detail of (A3) deserves a remark because \N\ leans on it (\S7, \S10, App.~A). The two arguments \lean{trivial}\ \lean{trivial} in \lean{zero_free_all_of_green_v_win} are not geometric data that has gone missing.
+They instantiate two \emph{propositional parameters} of a generic lemma:
+
+\excerpt{shapeof}
+\excerpt{topshape}
+
+\lean{forall_goal_of_shape_of_hyps} is stated for arbitrary propositions \lean{V} and \lean{NR}. The shape theorem used on the route is stated with \texttt{V := True} and \texttt{NR := True},
+and its proof introduces the two corresponding hypotheses (\lean{hVC} and \lean{nR} in the source) and never refers to them again (\textsf{S}; confirmed independently by agent~H).
+The route supplies \lean{trivial} because the statement being applied asks for a proof of \lean{True}.
+
+\subsection{The degenerate model (A4)}
+\label{sec:degenerate}
+
+\excerpt{geodegen}
+
+This is an instance of the abstract interface \texttt{DV.Geo F}: the variety is $\mathbb{N}$, and effectivity, nefness, bigness and the like are the proposition \lean{True}.
+The file is called \path{Inhabited.lean}; \lean{mdlJunk}, \lean{cxJunk}, \lean{algDegenerate} and \lean{padDegenerate} are defined next to it.
+Agent~E checked every row of the table in \N, \S3 (the fields of \lean{geoDegenerate}, of the datum \lean{divXFl} built on it, and of the seed \lean{x0}) against the source and found all of them accurate (\textsf{G-E}).
+It also found that the description of \lean{graft} in \N\ is slightly simplified: besides the geometric fields from \lean{divXFl} and the lattice fields from the seed, about fifteen local fields come from a third datum.
+
+\begin{verdictbox}
+\textbf{Kernel-level result (K).} All of these objects are in the dependency cone of \lean{riemannHypothesis}. The numbers of declarations that depend on each are:
+\lean{geoDegenerate} \NgeoDeg, \lean{algDegenerate} 41, \lean{padDegenerate} 42, \lean{mdlJunk} 44, \lean{cxJunk} 42, \lean{divXFl} 27, \lean{geoOver_stages} 25, the seed \lean{x0} 51, \lean{graft} 28.
+The graph shows two further trivial instances of the interface that \N\ does not mention: an empty model \lean{geoExample} (53 dependents) and a one-point model \lean{pointGeo} (47 dependents).
+The union of all these sets, together with the dependents of \lean{anyGeometry}, has \textbf{\Nflagged} elements.
+
+The \emph{interface type} \lean{DV.Geo} is a different matter. It is a field of the record \lean{DivX} that is carried through the family data, and \NifaceDeps\ declarations depend on it.
+But only \NaccDirect\ declarations refer directly to one of its field accessors, and only \NaccThmProof\ of these are theorems whose proof does so. No declaration eliminates a \lean{DV.Geo} or a \lean{DivX} record by its recursor.
+\end{verdictbox}
+
+The picture is therefore the one \N\ describes: a thin layer of declarations is written against an abstract geometry interface, and the release instantiates the interface with trivial models.
+Section~\ref{sec:inference} asks what follows from that.
+
+\subsection{The lattice side (A4)}
+
+\excerpt{existsdivt}
+
+The three lattice conditions of the existence statement \lean{DivEx} are discharged as \N, \S4 says: by \texttt{exists\_mjHTie … rfl HEq.rfl}, by \texttt{fun \_ => rfl}, and by \texttt{lamAre\_of\_eq … rfl} (\textsf{S}, \textsf{G-E}).
+They can be, because the seed sets \texttt{MjH := mjH Z}, \texttt{logLam := logLamOf Z hH} and \texttt{kapR := fun \_ => kapSharp D}.
+
+Agent~E added a point that \N\ passes over quickly and that matters for (B1). The objects that are copied are not themselves trivial.
+\lean{mjLat}, \lean{logLamOf} and \lean{kapSharp} are Hermitian lattices, logarithms of eigenvalues and a spectral constant computed from the arithmetic (``row-side'') data,
+and the release proves lemmas with content about them (\lean{mjH_good}, \lean{jM_lat}, \lean{jM_metric}) from hypotheses \lean{Holds} and \lean{Pins} (\textsf{G-E}; all six names are in the export, \textsf{K}).
+What holds by \lean{rfl} is that the datum \emph{carries} these lattices, not anything about the lattices.
+
+\subsection{The height (A6)}
+\label{sec:height-facts}
+
+\excerpt{hexpl6}
+\excerpt{heighteq}
+
+The height slot of the datum is overwritten by \lean{setDiv} with \texttt{p.ht}, which is the formula \lean{hExpl6}; the field \lean{h_eq} then holds by \lean{rfl}. This is (A6), and it is accurate (\textsf{S}, \textsf{G-G}).
+Agent~G checked the remaining details of \N, \S7 and reports the following (we re-checked the items marked \textsf{S}):
+\begin{itemize}
+\item Every caller of \lean{exists_divStage_of_pk} passes the zero function as initial height, as \N\ says (\textsf{G-G}).
+\item Of the four sites at which \N\ says \lean{h_eq} is constructed, two (\path{DisjointSplitLevelPlaces.lean}, lines 331 and 501) concern a field of the same name in a different structure,
+\texttt{h\_eq : h = hP * k} at line 264 of that file (\textsf{S}); two other sites that propagate the real field are not listed in \N.
+\item The construction \lean{linkDIVt_closedK}, which \N\ uses to explain how the height is supplied, is not in the export (\textsf{K}). \N\ notes later in \S7 that the live route uses \lean{closed_linkDIVt_of_closed_bridge_kernel} instead; that theorem is in the export.
+\item On the live route the pairing \lean{Bk} is not identically zero: it is tied to the period pairing \lean{Bu} by a proved rationality statement \lean{BuRational}, and the case $\mtt{Bk}\ u \neq 0$ is used downstream (\textsf{G-G}; the lemmas named by the agent are in the export, \textsf{K}).
+\end{itemize}
+The last sentence of (A6), that the two inequalities about the height are proved from matrix estimates, is also accurate. It is examined in Section~\ref{sec:squeeze} because it decides (B1).
+
+\subsection{The dead extraction lemmas (A5)}
+\label{sec:dead}
+
+\N, \S6 reports that \lean{GeoCl} is never opened by case analysis or induction and that six lemmas written to extract geometric content occur only at their own declarations.
+A text search cannot quite establish the first claim, since pattern matching need not name the type. The kernel export can.
+
+\begin{verdictbox}
+\textbf{Kernel-level result (K).}
+\begin{itemize}
+\item The recursor \lean{GeoCl.rec} is referenced by no declaration outside the inductive block of \lean{GeoCl} itself; \lean{GeoCl.casesOn} and \lean{GeoCl.recOn} do not occur in the export.
+Any case analysis or induction on a \lean{GeoCl} proof compiles to the recursor. \emph{No proof in the cone ever opens a} \lean{GeoCl} \emph{certificate.}
+\item The constructor \lean{GeoCl.base} is used once (in \lean{geoCl_of}) and \lean{GeoCl.step} once (in \lean{oAt_setDiv}).
+\item The \lean{geo} field of the certificate \lean{OAt} is read by exactly two theorems, \lean{divEx_geoCl} and \lean{oAt_setDiv}, and each passes it straight into a \lean{GeoCl} constructor. \lean{OAt.rec} has no referrer.
+By contrast the other field, \lean{lam}, is also read by \lean{GlobalTheory.T.parameter_of_discrete_series_ray_alt}: in the same certificate one field has a consumer and the other has none.
+\item \lean{geoOf}, \lean{GeoTiedP.geoTied}, \lean{GeoTiedP.formsTieX}, \lean{degree_value_of_determinant} and \lean{SlopeBoundFamilyStatement} do not occur in the export.
+\end{itemize}
+\end{verdictbox}
+
+The last item bears on the remark in \N, \S6 that the degree equation is ``never proved''. It occurs only as a hypothesis inside \lean{SlopeBoundFamilyStatement} and one admissibility bundle.
+Since \lean{SlopeBoundFamilyStatement} is not in the export, no declaration used by the final theorem assumes that equation. An unproved hypothesis of an unused statement is not a gap. \Fnote
+
+\subsection{Summary of the fact check}
+
+{\small
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{@{}r>{\raggedright\arraybackslash}p{6.5cm}c>{\raggedright\arraybackslash}p{6.3cm}@{}}
+\caption{Observations of \N\ and what we found. Evidence: \textsf{S} source, \textsf{K} kernel export, \textsf{G-x} Gemini agent x.}\label{tab:facts}\\
+\toprule
+\# & Observation in \N\ (section) & Finding & Evidence and remarks \\
+\midrule
+\endfirsthead
+\toprule
+\# & Observation in \N\ (section) & Finding & Evidence and remarks \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+1 & Closed theorem of Mathlib's \lean{RiemannHypothesis}; no axiom, \lean{sorry}, \lean{native_decide}, \lean{unsafe}, \lean{opaque} (Abstract, \S12) & \OK & \textsf{S}, \textsf{K}: three standard axioms only; statement cone is Mathlib only (Section~\ref{sec:taut}) \\
+2 & Route to the final theorem; \lean{plugAll} not on it (\S1, \S7, \S11) & \OK & \textsf{S}, \textsf{K} \\
+3 & \texttt{anyGeometry := fun \_ \_ \_ => True}; 118 uses in 24 files (\S2) & \OK & \textsf{S}; \textsf{K}: \NanyGeo\ dependents, final theorem included \\
+4 & \lean{divEx_prov} fills the geometric field with \lean{trivial} (\S2) & \OK & \textsf{S}, \textsf{G-E} \\
+5 & \lean{divEx_of_ox} ignores three hypotheses named after published results (\S2) & \OK & \textsf{S}: body is \texttt{fun \_ \_ \_ 𝒮 hOx => divEx\_prov 𝒮 hOx}. \textsf{G-E}: at the call sites the three arguments are theorems proved in the release \\
+6 & Field table of the degenerate model, of \lean{divXFl} and of the seed (\S3) & \OK & \textsf{G-E}: every row verified; \textsf{K}: all in the cone \\
+7 & \lean{graft} takes geometric fields from \lean{divXFl}, lattice fields from the seed (\S3) & \PARTLY & \textsf{G-E}: also about 15 local fields from a third datum \\
+8 & Lattice conditions of \lean{DivEx} discharged by \lean{rfl} (\S4) & \OK & \textsf{S}, \textsf{G-E}; the copied lattices are substantive objects with proved lemmas \\
+9 & Row-side conditions \lean{Holds}, \lean{InGeo} have content (\S5) & \OK & \N's own statement; \textsf{K}: in the cone\Frow \\
+10 & \lean{GeoTiedP.geoTied}, \lean{.formsTieX} never called (\S5) & \OK & \textsf{K}: neither name occurs in the export \\
+11 & \lean{GeoCl} never opened (\S6) & \OK & \textsf{K}: \lean{GeoCl.rec} has no referrer outside its own block \\
+12 & Six extraction lemmas occur once (\S6) & \OK & \textsf{K}: those checked are absent from the export\Fsix \\
+13 & Degree equation only a hypothesis, never proved (\S6) & \OK & \textsf{K}: and the statement containing it is not used by the final theorem \\
+14 & Two shape inputs supplied by \lean{trivial} (\S7) & \OK & \textsf{S}, \textsf{G-H}: they instantiate two unused propositional parameters at \lean{True} \\
+15 & Height overwritten by \lean{hExpl6}; \lean{h_eq} by \lean{rfl} (\S7) & \OK & \textsf{S}, \textsf{G-G} \\
+16 & \lean{h_eq} constructed at four listed sites (\S7) & \PARTLY & \textsf{S}, \textsf{G-G}: two of the four are a different field of the same name \\
+17 & Initial height is zero (\S7) & \OK & \textsf{G-G} \\
+18 & \lean{WordFacts}: two inequalities, proved by \lean{divClausesR_of} from about forty inputs (\S7) & \OK & \textsf{S}, \textsf{K}, \textsf{G-G}: \NdivInputs\ fields; \lean{WordFacts} has a third conjunct not shown in \N \\
+19 & \lean{Bk} is the pairing or else 0 (\S7) & \PARTLY & \textsf{G-G}: on the live route it is tied to the pairing by a proved statement \\
+20 & The squeeze ``compares a quantity with itself and holds by reflexivity'' (Abstract, \S8) & \NO & \textsf{S}, \textsf{K}, \textsf{G-G}, \textsf{G-H}: contradicted by row 18; Section~\ref{sec:squeeze} \\
+21 & Only the tautology ``RiemannHypothesis $=$ RiemannHypothesis'' is certified (Abstract, \S8) & \NO & \textsf{K}, \textsf{G-H}: Section~\ref{sec:taut} \\
+\end{longtable}
+}

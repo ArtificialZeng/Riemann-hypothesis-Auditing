@@ -1,6 +1,0 @@
-def divXFl : DivX D :=
-  { X0 with
-    geo := geoDegenerate D.what₂.LL D.what₂.Tau
-    Lev := Unit
-    levPr := fun _ => Finset.univ.image D.host.g
-    shv := fun S _ => shimXFl D jC (recN D S) (recJ D S) (recJ_pos D S) (recJ_lt D S)

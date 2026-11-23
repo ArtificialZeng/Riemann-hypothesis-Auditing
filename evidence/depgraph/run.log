@@ -1,0 +1,23 @@
+start 11:14:41
+... 100 M lines, 5.4 GB, exprs 97967407, nodes 271683, dag visits 248404802
+... 200 M lines, 11.2 GB, exprs 196503089, nodes 433719, dag visits 547340419
+... 300 M lines, 16.8 GB, exprs 295316982, nodes 528753, dag visits 788473145
+... 400 M lines, 22.5 GB, exprs 394112545, nodes 642976, dag visits 1059319653
+... 500 M lines, 28.3 GB, exprs 492764555, nodes 791758, dag visits 1353892789
+... 600 M lines, 33.9 GB, exprs 591852646, nodes 874649, dag visits 1599366526
+... 700 M lines, 39.6 GB, exprs 690420802, nodes 1013561, dag visits 1901596509
+... 800 M lines, 45.4 GB, exprs 788912238, nodes 1151166, dag visits 2179233027
+... 900 M lines, 51.1 GB, exprs 887507424, nodes 1247673, dag visits 2418070837
+... 1000 M lines, 56.8 GB, exprs 985705864, nodes 1358480, dag visits 2681492565
+lines: 1080769508
+bytes: 61570595788
+expression records: 1065214335
+declaration records (graph nodes): 1468418
+declared names: 1484733
+records by kind: {"axiom": 3, "def": 214241, "inductive": 7969, "opaque": 91, "quot": 4, "thm": 1246110}
+type-dependency edges: 49376348
+value-dependency edges: 106908310
+expression-DAG visits during the walk: 2890194177
+watched names present in the export: ["Formalism.BasicNotions.DV.Geo.mk", "Formalism.BasicNotions.DV.Geo.rec", "Formalism.BasicNotions.DivX.mk", "Formalism.BasicNotions.DivX.rec", "GlobalTheory.Mem.Top.Bl.GeoCl", "GlobalTheory.Mem.Top.Bl.GeoCl.base", "GlobalTheory.Mem.Top.Bl.GeoCl.rec", "GlobalTheory.Mem.Top.Bl.GeoCl.step", "GlobalTheory.Mem.Top.Bl.OAt.geo", "GlobalTheory.Mem.Top.Bl.OAt.lam", "GlobalTheory.Mem.Top.Bl.OAt.mk", "GlobalTheory.Mem.Top.Bl.OAt.rec", "GlobalTheory.Mem.Top.Bl.anyGeometry", "GlobalTheory.Mem.Top.Bl.geoCl", "GlobalTheory.Mem.Top.Bl.geoCl_of"]
+watched names that never occur in the export: ["Formalism.BasicNotions.DV.Geo.casesOn", "Formalism.BasicNotions.DivT.casesOn", "Formalism.BasicNotions.DivT.rec", "Formalism.BasicNotions.DivX.casesOn", "Formalism.L2.Geo.GeoTiedP.formsTieX", "Formalism.L2.Geo.GeoTiedP.geoTied", "GlobalTheory.Mem.Top.Bl.GeoCl.casesOn", "GlobalTheory.Mem.Top.Bl.GeoCl.recOn", "GlobalTheory.Mem.Top.Bl.OAt.casesOn", "GlobalTheory.Mem.Top.Bl.geoOf", "Lean.ofReduceBool", "Lean.ofReduceNat", "Lean.trustCompiler", "sorryAx"]
+end 11:17:40

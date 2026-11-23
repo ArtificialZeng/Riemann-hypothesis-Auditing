@@ -1,0 +1,117 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{fontspec}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xcolor}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{fvextra}
+\usepackage{newunicodechar}
+\usepackage[most]{tcolorbox}
+\usepackage{url}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!55!black,citecolor=blue!50!black]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+
+% ---------- fonts: a monospace face with wide Unicode coverage for Lean source ----------
+\setmonofont{DejaVuSansMono.ttf}[Scale=0.80,BoldFont=DejaVuSansMono-Bold.ttf,ItalicFont=DejaVuSansMono-Oblique.ttf,BoldItalicFont=DejaVuSansMono-BoldOblique.ttf]
+\newfontfamily\mathfb{STIX Two Math}[Scale=0.88]
+\newunicodechar{𝒞}{{\mathfb 𝒞}}
+\newunicodechar{𝓞}{{\mathfb 𝓞}}
+\newunicodechar{𝒜}{{\mathfb 𝒜}}
+\newunicodechar{𝒮}{{\mathfb 𝒮}}
+\newunicodechar{𝒟}{{\mathfb 𝒟}}
+\newunicodechar{ℰ}{{\mathfb ℰ}}
+
+% ---------- macros ----------
+\makeatletter\g@addto@macro{\UrlBreaks}{\do\_\do\.}\makeatother
+\Urlmuskip=0mu plus 2mu
+\DeclareUrlCommand\lean{\urlstyle{tt}}
+\DeclareUrlCommand\path{\urlstyle{tt}}
+\newcommand{\leanu}[1]{\texttt{#1}}% identifiers containing non-ASCII characters or spaces
+\newcommand{\mtt}[1]{\text{\texttt{#1}}}
+\newcommand{\N}{\textup{[N]}}% the paper under review
+\newcommand{\OK}{\textcolor{green!40!black}{\textbf{correct}}}
+\newcommand{\PARTLY}{\textcolor{orange!70!black}{\textbf{partly}}}
+\newcommand{\NO}{\textcolor{red!70!black}{\textbf{incorrect}}}
+\definecolor{boxgray}{gray}{0.955}
+\newtcolorbox{verdictbox}[1][]{enhanced,breakable,colback=blue!3,colframe=blue!45!black,boxrule=0.8pt,arc=2pt,left=7pt,right=7pt,top=6pt,bottom=6pt,#1}
+\newtcolorbox{notebox}[1][]{enhanced,breakable,colback=boxgray,colframe=gray!55,boxrule=0.5pt,arc=2pt,left=7pt,right=7pt,top=5pt,bottom=5pt,#1}
+
+\makeatletter\newcommand{\tableinput}[1]{\@@input #1 }\makeatother
+\input{excerpts/excerpts_meta.tex}
+\newcommand{\excerpt}[2][]{%
+  \par\smallskip\noindent{\scriptsize\color{black!62}\csname ex@#2@file\endcsname,\ \ lines \csname ex@#2@first\endcsname--\csname ex@#2@last\endcsname}\par\vspace{-0.55em}%
+  \VerbatimInput[numbers=left,firstnumber=\csname ex@#2@first\endcsname,breaklines=true,breakanywhere=true,fontsize=\scriptsize,frame=single,rulecolor=\color{gray!50},numbersep=4pt,xleftmargin=2.1em,framesep=3pt,#1]{excerpts/#2.txt}\vspace{-0.3em}}
+\fvset{breaklines=true,breakanywhere=true}
+\input{results_v2.tex}
+
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\setlist{itemsep=0.15em,topsep=0.3em,parsep=0.1em}
+\setlength{\emergencystretch}{3.5em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small The Invalidity of ``The Invalidity of Alpöge's Proof of the Riemann Hypothesis''}
+\fancyhead[R]{\small Z.~Zeng}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\headheight}{14pt}
+\hypersetup{pdftitle={The Invalidity of "The Invalidity of Alpöge's Proof of the Riemann Hypothesis"},pdfauthor={Zijian Zeng},
+  pdfsubject={A kernel-level audit of the vacuous-witness objection to the Lean formalization},pdfkeywords={Riemann Hypothesis, Lean 4, formal verification, proof audit}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries The Invalidity of\\[0.3em] ``The Invalidity of Alpöge's Proof\\[0.3em] of the Riemann Hypothesis''\par}
+\vspace{0.9em}
+{\large A kernel-level audit of the vacuous-witness objection to the Lean formalization\par}
+\vspace{1.4em}
+{\large Zijian Zeng\par}
+\vspace{0.35em}
+{\small Institute of Computer Science and Digital Innovation, UCSI University,\\ Kuala Lumpur, 56000, MALAYSIA\par}
+\vspace{0.3em}
+{\small \href{mailto:zijianzeng@foxmail.com}{\texttt{zijianzeng@foxmail.com}};\ \ \href{mailto:1002266693@ucsiuniversity.edu.my}{\texttt{1002266693@ucsiuniversity.edu.my}}\par}
+\vspace{0.9em}
+{\small Audit date: 23 November 2026\par}
+\end{center}
+\vspace{0.6em}
+
+\begin{abstract}
+\noindent
+Nielsen \N\ argues that the Lean~4 formalization released by Alpöge on 20 November 2026 does not contain a proof of the Riemann Hypothesis:
+on the route to the final theorem a geometry predicate is the constant \lean{True}, the geometric witness is a degenerate model,
+lattice identifications hold by \lean{rfl}, and a height is installed by assignment.
+We audit that argument against the published artefacts, namely the author's source archive and the 61.57\,GB kernel-level export of the proof term.
+The source-level observations of \N\ are, with minor corrections, accurate, and we confirm at kernel level that the flagged objects lie in the dependency cone of \lean{riemannHypothesis}.
+The inference from them to invalidity nevertheless fails.
+(i)~What the kernel certifies is a closed term whose type is Mathlib's proposition \lean{RiemannHypothesis} and which uses only the three standard axioms.
+Its statement depends on \NstmtMain\ declarations, all of them in Mathlib and none in the release; it is not an identity of the form $X = X$, and auxiliary definitions cannot change what it says.
+(ii)~The claim that the central squeeze compares a quantity with itself and holds by reflexivity is contradicted by the code and by Section~7 of \N\ itself:
+the two inequalities are proved from \NdivInputs\ hypotheses (operator-norm, valuation and covolume bounds) by a theorem whose dependency cone contains \NdivClausesThm\ theorems of the release and none of the flagged objects.
+(iii)~The reply of \N\ to the ``kernel objection'' tests soundness by \emph{deleting} an input. The relevant test is \emph{replacing} it, and the consumers on the route are universally quantified over the inputs in question.
+(iv)~Only \NanyGeo\ of \Ndecl\ declarations depend on the \lean{True} predicate, while the hypothesis package it is said to hollow out is established using \NpackageThm\ theorems of the release.
+What \N\ does establish is weaker: the formal proof does not use the geometric interpretation that its identifiers advertise.
+That concerns exposition, not validity.
+We also report an independent replay of the complete export with the \texttt{con-leche} checker and a byte-identical rebuild of the Mathlib-only statement.
+\end{abstract}
+
+\input{sec1_intro.tex}
+\input{sec2_objects.tex}
+\input{sec3_argument.tex}
+\input{sec4_facts.tex}
+\input{sec5_inference.tex}
+\input{sec6_defects.tex}
+\input{sec7_credit.tex}
+\input{sec8_limits.tex}
+\input{sec9_end.tex}
+
+\appendix
+\input{app.tex}
+
+\end{document}
