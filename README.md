@@ -5,7 +5,7 @@ A kernel-level audit of the vacuous-witness objection to the Lean formalization.
 **Zijian Zeng** — Institute of Computer Science and Digital Innovation, UCSI University, Kuala Lumpur, 56000, Malaysia
 (<zijianzeng@foxmail.com>; <1002266693@ucsiuniversity.edu.my>)
 
-**Paper (PDF): [`paper/invalidity_of_the_invalidity.pdf`](paper/invalidity_of_the_invalidity.pdf)** · audit date 23 November 2026
+**Paper (PDF): [`paper/invalidity_of_the_invalidity.pdf`](paper/invalidity_of_the_invalidity.pdf)** · audit date 23 November 2026 · addendum 24 November 2026
 
 ---
 
@@ -46,6 +46,33 @@ about validity.
 Independently of the objection, we looked for the ways a kernel-checked theorem can still be wrong (extra axioms, a
 substituted statement, an exploited kernel defect, a mismatch between source and checked artefact) and found none.
 
+## Addendum (24 November 2026): the minimal example
+
+On 24 November 2026 Nielsen posted a Lean file of about forty lines, described as a minimal example with no `sorry`
+and no custom axioms, as showing how the release compiles. Section 11 of the paper examines it.
+
+**The example does not model the release.** Its theorem assumes the Riemann Hypothesis and hands it back; the
+theorem of the release has no hypothesis.
+
+```lean
+theorem claimed_rh (hRH : RiemannHypothesis) : (∃ b : Bundle, …) ∧ RiemannHypothesis   -- the example
+theorem riemannHypothesis : RiemannHypothesis := rhOfAll                               -- the release
+```
+
+* The type of `claimed_rh` is `RiemannHypothesis → (…) ∧ RiemannHypothesis`. The same text compiles with `False`
+  in place of `RiemannHypothesis`. With the hypothesis left out it does not compile, and six further attempts to
+  do without it also fail.
+* In the 61.57 GB proof export the type of `riemannHypothesis` is the bare constant `RiemannHypothesis`. A
+  hypothesis would be recorded as a `forallE`, as it is for the lemma one step below.
+* Of the 1,468,418 declarations in the export, four refer to `RiemannHypothesis` in their type, each as its
+  conclusion. In the source, none of the 51 occurrences of the identifier is a hypothesis.
+* The last two steps of the release that conclude `RiemannHypothesis` use only Mathlib and compile on their own.
+  The hypothesis they need is supplied by a theorem that has none; in the example nobody supplies `hRH`.
+* What the example does show: a vacuous certificate adds no evidence, and a clean `#print axioms` report does not
+  tell you what a theorem states. One has to read the statement, which is what the statement comparison checks.
+
+Files: `evidence/minimal-example/`. Six further Gemini agents verified this independently: `evidence/agy/round3/`.
+
 ## How it was checked
 
 * **Provenance.** SHA-256 of the author's archive and of both published exports recomputed and matched; mirror
@@ -77,6 +104,22 @@ Several findings in the paper originated with these agents:
 
 All eight reached the same overall assessment as the main analysis. Prompts and full reports: `evidence/agy/`.
 
+For the addendum, six more agents (I–O) were run in the same way, this time able to compile small Lean files.
+What originated with them:
+
+* a correction to the main analysis, whose draft contained a vacuous check (an equation between two proofs of a
+  proposition, true by proof irrelevance), and the observation that the three axioms reported for the example
+  come from its statement, not from its proof (agent I);
+* a classification of all 51 occurrences of `RiemannHypothesis` in the source, and the seven lemma hypotheses of
+  that shape on the route with the theorem that discharges each (agent J);
+* six failed attempts to remove the hypothesis of the example, and the converse experiment: the same vacuous
+  bundle passed to a lemma stated for all bundles yields a valid theorem (agent K);
+* the strongest point in favour of the example, recorded in the paper (agent L);
+* the common prefix of the two kernel exports and a full pass over the 61.57 GB file for axiom records (agent M);
+* an independent compilation of the last steps and a walk along the route (agent O).
+
+All six reached the same assessment. We recompiled their 23 test files and obtained the outcomes they report.
+
 ## Limits
 
 * The mathematics was not read. This is an audit of an argument about validity.
@@ -94,12 +137,15 @@ evidence/    REPRODUCE.md
   depgraph/      depquery.py, watch list, query outputs, hashes of the graph files
   con-leche/     logs of the independent checker run
   challenge-rebuild/, provenance/, hygiene/, toy/
-  agy/           prompts and reports of the eight Gemini agents (round 1: A–D, round 2: E–H)
+  minimal-example/   the example of 24 November 2026: compiled files, export records, graph query
+  agy/           prompts and reports of the fourteen Gemini agents (round 1: A–D, round 2: E–H, round 3: I–O)
 ```
 
 ## Versions
 
-* **v2** (this paper, English): based on the full text of Nielsen's paper; adds the dependency graph, the second
+* **v2.1** (24 November 2026): adds the addendum on the minimal example (Section 11 of the paper), the files in
+  `evidence/minimal-example/` and the third round of agents.
+* **v2** (the paper, English): based on the full text of Nielsen's paper; adds the dependency graph, the second
   round of agents and a correction of an undercount in v1 (Appendix B of the paper).
 * **v1** (a report in Chinese, merged as PR #1): superseded; available in the git history.
 
@@ -123,5 +169,10 @@ carried out the main analysis and drafted the text under the author's direction.
 
 Nielsen 论文真正说明的是：形式化证明没有使用其标识符所宣称的几何解释。这是关于表述的发现，不是关于有效性的发现。
 
-独立验证由 Google Gemini 4 Neon（XHigh，经 `agy`）的八个只读代理完成，论文中多处发现最先出自这些代理（见上文及论文第 7 节）。
+**补遗（2026 年 11 月 24 日）：** Nielsen 又发布了一段约四十行的 Lean“最小示例”，称发布版就是这样编译通过的。
+核验结论：**该示例不是发布版的模型。** 示例的定理把黎曼猜想作为假设（`hRH : RiemannHypothesis`）再原样交回；
+发布版的主定理没有任何假设，在 61.57 GB 的内核导出文件中其类型就是裸常量 `RiemannHypothesis`。
+去掉假设后示例无法编译；导出的 1,468,418 个声明中只有 4 个在类型里提到 `RiemannHypothesis`，且全部是作为结论。详见论文第 11 节。
+
+独立验证由 Google Gemini 4 Neon（XHigh，经 `agy`）的十四个只读代理完成（主体审计八个，补遗六个），论文中多处发现最先出自这些代理（见上文及论文第 7 节、第 11.7 节）。
 论文正文为英文：[`paper/invalidity_of_the_invalidity.pdf`](paper/invalidity_of_the_invalidity.pdf)。

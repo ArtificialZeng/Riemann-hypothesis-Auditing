@@ -1,0 +1,161 @@
+\section{Addendum (24 November 2026): the minimal example}
+\label{sec:addendum}
+
+After this note was completed, the author of \N\ posted a Lean file of about forty lines~\cite{nielsenpost}, described in its own comments as a minimal example with no \lean{sorry} and no custom axiom, and presented it as showing how the release compiles.
+This addendum examines that file. The result can be stated at once.
+
+\begin{verdictbox}
+The example does not model the release. Its theorem \emph{assumes} the Riemann Hypothesis and hands the assumption back; the theorem of the release has no hypothesis, in the source and in the kernel export.
+With the hypothesis removed the example does not compile, in any of the ways that were tried.
+The objection therefore fails, and for the reason already given in Proposition~\ref{prop:vac}.
+\end{verdictbox}
+
+One further kind of evidence is used below: \textsf{L}, the output of the Lean compiler on a small file. The files and outputs are in \path{evidence/minimal-example} in the repository.
+
+\subsection{The example}
+
+The file defines a predicate \lean{anyGeometry} that is constantly \lean{True}, a number \lean{targetFormula}, a structure with a field \lean{height} and a field saying that \lean{height} equals \lean{targetFormula},
+an instance in which that equation holds by \lean{rfl}, and a bundle of the two.
+These are miniatures of objects that are in the release and on the route (Section~\ref{sec:facts}); agent~K matched each of them to its counterpart there.
+The file ends with the following theorem and with the command \texttt{\#print axioms claimed\_rh}.
+\begin{Verbatim}[fontsize=\small,frame=single,rulecolor=\color{gray!50}]
+theorem claimed_rh (hRH : RiemannHypothesis) :
+    (∃ b : Bundle, anyGeometry 0 ∧ b.model.height = targetFormula) ∧ RiemannHypothesis := by
+  let b := buildBundle
+  exact ⟨⟨b, valid_bundle_of_manufactured b⟩, hRH⟩
+\end{Verbatim}
+\noindent The comment above it in the file says that when the Riemann Hypothesis is combined with the certificate of the bundle, the certificate adds no independent evidence. That is true, and it is what the file shows.
+
+\subsection{What the example states}
+
+We elaborated the file with Lean~4.33.1 against the build of Mathlib that the release pins. The post displays the text flush left, which Lean does not parse; we restored the indentation and changed nothing else. Table~\ref{tab:minimal} collects the outcomes.
+
+\begin{table}[ht]
+\centering\small
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{1.6cm}@{}}
+\toprule
+Check & Outcome & Evidence \\
+\midrule
+The type of \lean{claimed_rh} & \texttt{RiemannHypothesis → (∃ b, …) ∧ RiemannHypothesis}: an implication whose hypothesis is its own conclusion. & \textsf{L}, \textsf{G-I} \\
+Its proof term & \texttt{fun hRH => … ⟨Exists.intro b …, hRH⟩}: the second component is the bound variable. Nothing from the bundle and nothing from Mathlib enters it. & \textsf{L}, \textsf{G-I} \\
+The same text with an arbitrary proposition \texttt{P}, or with \lean{False}, in place of \lean{RiemannHypothesis} & Compiles unchanged, with type \texttt{False → (…) ∧ False} in the second case. The text is not about the Riemann Hypothesis. & \textsf{L}, \textsf{G-I} \\
+The three axioms reported by \texttt{\#print axioms} & They enter through the \emph{statement}, in which the definition of the zeta function occurs. With \lean{False} in its place the report is ``does not depend on any axioms''. & \textsf{G-I}, \textsf{L} \\
+The bundle deleted altogether & \texttt{theorem t (hRH : RiemannHypothesis) : RiemannHypothesis := hRH} compiles, with the same axiom report. The bundle carries nothing. & \textsf{G-I}, \textsf{L} \\
+The hypothesis left out: \texttt{theorem t : RiemannHypothesis := (claimed\_rh \_).2} & Error: the compiler cannot supply the argument \lean{hRH}, and shows the open goal \lean{RiemannHypothesis}. & \textsf{L}, \textsf{G-I} \\
+Six further attempts to do without the hypothesis while keeping every vacuous ingredient & All six fail: extracting the conclusion from the bundle; a bundle field of type \lean{RiemannHypothesis}; \lean{rfl}, \lean{trivial}, \lean{decide}; a consumer quantified over all propositions; fields that mention the conclusion vacuously; redefining \lean{RiemannHypothesis}. & \textsf{G-K}, \textsf{L} \\
+\bottomrule
+\end{tabularx}
+\caption{What the Lean compiler says about the example. \textsf{L}: compiled by us; \textsf{G-x}: established by agent~x and, where \textsf{L} follows, recompiled by us with the same outcome.}
+\label{tab:minimal}
+\end{table}
+
+The example is thus an instance of Proposition~\ref{prop:vac}: a statement $H \to P$ whose proof says nothing about $P$. Here $H$ is the Riemann Hypothesis itself and $P$ contains it as a conjunct.
+The certificate about the bundle is true and idle; the conclusion is the hypothesis.
+What makes the file compile is the binder \texttt{(hRH : RiemannHypothesis)}. The predicate that is \lean{True} and the equation that holds by \lean{rfl} contribute nothing to that.
+
+\subsection{What the release states}
+
+The entry point of the release is the file \path{src/Main.lean}, and its first theorem reads, in full,
+\begin{Verbatim}[fontsize=\small,frame=single,rulecolor=\color{gray!50}]
+theorem riemannHypothesis : RiemannHypothesis := rhOfAll
+\end{Verbatim}
+\noindent There is no binder, and the file contains no \lean{variable} or \lean{section} that could add one (\textsf{S}, \textsf{G-I}, \textsf{G-J}).
+The source is not what was checked, so we looked at the kernel export as well. In the 61.57\,GB proof export the declaration is recorded as
+\begin{Verbatim}[fontsize=\scriptsize,frame=single,rulecolor=\color{gray!50},breaklines=true,breakanywhere=true]
+{"thm":{"all":[14065054],"levelParams":[],"name":14065054,"type":6490658,"value":1065212062}}
+{"const":{"name":326825,"us":[]},"ie":6490658}
+{"in":326825,"str":{"pre":0,"str":"RiemannHypothesis"}}
+\end{Verbatim}
+\noindent that is, name 14065054 (\lean{riemannHypothesis}) is a theorem whose type is expression 6490658, and that expression is the bare constant \lean{RiemannHypothesis} (\textsf{K}).
+A hypothesis would make the type a \texttt{forallE} record. It does so for the lemma \lean{Formalism.VW.rh_of_every} one step below, whose type is recorded as
+\texttt{forallE} with domain \lean{UpperTheory.EveryCharacter} and body 6490658 (found by agent~M; confirmed by us, \textsf{K}).
+The challenge export, which we rebuilt from Mathlib alone (Section~\ref{sec:rebuild}), records the same constant as the type of the same name (\textsf{K}; independently \textsf{G-L} and \textsf{G-M}).
+Agent~M also found that the two exports agree byte for byte up to and including the definition of \lean{RiemannHypothesis}, their first 6,426,463 lines; we recomputed the two hashes and they coincide (\textsf{K}).
+Its full pass over the proof export found three \texttt{axiom} records, the standard ones, and no occurrence of \lean{sorryAx}, in agreement with Section~\ref{sec:defects}.
+
+This is not in dispute with \N. Its abstract says of the top-level theorem that it inhabits Mathlib's \lean{RiemannHypothesis}; that is observation (A1) of Section~\ref{sec:argument}.
+A theorem of type \texttt{RiemannHypothesis → …} does not inhabit \lean{RiemannHypothesis}. The example therefore departs from the description of the release that \N\ itself gives.
+
+\subsection{Is the Riemann Hypothesis assumed anywhere on the route?}
+
+The example would be a fair model if the release, somewhere below its final theorem, assumed what it concludes. We looked for that in four ways.
+
+\begin{enumerate}
+\item \textbf{In the dependency graph.} Of the \Ndecl\ declarations of the proof export, exactly four refer to the constant \lean{RiemannHypothesis} in their type:
+\lean{Formalism.VW.rh_of_right}, \lean{Formalism.VW.rh_of_every}, \lean{rhOfAll} and \lean{riemannHypothesis} (\textsf{K}). In each of the four it is the conclusion (\textsf{S}). None takes it as a hypothesis.
+\item \textbf{In the source.} Agent~J classified all 51 occurrences of the identifier in the repository of the release: 47 as the conclusion of a statement, one inside a proof, three in documentation, none as a hypothesis (\textsf{G-J}).
+The source contains more declarations than the export, which holds only what the final theorems use.
+\item \textbf{In unfolded form.} An assumption need not use the identifier. Lemmas on the route do have hypotheses that say what the Riemann Hypothesis, or its generalization to Dirichlet characters, says:
+\lean{rh_of_right} assumes that the zeta function has no zero with real part greater than $1/2$ other than at $s = 1$, and \lean{rh_of_every} assumes the corresponding statement for all Dirichlet $L$-functions.
+Agent~J followed the route for twelve levels, listed seven hypotheses of this kind, and for each named the theorem that supplies it; agent~O, reading independently, found the same for the part of the route it covered (\textsf{G-J}, \textsf{G-O}).
+This is what the last steps of any proof look like, and it is where the example and the release part ways.
+In the release the chain is closed: \texttt{rhOfAll := rh\_of\_every allChi}, where \lean{allChi} is a theorem without hypotheses whose type is the constant \lean{UpperTheory.EveryCharacter} (\textsf{S}; in the export, \textsf{G-M}),
+and the dependency cone of \lean{riemannHypothesis} contains \NconeProjThm\ theorems of the release (Appendix~\ref{app:data}).
+In the example nobody supplies \lean{hRH}.
+\item \textbf{By compiling the last steps.} The two lemmas just named use only Mathlib; the first is a proof of some sixty lines from the functional equation.
+Copied verbatim into a file of their own they compile, with the three standard axioms and the types
+\texttt{(∀ s, 1/2 < s.re → s ≠ 1 → riemannZeta s ≠ 0) → RiemannHypothesis} and \texttt{UpperTheory.EveryCharacter → RiemannHypothesis} (\textsf{L}; independently \textsf{G-O}).
+The definition of \lean{UpperTheory.EveryCharacter} mentions only Mathlib's \lean{DirichletCharacter.LFunction} (\textsf{S}, \textsf{G-O}).
+A last line that asks for \lean{RiemannHypothesis} without a proof of \lean{UpperTheory.EveryCharacter} fails in the same way as the example without \lean{hRH}.
+\end{enumerate}
+
+None of this requires reading every lemma of the release. A closed term that a kernel accepts with three axioms cannot contain an undischarged hypothesis; items 1--4 show where the hypotheses of the last steps are discharged, and the replay of Section~\ref{sec:conleche} covers the rest.
+
+\subsection{The converse experiment}
+
+Agent~K also ran the experiment in the other direction. It kept every vacuous ingredient of the example and passed the bundle, with two proofs of \lean{True}, to a lemma stated for all bundles whose conclusion is proved independently: the irrationality of $\sqrt{2}$, from Mathlib.
+The resulting theorem has no hypothesis, has \lean{buildBundle} and \lean{anyGeometry} in its proof term, and is valid (\textsf{G-K}, \textsf{L}). Agent~L did the same with Euclid's theorem on the infinitude of primes (\textsf{G-L}, \textsf{L}).
+Together with the six failures of Table~\ref{tab:minimal} this is the replacement test of Section~\ref{sec:remove} in miniature. Vacuous objects in the dependency cone of a closed theorem do not invalidate it, and without a proof of the conclusion they cannot produce it.
+
+\subsection{What the example does show}
+
+Two things, and both were already common ground.
+
+\begin{enumerate}
+\item \textbf{A vacuous certificate adds no evidence to a statement to which it is attached.} Section~\ref{sec:credit} says the same of the geometric layer of the release.
+Alpöge has since written that the source contains much that is unnecessary and that criticism of it is reasonable~\cite{alpogepost}. That concession concerns the same layer. Like the layer, it bears on the state of the source and not on what the checked term proves.
+\item \textbf{A clean axiom report does not show that a theorem proves what its name suggests.} Agent~L named this as the strongest point in favour of the example.
+\lean{claimed_rh} is a valid theorem with no \lean{sorry} and only the standard axioms. It is simply not the Riemann Hypothesis. One has to read the statement.
+That is exit~(ii) of Proposition~\ref{prop:exits}, and the mechanical check for it is the comparison of the statement with a reference built from Mathlib alone (Sections~\ref{sec:rebuild} and~\ref{sec:conleche}).
+The release passes that check. The example would not: its type is not the constant \lean{RiemannHypothesis}.
+\end{enumerate}
+
+\subsection{Independent verification of the addendum}
+\label{sec:agents3}
+
+As in the main audit, the checking was shared with a second line of verification, and it corrected the first.
+Six further agents were run with Gemini~4 Neon through \texttt{agy}, each from an empty context and on one sub-question. They were given the example and the claim made for it in neutral terms, were told not to read our earlier reports or each other's directories,
+and, unlike the agents of Section~\ref{sec:agents}, could compile small Lean files against Mathlib. They could not build the release. (There is no agent~N, to avoid confusion with \N.)
+
+\begin{table}[ht]
+\centering\small
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Agent & Sub-question & What it established \\
+\midrule
+I & what the example states and proves & The type, the proof term, the substitution of \texttt{P} and \lean{False}, the deletion of the bundle.
+\textbf{Caught a vacuous check in our draft}: we had tested that the second component of \lean{claimed_rh} equals \lean{hRH} by \lean{rfl}, which holds for any two proofs of a proposition; it printed the term instead.
+\textbf{Observed that the three reported axioms come from the statement, not from the proof.} \\
+J & is the conclusion assumed on the route? & \textbf{Classified all 51 occurrences} of the identifier; \textbf{listed the seven hypotheses of this shape on the route and the theorem that discharges each}; found no construct that could add a hidden hypothesis in the 53 files of the chain. \\
+K & is the example a faithful model? & Matched each ingredient to its counterpart in the release and \textbf{found none for the hypothesis} \lean{hRH} or for the final conjunction; \textbf{the six failed attempts}; \textbf{the converse experiment}. \\
+L & logic of the inference & Conditions under which the inference from the example would be valid; verified the type in the challenge export; verdict: invalid. \textbf{The point in favour of the example} recorded above. \\
+M & the kernel exports & Resolved the records of \lean{riemannHypothesis}, \lean{rhOfAll}, \lean{rh_of_every} and \lean{allChi} in the proof export, with the same result as ours;
+\textbf{found the common prefix of the two exports}; a full pass over the 61.57\,GB file for axiom records. \\
+O & where the conclusion comes from & Compiled the last steps on its own; unfolded \lean{UpperTheory.EveryCharacter} to Mathlib terms; walked the route, confirmed that the vacuous objects are on it and that their consumers are universally quantified, as in Section~\ref{sec:remove}. \\
+\bottomrule
+\end{tabularx}
+\caption{The six agents of the addendum (Gemini~4 Neon). Bold marks what originated with the agent.}
+\label{tab:agents3}
+\end{table}
+
+All six reached the assessment stated at the head of this addendum. The qualifications of Section~\ref{sec:agents} apply again: the agents read the same artefacts as we did, and the prompts were ours.
+We recompiled all 23 Lean test files written by the agents and obtained in every case the outcome they report; the list is in the repository.
+Agents~L and~O also recorded further definitions equal to \lean{True} on or near the route, among them a slot named \lean{UnusedSlot72}. They add to the list of Section~\ref{sec:facts} and do not change its assessment.
+
+\subsection{Limits of the addendum}
+
+The post is informal, and we have addressed only the file and the claim that it shows how the release compiles.
+The limits of Section~\ref{sec:limits} apply unchanged: the mathematics was not read, and the build from source to export was not reproduced here.
+Agent~J read the route to a depth of twelve levels and not to its leaves, so item~3 above is a sample; the absence of an assumed conclusion rests on items~1 and~2 and, decisively, on the fact that the checked term is closed.

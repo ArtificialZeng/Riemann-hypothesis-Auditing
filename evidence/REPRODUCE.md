@@ -170,10 +170,35 @@ lean evidence/toy/ToyInterpolant.lean
 
 ## 7. Independent verification agents (Gemini 4 Neon)
 
-Eight `agy --dangerously-skip-permissions --model gemini-4-neon-xhigh --print "<prompt>"` runs, read-only by
+Fourteen `agy --dangerously-skip-permissions --model gemini-4-neon-xhigh --print "<prompt>"` runs, read-only by
 instruction, each from an empty context.
 
 * Round 1 (claims as publicly summarized): prompts `agy/prompts/{A,B,C,D}.txt`, reports `agy/*.md`.
   Local absolute paths were rewritten to `~/rh-audit/...`; nothing else was edited.
 * Round 2 (full text of the paper): prompts `agy/round2/prompts/{E,F,G,H}.txt`, reports `agy/round2/*.md`;
   see `agy/round2/README.md` for the three kinds of edit applied before publication.
+* Round 3 (the minimal example of 24 November 2026): six further runs, prompts `agy/round3/prompts/{I,J,K,L,M,O}.txt`,
+  reports `agy/round3/*.md`, the agents' test files in `agy/round3/work/`; see `agy/round3/README.md`.
+
+## 8. The minimal example of 24 November 2026 (addendum)
+
+Inside the project of section 5 (Lean 4.33.1, Mathlib `v4.33.1` from the official cache):
+
+```bash
+lake env lean /path/to/evidence/minimal-example/NielsenMinimal.lean
+# 'claimed_rh' depends on axioms: [propext, Classical.choice, Quot.sound]
+lake env lean /path/to/evidence/minimal-example/NielsenMinimal_checked.lean
+# claimed_rh : RiemannHypothesis → (∃ b, anyGeometry 0 ∧ b.model.height = targetFormula) ∧ RiemannHypothesis
+# ... and one error, as intended: don't know how to synthesize placeholder for argument `hRH`
+lake env lean /path/to/evidence/minimal-example/LastSteps.lean
+# Formalism.VW.rh_of_every : UpperTheory.EveryCharacter → RiemannHypothesis
+# ... and one error, as intended: don't know how to synthesize placeholder for argument `h`
+```
+
+The records of `riemannHypothesis` in the two exports, with the commands that found them, are in
+`minimal-example/export_records.txt`. The graph query needs the output of section 3:
+
+```bash
+python3 -I evidence/minimal-example/rh_referrers.py graph mathlib_names.txt
+# refer to RiemannHypothesis in their TYPE: 4 total = 0 library + 4 release
+```

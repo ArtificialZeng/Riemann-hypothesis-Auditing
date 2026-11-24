@@ -133,5 +133,6 @@ The file \path{evidence/REPRODUCE.md} in the repository gives the commands. In o
 \item dump the Mathlib constant names with \path{evidence/depgraph/DumpNames.lean}, run \path{depquery.py}, then \path{paper/make_tables.py};
 \item build \texttt{con-leche} and run it with \texttt{--verified --compare};
 \item rebuild the challenge export with \path{evidence/challenge-rebuild/run2.sh} and compare it byte for byte;
-\item compile the two files in \path{evidence/toy} with any recent Lean~4.
+\item compile the two files in \path{evidence/toy} with any recent Lean~4;
+\item for the addendum, compile the files in \path{evidence/minimal-example} inside the project of step~5 and run \path{rh_referrers.py} on the graph of step~2.
 \end{enumerate}

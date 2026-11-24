@@ -1,0 +1,26 @@
+declarations: 1468418  target node: 51213 def ['RiemannHypothesis'] library
+
+refer to RiemannHypothesis in their TYPE: 4 total = 0 library + 4 release
+   RELEASE thm Formalism.VW.rh_of_right
+   RELEASE thm Formalism.VW.rh_of_every
+   RELEASE thm rhOfAll
+   RELEASE thm riemannHypothesis
+
+refer to RiemannHypothesis in their VALUE: 1 total = 0 library + 1 release
+   RELEASE thm Formalism.VW.rh_of_right
+
+Formalism.VW.rh_of_every [thm]
+   type  refers to: ['RiemannHypothesis', 'UpperTheory.EveryCharacter']
+   value refers to: ['Complex.instOne', 'Complex.mk', 'One.toOfNat1', 'OfNat.ofNat', 'Ne', 'Complex.instField', 'Field.toSemifield', 'Semifield.toCommGroupWithZero', 'CommGroupWithZero.toCommMonoidWithZero', 'instOfNatNat', 'Nat.zero', 'ZMod.commRing', 'ZMod', 'CommRing.toCommMonoid', 'MulChar.hasOne', 'DirichletCharacter', 'Or.inl', 'Nat.instNeZeroSucc', 'DirichletCharacter.LFunction_modOne_eq', 'Complex.instZero', 'Zero.toOfNat0', 'riemannZeta', 'DirichletCharacter.LFunction', 'congrArg', 'Eq.mp', 'Complex.re', 'Nat.instAtLeastTwoHAddOfNat', 'Real.instNatCast', 'Real.ofCauchy', 'instOfNatAtLeastTwo', 'Real.instOne', 'Real.instDivInvMonoid', 'DivInvMonoid.toDiv', 'instHDiv', 'HDiv.hDiv', 'Real.instLT', 'LT.lt', 'Formalism.VW.rh_of_right', 'UpperTheory.EveryCharacter']
+
+allChi [thm]
+   type  refers to: ['UpperTheory.EveryCharacter']
+   value refers to: ['UpperTheory.FinalTheorems.everyCharacter']
+
+rhOfAll [thm]
+   type  refers to: ['RiemannHypothesis']
+   value refers to: ['allChi', 'Formalism.VW.rh_of_every']
+
+riemannHypothesis [thm]
+   type  refers to: ['RiemannHypothesis']
+   value refers to: ['rhOfAll']
