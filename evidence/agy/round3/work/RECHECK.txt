@@ -1,0 +1,28 @@
+Exit codes obtained when the 23 Lean test files of the six agents were recompiled by the main analysis
+(Lean 4.33.1, Mathlib at the tag pinned by the release; command: leanc.sh FILE, run in this directory).
+0 = elaborated without error; 1 = at least one error. Every code agrees with the agent's own report:
+the files with code 1 are the ones written to fail (the hypothesis removed, or an attempt to do without it).
+
+0 I/T1_check_type.lean
+1 I/T2_no_hRH_fail.lean
+0 I/T2_proof_term.lean
+0 I/T3_arbitrary_P.lean
+0 I/T3_false.lean
+0 I/T3_no_mathlib.lean
+1 I/T4_no_hyp.lean
+0 I/T5_check_rh_type.lean
+0 I/T6_minimal.lean
+0 I/T6_no_bundle.lean
+0 J/CheckStatements.lean
+0 K/converse_vacuous_bundle.lean
+1 K/steelman_1_extract_from_bundle.lean
+1 K/steelman_2_bundle_carries_rh.lean
+1 K/steelman_3_rfl_trivial_decide.lean
+1 K/steelman_4_polymorphic_consumer.lean
+1 K/steelman_5_structure_field_mentions_rh.lean
+1 K/steelman_6_redefine_rh.lean
+0 L/TestTypes.lean
+0 L/VacuousScaffoldingTest.lean
+0 M/CheckNielsen.lean
+0 O/VerifyClaimStrip.lean
+0 O/VerifyLastSteps.lean

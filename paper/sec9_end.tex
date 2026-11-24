@@ -12,6 +12,8 @@ The hollow layer is a part of the proof term that the proof does not need.
 The title of this note is deliberately symmetrical with the title of the paper it answers, and the symmetry should not be over-read.
 We do not claim that the mathematics of the release has been understood or reviewed, only that this objection to it is invalid; and what the objection uncovered about the distance between the formal proof and its own vocabulary remains worth the attention of anyone who sets out to explain the proof.
 
+\input{sec10_addendum.tex}
+
 \section*{Contributions, tools and acknowledgements}
 \addcontentsline{toc}{section}{Contributions, tools and acknowledgements}
 \label{sec:contrib}
@@ -21,12 +23,14 @@ This audit is the product of a person and two AI systems, and the division of la
 The author posed the question, supplied the paper under review, set the scope and the standard of evidence, directed the work and is responsible for the text and its conclusions.
 
 \emph{Claude Code} (Anthropic) carried out the main line of analysis under the author's direction: it wrote the programs \texttt{conescan}, \texttt{depgraph} and \texttt{depquery}, ran them and the \texttt{con-leche} replay,
-rebuilt the challenge export, selected the source excerpts and drafted this text.
+rebuilt the challenge export, selected the source excerpts and drafted this text. For the addendum it compiled the example and the last steps of the release, and looked up the records in the two exports.
 
-\emph{Gemini~4 Neon} (Google), run as eight independent agents through the \texttt{agy} tool, performed the independent verification described in Section~\ref{sec:agents}.
+\emph{Gemini~4 Neon} (Google), run as fourteen independent agents through the \texttt{agy} tool, eight for the main audit and six for the addendum, performed the independent verification described in Sections~\ref{sec:agents} and~\ref{sec:agents3}.
 Several findings used in this note originated with those agents and not with the main analysis: the location of the degenerate and junk models, the observation that the custom tactics call for an independent kernel replay,
-the substantive nature of the copied lattices, the two mis-cited sites, the link between \lean{Bk} and the period pairing, and the minimal counterexample to the deletion test.
-The main analysis, for its part, made an error in the first version of this audit, an undercount that came to light when the dependency graph was rebuilt with a second program (Appendix~\ref{app:erratum}). The results are stronger for having been obtained twice, by different systems.
+the substantive nature of the copied lattices, the two mis-cited sites, the link between \lean{Bk} and the period pairing, and the minimal counterexample to the deletion test;
+and, in the addendum, the six failed attempts to remove the hypothesis of the example, the converse experiment, the classification of every occurrence of the conclusion in the source, and the common prefix of the two exports.
+The main analysis, for its part, made an error in the first version of this audit, an undercount that came to light when the dependency graph was rebuilt with a second program (Appendix~\ref{app:erratum}),
+and a vacuous check in its draft of the addendum, which agent~I caught. The results are stronger for having been obtained twice, by different systems.
 
 Neither AI system is an author, and neither can take responsibility for the conclusions; the author does.
 The author thanks J.~L.~Nielsen for a paper whose careful reading of the source made this audit possible, and the maintainers of the verification page and of the mirrors for making the artefacts available.
@@ -34,6 +38,8 @@ The author thanks J.~L.~Nielsen for a paper whose careful reading of the source 
 \begin{thebibliography}{9}
 \bibitem[N]{nielsen} J.~L.~Nielsen, \emph{The Invalidity of Alpöge's Proof of the Riemann Hypothesis: Vacuously true geometric and lattice witnesses in the Lean formalization},
 Center for Topological Physics, Lawrence, Kansas; title page dated 20 November 2026, 17~pages. PhilArchive record \url{https://philarchive.org/rec/NIEIOT-2}.
+\bibitem{nielsenpost} J.~L.~Nielsen, post on X containing a minimal Lean example, 24 November 2026. \url{https://x.com/QualiaQuanta/status/2125008805310222352}
+\bibitem{alpogepost} L.~Alpöge, post on X, 24 November 2026. \url{https://x.com/__alpoge__/status/2124987173439209561}
 \bibitem{alpoge} L.~Alpöge, \emph{Remark}, 20 November 2026. \url{https://alpo.ge/remark.pdf}
 \bibitem{community} Lean and Mathlib communities, statement on the formalization, 21 November 2026. \url{https://leanprover-community.github.io/blog/posts/riemann-hypothesis/}
 \bibitem{mit} A.~V.~Sutherland, verification files for the release (proof export, challenge export, checker logs). \url{https://math.mit.edu/~drew/grh/}

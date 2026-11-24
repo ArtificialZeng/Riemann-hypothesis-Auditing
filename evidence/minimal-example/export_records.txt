@@ -1,0 +1,71 @@
+Records of the main theorem in the two kernel-level exports (lean4export NDJSON, format 3.1.0).
+solution.ndjson  = the complete proof export (61,570,595,788 bytes); challenge.ndjson = the statement-only export.
+Commands were run in the directory holding the two files. Line numbers are 1-based.
+
+--- proof export: name and declaration records (found in the last 300 MB) -------------------------------
+$ tail -c 300000000 solution.ndjson | LC_ALL=C grep -a -F -e '"str":"riemannHypothesis"}' -e '"str":"rhOfAll"}'
+{"in":14065053,"str":{"pre":0,"str":"rhOfAll"}}
+{"in":14065054,"str":{"pre":0,"str":"riemannHypothesis"}}
+
+$ tail -c 300000000 solution.ndjson | LC_ALL=C grep -a -F -e '"name":14065054,' -e '"name":14065053,'
+{"thm":{"all":[14065053],"levelParams":[],"name":14065053,"type":6490658,"value":1065212061}}
+{"const":{"name":14065053,"us":[]},"ie":1065212062}
+{"thm":{"all":[14065054],"levelParams":[],"name":14065054,"type":6490658,"value":1065212062}}
+
+--- proof export: the type expression 6490658, shared by `rhOfAll` and `riemannHypothesis` ----------------
+$ LC_ALL=C grep -a -m1 -n -E '("ie":6490658\}$|^\{"ie":6490658,)' solution.ndjson
+6887633:{"const":{"name":326825,"us":[]},"ie":6490658}
+$ LC_ALL=C grep -a -m1 -n -F '{"in":326825,' solution.ndjson
+6426430:{"in":326825,"str":{"pre":0,"str":"RiemannHypothesis"}}
+
+   => the type of `riemannHypothesis` is the bare constant `RiemannHypothesis`.
+      A hypothesis would make it a `forallE` record, as it is for `Formalism.VW.rh_of_every` below.
+
+--- proof export: the proof term, two levels ---------------------------------------------------------------
+value of riemannHypothesis = expression 1065212062 = const 14065053 = `rhOfAll`            (record above)
+$ tail -c 300000000 solution.ndjson | LC_ALL=C grep -a -E '("ie":106521206[01]\}$|"ie":1065212059\}$|^\{"in":14065052,)'
+{"in":14065052,"str":{"pre":0,"str":"allChi"}}
+{"const":{"name":341189,"us":[]},"ie":1065212059}
+{"const":{"name":14065052,"us":[]},"ie":1065212060}
+{"app":{"arg":1065212060,"fn":1065212059},"ie":1065212061}
+$ LC_ALL=C grep -a -m1 -n -F '{"in":341189,' solution.ndjson
+6894372:{"in":341189,"str":{"pre":341049,"str":"rh_of_every"}}
+$ LC_ALL=C grep -a -m1 -n -F '{"in":341049,' solution.ndjson
+6887493:{"in":341049,"str":{"pre":341048,"str":"VW"}}
+
+   => value of rhOfAll = `Formalism.VW.rh_of_every` applied to `allChi`.
+
+Reported by the independent agent M (Gemini 4 Neon), which resolved the same records on its own
+(../agy/round3/M_kernel_export.md) and went one step further. The two expression records were then
+confirmed by us:
+$ sed -n '6894373,6894374p;6894374q' solution.ndjson
+{"const":{"name":326947,"us":[]},"ie":6497236}
+{"forallE":{"binderInfo":"default","body":6490658,"name":269,"type":6497236},"ie":6497237}
+$ LC_ALL=C grep -a -m1 -n -F '{"in":326947,' solution.ndjson
+6428174:{"in":326947,"str":{"pre":326946,"str":"EveryCharacter"}}
+Agent M's findings:
+   solution.ndjson:6894374   type of `Formalism.VW.rh_of_every` = expression 6497237 =
+        {"forallE":{"binderInfo":"default","body":6490658,"name":269,"type":6497236},"ie":6497237}
+        i.e. `UpperTheory.EveryCharacter → RiemannHypothesis`: here the hypothesis IS visible as a `forallE`
+   solution.ndjson:6894373   type of `allChi` = expression 6497236 = a bare constant, `UpperTheory.EveryCharacter`
+   full pass over solution.ndjson (1,080,769,508 lines): exactly three `axiom` records
+        (propext, Quot.sound, Classical.choice, at lines 16847, 19518, 45191) and no occurrence of "sorryAx"
+
+--- challenge export -------------------------------------------------------------------------------------
+$ LC_ALL=C grep -a -n -F -e '"str":"riemannHypothesis"}' -e '"str":"RiemannHypothesis"}' challenge.ndjson
+6426430:{"in":326825,"str":{"pre":0,"str":"RiemannHypothesis"}}
+6426467:{"in":326835,"str":{"pre":0,"str":"riemannHypothesis"}}
+$ LC_ALL=C grep -a -n -F '"name":326835,' challenge.ndjson
+6426520:{"thm":{"all":[326835],"levelParams":[],"name":326835,"type":6045960,"value":6046011}}
+$ LC_ALL=C grep -a -m1 -n -E '("ie":6045960\}$|^\{"ie":6045960,)' challenge.ndjson
+6426468:{"const":{"name":326825,"us":[]},"ie":6045960}
+
+   => the same bare constant. (The name record of `RiemannHypothesis` is line 6426430 with id 326825 in both
+      files: both exports begin with the same Mathlib prefix.)
+
+--- common prefix of the two exports (found by agent M, recomputed by us) ---------------------------------
+$ head -n 6426463 challenge.ndjson | shasum -a 256
+76cdfa12c3dc6bbfa22730e6d52c6e42e5057594a3fe1cb29068ee930f7011a1  -
+$ head -n 6426463 solution.ndjson | shasum -a 256
+76cdfa12c3dc6bbfa22730e6d52c6e42e5057594a3fe1cb29068ee930f7011a1  -
+   line 6426463 is the `def` record of `RiemannHypothesis` (name 326825) in both files.

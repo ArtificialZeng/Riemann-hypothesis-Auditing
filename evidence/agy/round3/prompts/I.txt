@@ -1,0 +1,23 @@
+You are an independent reviewer. Subject: Levent Alpöge's Lean 4 development claimed to prove the Riemann Hypothesis (released 20 Nov 2026), and a short Lean example that a critic, J. L. Nielsen, posted publicly on 24 Nov 2026 with the claim that the example shows "how the code compiles" and that the release is "a minimal tautological" construction.
+
+MATERIAL (all local, no network needed):
+ - The posted example, verbatim (flush left as displayed in the post): ~/rh-audit/agents3/input/posted_verbatim.txt
+ - The same example with indentation restored so that Lean parses it (differs only in leading whitespace): ~/rh-audit/agents3/input/NielsenMinimal.lean
+ - The release source: git checkout at ~/rh-audit/src/omega (Lean sources under ~/rh-audit/src/omega/src, about 175k files). Entry point: ~/rh-audit/src/omega/src/Main.lean . Search with `git grep -n -F 'literal'` or `git grep -n -w -F 'name'` inside the repo. Do NOT rely on `\b` or `\s` in `git grep -E` (they silently fail here); `rg` is not installed. A declaration-head index (one line per theorem/def/structure with file:line) is at ~/rh-audit/index/decls.txt (1.06M lines; grep it).
+ - Mathlib sources matching the release (tag v4.33.1): ~/rh-audit/challenge-rebuild/.lake/packages/mathlib
+ - Lean 4.33.1 IS available for small files through a wrapper that writes nothing: `~/rh-audit/agents3/leanc.sh /absolute/path/File.lean` (official Mathlib build on the search path; a file that imports Mathlib modules elaborates in about 15 s). The release itself is NOT built: you cannot import release modules; read them.
+
+STRICT RULES: (1) READ-ONLY everywhere, except your own scratch directory and your single report file, both named below. Never modify, build or delete anything else. (2) No network access. (3) Do not trust comments, file names or identifier names as evidence of what code does; only actual Lean terms, types and compiler output count. (4) Every factual claim must cite file:line with the quoted line(s), or the exact command you ran with its output. (5) If you cannot verify something, write NOT VERIFIED and why; never guess. (6) Be neutral: you are not told which side is right. Report what you find even if it supports the critic. (7) Refer to the critic as "Nielsen" or "the author of the example"; do not use gendered pronouns for anyone. (8) Do not read anything under ~/rh-audit/repo, ~/rh-audit/agents, ~/rh-audit/agents2, ~/rh-audit/report or other agents' directories under ~/rh-audit/agents3: those contain other reviewers' conclusions and your review must be independent.
+
+YOUR SCRATCH DIRECTORY: ~/rh-audit/agents3/work/I/ (put any Lean test files there).
+
+YOUR TASK (I: what the posted example states and proves).
+ 1. Elaborate the example with the wrapper. Report the exact output. Then, in a copy in your scratch directory, add `#check @claimed_rh` and report the exact type of `claimed_rh`. Does that type have hypotheses? Which?
+ 2. Where does the conjunct `RiemannHypothesis` in the conclusion of `claimed_rh` come from inside the proof term? Is it derived from the bundle, from Mathlib, or from the hypothesis? Test it by elaboration (for instance, check whether `(claimed_rh hRH).2 = hRH` holds by `rfl`).
+ 3. Is the example specific to the Riemann Hypothesis? Test whether the same text goes through with `RiemannHypothesis` replaced by an arbitrary `P : Prop`, and by `False`. Report what compiles.
+ 4. Does the example, as it stands, yield a term of type `RiemannHypothesis` with no hypothesis? Try to obtain one from it (for instance `theorem t : RiemannHypothesis := (claimed_rh _).2`) and report the exact compiler output.
+ 5. Read ~/rh-audit/src/omega/src/Main.lean. Quote every theorem in it in full. For each: does its statement have hypotheses (explicit binders, or implicit ones through `variable`, `section`, `include`, `open ... in`, `omit`)? Is the type of the release theorem `riemannHypothesis` the same as the type of the example theorem `claimed_rh`? State the two types side by side.
+ 6. In the example, delete the bundle entirely (keep only `theorem t (hRH : RiemannHypothesis) : RiemannHypothesis := hRH`). Does it compile? What does that say about which ingredient of the example carries the conclusion?
+ 7. Conclusion, in at most 8 lines: what does the example demonstrate, and what does it not demonstrate, about a theorem whose statement is `RiemannHypothesis` with no hypothesis?
+
+Write your report (Markdown; one section per numbered item; then a summary table of at most 12 lines; then a section "What I could not verify") to ~/rh-audit/agents3/out/I_example_semantics.md . Finish by printing the single line: REPORT WRITTEN.

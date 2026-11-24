@@ -1,0 +1,7 @@
+Formalism.VW.rh_of_right : (∀ (s : ℂ), 1 / 2 < s.re → s ≠ 1 → riemannZeta s ≠ 0) → RiemannHypothesis
+Formalism.VW.rh_of_every : UpperTheory.EveryCharacter → RiemannHypothesis
+'Formalism.VW.rh_of_every' depends on axioms: [propext, Classical.choice, Quot.sound]
+LastSteps.lean:85:73: error: don't know how to synthesize placeholder for argument `h`
+context:
+⊢ UpperTheory.EveryCharacter
+exit code: 1

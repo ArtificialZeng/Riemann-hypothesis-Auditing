@@ -1,0 +1,10 @@
+'claimed_rh' depends on axioms: [propext, Classical.choice, Quot.sound]
+claimed_rh : RiemannHypothesis → (∃ b, anyGeometry 0 ∧ b.model.height = targetFormula) ∧ RiemannHypothesis
+theorem claimed_rh : RiemannHypothesis → (∃ b, anyGeometry 0 ∧ b.model.height = targetFormula) ∧ RiemannHypothesis :=
+fun hRH =>
+  let b := buildBundle;
+  ⟨Exists.intro b (valid_bundle_of_manufactured b), hRH⟩
+NielsenMinimal_checked.lean:74:59: error: don't know how to synthesize placeholder for argument `hRH`
+context:
+⊢ RiemannHypothesis
+exit code: 1
